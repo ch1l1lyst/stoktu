@@ -330,7 +330,3 @@ SESSION_DOMAIN=localhost
 ## 💬 **FRASE CLAVE**
 
 > **`PrivateRoute`** es el guardia del frontend: si no estás autenticado, no pasas.
-
----
-
-Con esto tienes el roadmap completo para el frontend, en el mismo estilo que el backend. Ahora ya sabes exactamente qué archivos crear y por qué. 😎🚀
