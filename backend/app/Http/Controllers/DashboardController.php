@@ -16,12 +16,11 @@ class DashboardController extends Controller
         $startDate = $month . '-01';
         $endDate = date('Y-m-t', strtotime($startDate));
 
-        // ============================================================
-        // 1. INDICADORES DE VENTAS E INVENTARIO
-        // ============================================================
+
 
         // Ventas totales (ingresos)
         $totalVentas = Venta::whereBetween('fecha', [$startDate, $endDate])
+            ->where('estado_pedido', 'completado')
             ->sum(DB::raw('cantidad * precio_unitario'));
 
         // Pedidos completados
