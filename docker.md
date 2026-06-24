@@ -278,3 +278,8 @@ volumes:
 ## 💬 **FRASE PARA RECORDAR**
 
 > **"La automatización con GitHub Actions es lo que separa a un desarrollador amateur de uno profesional. Haz que tu código se construya solo."** 😎🐳🚀
+
+Stop-Process -Name 'Docker Desktop' -Force -ErrorAction SilentlyContinue
+Stop-Process -Name 'com.docker.backend' -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 3
+Start-Process "C:\Program Files\Docker\Docker\Docker Desktop.exe"

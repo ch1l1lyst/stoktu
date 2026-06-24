@@ -116,3 +116,7 @@ Sistema funcional completo (MVP avanzado / producción interna).
 - Centraliza ventas y abastecimiento
 - Permite control en tiempo real del stock
 - Soporta decisiones basadas en datos
+
+COLORS UTILZIDOS EN EL DASHBOARD (POWER BI)
+BACKGROUND -> #0D0C0C
+BACKGROUND GRAFICA ->
