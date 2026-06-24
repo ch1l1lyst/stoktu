@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api", // ahora apunta al proxy
+  baseURL: "/api",
   withCredentials: true,
   headers: {
     Accept: "application/json",

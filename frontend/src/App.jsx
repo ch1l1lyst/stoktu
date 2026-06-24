@@ -5,7 +5,7 @@ import Dashboard from "./page/Gerencia/Dashboard";
 import ImportarVentas from "./page/ImportarVentas";
 import Layout from "./layouts/Layout";
 import Login from "./page/Login";
-import "./app.css";
+import "./App.css";
 import Inventario from "./page/Inventario";
 import CarritoProvider from "./context/CarritoContext";
 import Reposiciones from "./page/Reposiciones";

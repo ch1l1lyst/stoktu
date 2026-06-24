@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   // Función que se activa sola al cargar la app o recargar página
   const checkAuth = async () => {
     try {
-      const res = await api.get("/user"); // 👈 AQUÍ SE USA EL API
+      const res = await api.get("/user");
       setUser(res.data);
     } catch (error) {
       if (error.response?.status === 401) {
@@ -25,17 +25,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkAuth(); // Se ejecuta cuando el componente AuthProvider se monta
+    checkAuth();
   }, []);
 
   const login = async (email, password) => {
-    const res = await api.post("/login", { email, password }); // 👈 AQUÍ SE USA EL API
+    const res = await api.post("/login", { email, password });
     setUser(res.data.user);
     return res.data;
   };
 
   const logout = async () => {
-    await api.post("/logout"); // 👈 AQUÍ SE USA EL API
+    await api.post("/logout");
     setUser(null);
     navigate("/login");
   };
