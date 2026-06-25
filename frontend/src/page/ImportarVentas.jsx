@@ -13,26 +13,6 @@ import {
 } from "lucide-react";
 import api from "../api/axiosConfig";
 
-// ========== ESTILOS REUTILIZABLES ==========
-const thStyle = {
-  textAlign: "left",
-  padding: "6px 8px",
-  fontWeight: 600,
-  color: "#94a3b8",
-  fontSize: 10,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-  whiteSpace: "nowrap",
-};
-
-const tdStyle = {
-  padding: "6px 8px",
-  verticalAlign: "middle",
-  fontSize: 11,
-  color: "#e2e8f0",
-};
-
 const ImportarVentas = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -42,7 +22,7 @@ const ImportarVentas = () => {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const fileInputRef = useRef(null);
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
-  const [duplicateInfo, setDuplicateInfo] = useState(null); // <-- NUEVO ESTADO
+  const [duplicateInfo, setDuplicateInfo] = useState(null);
 
   useEffect(() => {
     fetchImportaciones();
@@ -111,7 +91,6 @@ const ImportarVentas = () => {
       fetchImportaciones();
     } catch (err) {
       const errorData = err.response?.data;
-      // Verificar si es error de duplicado (status 409 o mensaje específico)
       if (
         err.response?.status === 409 ||
         errorData?.message?.includes("ya fue importado anteriormente") ||
@@ -144,132 +123,36 @@ const ImportarVentas = () => {
   };
 
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 14,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-        color: "#e2e8f0",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-3.5 font-sans overflow-hidden text-[#e2e8f0]">
       {/* HEADER */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Upload size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Importar Ventas
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>Sube CSV o TXT</p>
+            <p className="text-[9px] text-[#64748b]">Sube CSV o TXT</p>
           </div>
         </div>
-
         <button
           onClick={fetchImportaciones}
-          style={{
-            background: "#252836",
-            border: "0.5px solid rgba(255,255,255,0.1)",
-            borderRadius: 7,
-            width: 28,
-            height: 28,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "#94a3b8",
-          }}
+          className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
         >
           <RefreshCw size={13} />
         </button>
       </div>
 
       {/* CONTENIDO SCROLLABLE */}
-      <div
-        style={{
-          flex: 1,
-          overflow: "auto",
-          minHeight: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-        }}
-      >
+      <div className="flex-1 overflow-auto min-h-0 flex flex-col gap-3">
         {/* Área de subida */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 12,
-            border: "0.5px solid rgba(255,255,255,0.08)",
-            padding: "20px 24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <label
-              style={{
-                width: "100%",
-                maxWidth: 400,
-                height: 120,
-                border: "2px dashed rgba(255,255,255,0.15)",
-                borderRadius: 10,
-                cursor: "pointer",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "background 0.2s",
-                background: "transparent",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(255,255,255,0.04)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
-            >
-              <Upload size={32} color="#64748b" style={{ marginBottom: 6 }} />
-              <p style={{ fontSize: 12, color: "#94a3b8" }}>
+        <div className="bg-[#252836] rounded-xl border border-white/10 p-5">
+          <div className="flex flex-col items-center gap-3">
+            <label className="w-full max-w-[400px] h-[120px] border-2 border-dashed border-white/15 rounded-lg cursor-pointer flex flex-col items-center justify-center transition-colors hover:bg-white/5">
+              <Upload size={32} color="#64748b" className="mb-1.5" />
+              <p className="text-xs text-[#94a3b8]">
                 Seleccionar archivo CSV o TXT
               </p>
               <input
@@ -277,34 +160,17 @@ const ImportarVentas = () => {
                 accept=".csv,.txt"
                 onChange={handleFileChange}
                 ref={fileInputRef}
-                style={{ display: "none" }}
+                className="hidden"
               />
             </label>
 
             {file && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "rgba(255,255,255,0.06)",
-                  padding: "4px 12px 4px 8px",
-                  borderRadius: 20,
-                }}
-              >
+              <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
                 <FileUp size={14} color="#94a3b8" />
-                <span style={{ fontSize: 12, color: "#e2e8f0" }}>
-                  {file.name}
-                </span>
+                <span className="text-xs text-[#e2e8f0]">{file.name}</span>
                 <button
                   onClick={resetForm}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "#ef4444",
-                    cursor: "pointer",
-                    padding: 2,
-                  }}
+                  className="bg-transparent border-none text-[#ef4444] cursor-pointer p-0.5"
                 >
                   <X size={14} />
                 </button>
@@ -315,24 +181,7 @@ const ImportarVentas = () => {
               <button
                 onClick={handleValidate}
                 disabled={uploading}
-                style={{
-                  background: "#4f8ef7",
-                  border: "none",
-                  borderRadius: 7,
-                  padding: "6px 18px",
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: "#fff",
-                  cursor: uploading ? "default" : "pointer",
-                  opacity: uploading ? 0.6 : 1,
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={(e) =>
-                  !uploading && (e.currentTarget.style.background = "#3b7ad9")
-                }
-                onMouseLeave={(e) =>
-                  !uploading && (e.currentTarget.style.background = "#4f8ef7")
-                }
+                className="bg-[#4f8ef7] border-none rounded-md px-4 py-1.5 text-xs font-medium text-white cursor-pointer disabled:opacity-60 transition-colors hover:bg-[#3b7ad9]"
               >
                 {uploading ? "Validando..." : "Validar"}
               </button>
@@ -345,41 +194,29 @@ const ImportarVentas = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{
-              background: "#252836",
-              borderRadius: 12,
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              padding: "14px 18px",
-            }}
+            className="bg-[#252836] rounded-xl border border-white/10 p-3.5"
           >
-            <div style={{ display: "flex", gap: 10 }}>
+            <div className="flex gap-2.5">
               {preview.error_count > 0 ? (
                 <AlertCircle size={20} color="#f59e0b" />
               ) : (
                 <CheckCircle size={20} color="#10b981" />
               )}
-              <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>
+              <div className="flex-1">
+                <h3 className="text-[13px] font-semibold text-[#e2e8f0]">
                   Validación
                 </h3>
-                <p style={{ fontSize: 12, color: "#94a3b8", margin: "2px 0" }}>
+                <p className="text-xs text-[#94a3b8] my-0.5">
                   {preview.message}
                 </p>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 16,
-                    marginTop: 6,
-                    fontSize: 12,
-                  }}
-                >
-                  <span style={{ color: "#10b981" }}>
+                <div className="flex gap-4 mt-1.5 text-xs">
+                  <span className="text-[#10b981]">
                     ✅ Válidas: {preview.valid_count}
                   </span>
-                  <span style={{ color: "#ef4444" }}>
+                  <span className="text-[#ef4444]">
                     ❌ Errores: {preview.error_count}
                   </span>
-                  <span style={{ color: "#94a3b8" }}>
+                  <span className="text-[#94a3b8]">
                     📄 Total: {preview.total_filas}
                   </span>
                 </div>
@@ -387,18 +224,7 @@ const ImportarVentas = () => {
             </div>
 
             {preview.errors?.length > 0 && (
-              <div
-                style={{
-                  marginTop: 10,
-                  maxHeight: 120,
-                  overflow: "auto",
-                  background: "rgba(0,0,0,0.3)",
-                  padding: 8,
-                  borderRadius: 6,
-                  fontSize: 11,
-                  color: "#fca5a5",
-                }}
-              >
+              <div className="mt-2.5 max-h-[120px] overflow-auto bg-black/30 p-2 rounded text-[11px] text-red-300">
                 {preview.errors.map((err, i) => (
                   <div key={i}>
                     Línea {err.linea}: {err.errores.join(", ")}
@@ -407,42 +233,17 @@ const ImportarVentas = () => {
               </div>
             )}
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                marginTop: 12,
-              }}
-            >
+            <div className="flex justify-end gap-2.5 mt-3">
               <button
                 onClick={resetForm}
-                style={{
-                  background: "#252836",
-                  border: "0.5px solid rgba(255,255,255,0.1)",
-                  borderRadius: 6,
-                  padding: "4px 14px",
-                  fontSize: 11,
-                  color: "#94a3b8",
-                  cursor: "pointer",
-                }}
+                className="bg-[#252836] border border-white/10 rounded px-3.5 py-1 text-[11px] text-[#94a3b8] cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleImport}
                 disabled={uploading}
-                style={{
-                  background: "#f59e0b",
-                  border: "none",
-                  borderRadius: 6,
-                  padding: "4px 14px",
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: "#1a1d27",
-                  cursor: uploading ? "default" : "pointer",
-                  opacity: uploading ? 0.6 : 1,
-                }}
+                className="bg-[#f59e0b] border-none rounded px-3.5 py-1 text-[11px] font-medium text-[#1a1d27] cursor-pointer disabled:opacity-60"
               >
                 {uploading
                   ? "Importando..."
@@ -459,38 +260,24 @@ const ImportarVentas = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{
-              background: "#252836",
-              borderRadius: 12,
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              padding: "14px 18px",
-            }}
+            className="bg-[#252836] rounded-xl border border-white/10 p-3.5"
           >
-            <div style={{ display: "flex", gap: 10 }}>
+            <div className="flex gap-2.5">
               {importResult.success_count > 0 ? (
                 <CheckCircle size={20} color="#10b981" />
               ) : (
                 <XCircle size={20} color="#ef4444" />
               )}
               <div>
-                <h3 style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0" }}>
+                <h3 className="text-[13px] font-semibold text-[#e2e8f0]">
                   Importación completada
                 </h3>
-                <p style={{ fontSize: 12, color: "#94a3b8", margin: "2px 0" }}>
+                <p className="text-xs text-[#94a3b8] my-0.5">
                   {importResult.message}
                 </p>
                 <button
                   onClick={resetForm}
-                  style={{
-                    marginTop: 6,
-                    background: "#4f8ef7",
-                    border: "none",
-                    borderRadius: 6,
-                    padding: "4px 14px",
-                    fontSize: 11,
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
+                  className="mt-1.5 bg-[#4f8ef7] border-none rounded px-3.5 py-1 text-[11px] text-white cursor-pointer"
                 >
                   Nueva importación
                 </button>
@@ -500,108 +287,66 @@ const ImportarVentas = () => {
         )}
 
         {/* Historial */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 12,
-            border: "0.5px solid rgba(255,255,255,0.08)",
-            overflow: "hidden",
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              padding: "8px 14px",
-              borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
+        <div className="bg-[#252836] rounded-xl border border-white/10 overflow-hidden flex-shrink-0">
+          <div className="px-3.5 py-2 border-b border-white/10 flex items-center gap-2">
             <History size={16} color="#4f8ef7" />
-            <h2 style={{ fontSize: 13, fontWeight: 500, color: "#e2e8f0" }}>
+            <h2 className="text-[13px] font-medium text-[#e2e8f0]">
               Historial de importaciones
             </h2>
           </div>
 
           {loadingHistory ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "24px 0",
-              }}
-            >
-              <div
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: "50%",
-                  border: "2px solid transparent",
-                  borderTop: "2px solid #4f8ef7",
-                  animation: "spin 0.8s linear infinite",
-                }}
-              />
-              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <div className="flex justify-center py-6">
+              <div className="w-7 h-7 rounded-full border-2 border-transparent border-t-[#4f8ef7] animate-spin" />
             </div>
           ) : importaciones.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "24px 0",
-                fontSize: 12,
-                color: "#64748b",
-              }}
-            >
+            <div className="text-center py-6 text-xs text-[#64748b]">
               Sin importaciones aún
             </div>
           ) : (
-            <div style={{ overflow: "auto", maxHeight: 260 }}>
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  fontSize: 11,
-                  color: "#e2e8f0",
-                }}
-              >
-                <thead
-                  style={{
-                    position: "sticky",
-                    top: 0,
-                    background: "#1a1d27",
-                    zIndex: 2,
-                  }}
-                >
+            <div className="overflow-auto max-h-[260px]">
+              <table className="w-full border-collapse text-xs text-[#e2e8f0]">
+                <thead className="sticky top-0 bg-[#1a1d27] z-10">
                   <tr>
-                    <th style={thStyle}>Archivo</th>
-                    <th style={thStyle}>Usuario</th>
-                    <th style={thStyle}>Fecha</th>
-                    <th style={thStyle}>Filas</th>
-                    <th style={thStyle}>Insertadas</th>
-                    <th style={thStyle}>Errores</th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Archivo
+                    </th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Usuario
+                    </th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Fecha
+                    </th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Filas
+                    </th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Insertadas
+                    </th>
+                    <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                      Errores
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {importaciones.map((imp) => (
-                    <tr
-                      key={imp.id}
-                      style={{
-                        borderBottom: "0.5px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <td style={tdStyle}>{imp.nombre_archivo}</td>
-                      <td style={tdStyle}>{imp.user?.name || "Anónimo"}</td>
-                      <td
-                        style={{ ...tdStyle, color: "#94a3b8", fontSize: 10 }}
-                      >
+                    <tr key={imp.id} className="border-b border-white/5">
+                      <td className="px-2 py-1.5 align-middle text-[11px]">
+                        {imp.nombre_archivo}
+                      </td>
+                      <td className="px-2 py-1.5 align-middle text-[11px]">
+                        {imp.user?.name || "Anónimo"}
+                      </td>
+                      <td className="px-2 py-1.5 align-middle text-[11px] text-[#94a3b8] text-[10px]">
                         {new Date(imp.created_at).toLocaleString()}
                       </td>
-                      <td style={tdStyle}>{imp.total_filas}</td>
-                      <td style={{ ...tdStyle, color: "#10b981" }}>
+                      <td className="px-2 py-1.5 align-middle text-[11px]">
+                        {imp.total_filas}
+                      </td>
+                      <td className="px-2 py-1.5 align-middle text-[11px] text-[#10b981]">
                         {imp.insertadas}
                       </td>
-                      <td style={{ ...tdStyle, color: "#ef4444" }}>
+                      <td className="px-2 py-1.5 align-middle text-[11px] text-[#ef4444]">
                         {imp.errores}
                       </td>
                     </tr>
@@ -613,30 +358,15 @@ const ImportarVentas = () => {
         </div>
       </div>
 
-      {/* ========== MODAL DE DUPLICADO ========== */}
+      {/* MODAL DUPLICADO */}
       <AnimatePresence>
         {showDuplicateModal && duplicateInfo && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 9999,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => {
                 setShowDuplicateModal(false);
                 setDuplicateInfo(null);
@@ -646,92 +376,39 @@ const ImportarVentas = () => {
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 420,
-                padding: 20,
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative bg-[#1a1d27] border border-white/10 rounded-xl w-full max-w-[420px] p-5 shadow-2xl"
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  marginBottom: 12,
-                }}
-              >
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    background: "rgba(245,158,11,0.15)",
-                    border: "0.5px solid rgba(245,158,11,0.3)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
                   <AlertTriangle size={18} color="#f59e0b" />
                 </div>
                 <div>
-                  <h4
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: "#e2e8f0",
-                    }}
-                  >
+                  <h4 className="text-[15px] font-semibold text-[#e2e8f0]">
                     Archivo duplicado
                   </h4>
-                  <p style={{ fontSize: 11, color: "#94a3b8" }}>
+                  <p className="text-[11px] text-[#94a3b8]">
                     Este archivo ya fue importado anteriormente
                   </p>
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, color: "#e2e8f0", marginBottom: 8 }}>
+              <p className="text-[13px] text-[#e2e8f0] mb-2">
                 {duplicateInfo.mensaje}
               </p>
               {duplicateInfo.fecha && (
-                <p
-                  style={{
-                    fontSize: 11,
-                    color: "#64748b",
-                    marginBottom: 16,
-                  }}
-                >
+                <p className="text-[11px] text-[#64748b] mb-4">
                   📅 Importado el:{" "}
                   {new Date(duplicateInfo.fecha).toLocaleString()}
                 </p>
               )}
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  justifyContent: "flex-end",
-                }}
-              >
+              <div className="flex gap-2.5 justify-end">
                 <button
                   onClick={() => {
                     setShowDuplicateModal(false);
                     setDuplicateInfo(null);
                   }}
-                  style={{
-                    background: "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    borderRadius: 7,
-                    padding: "6px 16px",
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                  }}
+                  className="bg-[#252836] border border-white/10 rounded px-4 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
                 >
                   Cerrar
                 </button>
@@ -741,16 +418,7 @@ const ImportarVentas = () => {
                     setDuplicateInfo(null);
                     resetForm();
                   }}
-                  style={{
-                    background: "#4f8ef7",
-                    border: "none",
-                    borderRadius: 7,
-                    padding: "6px 16px",
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
+                  className="bg-[#4f8ef7] border-none rounded px-4 py-1.5 text-xs font-medium text-white cursor-pointer"
                 >
                   Entendido
                 </button>

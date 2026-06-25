@@ -25,7 +25,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// ========== CARGA AUTOMÁTICA DE IMÁGENES POR CARPETA (sin cambios) ==========
+// ========== CARGA AUTOMÁTICA DE IMÁGENES ==========
 const imageModules = import.meta.glob(
   "/src/assets/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
   { eager: true, import: "default" },
@@ -48,26 +48,6 @@ Object.entries(imageModules).forEach(([path, url]) => {
   }
 });
 
-// ========== ESTILOS REUTILIZABLES (igual que en Ventas) ==========
-const thStyle = {
-  textAlign: "left",
-  padding: "6px 8px",
-  fontWeight: 600,
-  color: "#94a3b8",
-  fontSize: 10,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-  whiteSpace: "nowrap",
-};
-
-const tdStyle = {
-  padding: "6px 8px",
-  verticalAlign: "middle",
-  fontSize: 11,
-  color: "#e2e8f0",
-};
-
 // ========== TOAST ==========
 const Toast = ({ message, type, onClose }) => {
   useEffect(() => {
@@ -81,36 +61,14 @@ const Toast = ({ message, type, onClose }) => {
       initial={{ opacity: 0, y: -12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -12, scale: 0.95 }}
-      style={{
-        position: "fixed",
-        top: 80,
-        right: 16,
-        zIndex: 9999,
-        background: "#252836",
-        border: `1px solid ${bgColor}40`,
-        borderRadius: 12,
-        padding: "10px 16px",
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-        color: "#e2e8f0",
-        fontSize: 12,
-        maxWidth: 320,
-        backdropFilter: "blur(8px)",
-      }}
+      className="fixed top-20 right-4 z-[9999] bg-[#252836] border border-[${bgColor}]/25 rounded-xl px-4 py-2.5 flex items-center gap-2.5 shadow-xl text-[#e2e8f0] text-xs max-w-[320px] backdrop-blur-md"
+      style={{ borderColor: `${bgColor}40` }}
     >
       <span style={{ color: bgColor }}>{type === "success" ? "✅" : "❌"}</span>
       <span>{message}</span>
       <button
         onClick={onClose}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#64748b",
-          cursor: "pointer",
-          padding: 2,
-        }}
+        className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
       >
         <X size={14} />
       </button>
@@ -118,7 +76,7 @@ const Toast = ({ message, type, onClose }) => {
   );
 };
 
-// ========== METRIC CARD (con inline styles) ==========
+// ========== METRIC CARD ==========
 const MetricCard = memo(({ title, value, icon: Icon, accent }) => {
   const accentColors = {
     blue: {
@@ -143,48 +101,19 @@ const MetricCard = memo(({ title, value, icon: Icon, accent }) => {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      style={{
-        background: "#252836",
-        borderRadius: 12,
-        border: "0.5px solid rgba(255,255,255,0.08)",
-        padding: "14px 16px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
+      className="bg-[#252836] rounded-xl border border-white/10 p-3.5 flex items-center justify-between"
     >
       <div>
-        <p
-          style={{
-            fontSize: 9,
-            fontWeight: 600,
-            color: "#94a3b8",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-          }}
-        >
+        <p className="text-[9px] font-semibold text-[#94a3b8] uppercase tracking-wider">
           {title}
         </p>
-        <p
-          style={{
-            fontSize: 20,
-            fontWeight: 700,
-            color: "#e2e8f0",
-            marginTop: 2,
-          }}
-        >
-          {value}
-        </p>
+        <p className="text-xl font-bold text-[#e2e8f0] mt-0.5">{value}</p>
       </div>
       <div
+        className="p-2 rounded-xl flex items-center justify-center"
         style={{
           background: colors.bg,
           border: `0.5px solid ${colors.border}`,
-          borderRadius: 10,
-          padding: 8,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
         }}
       >
         <Icon size={18} color={colors.text} />
@@ -193,7 +122,7 @@ const MetricCard = memo(({ title, value, icon: Icon, accent }) => {
   );
 });
 
-// ========== PRODUCT CARD (con inline styles) ==========
+// ========== PRODUCT CARD ==========
 const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
   const p = item.producto;
   const stockBajo = item.stock_bajo;
@@ -202,180 +131,54 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      style={{
-        background: "#252836",
-        borderRadius: 12,
-        border: "0.5px solid rgba(255,255,255,0.08)",
-        overflow: "hidden",
-        transition: "background 0.2s, border-color 0.2s",
-        display: "flex",
-        flexDirection: "column",
-        cursor: "default",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = "#252836";
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-      }}
+      className="bg-[#252836] rounded-xl border border-white/10 overflow-hidden flex flex-col cursor-default transition-all duration-200 hover:bg-white/5 hover:border-white/15"
     >
-      {/* Imagen con badge de stock */}
-      <div
-        style={{
-          background: "rgba(0,0,0,0.3)",
-          height: 144,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
+      <div className="bg-black/30 h-36 flex items-center justify-center relative overflow-hidden">
         {p.imagen ? (
           <img
             src={p.imagen}
             alt={p.nombre}
-            style={{
-              maxHeight: "100%",
-              maxWidth: "100%",
-              objectFit: "contain",
-              padding: 8,
-            }}
+            className="max-h-full max-w-full object-contain p-2"
           />
         ) : (
           <Package size={36} color="#4a5568" />
         )}
         <div
-          style={{
-            position: "absolute",
-            top: 8,
-            left: 8,
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            padding: "2px 8px",
-            borderRadius: 12,
-            fontSize: 9,
-            fontWeight: 600,
-            border: "0.5px solid",
-            background: stockBajo
-              ? "rgba(239,68,68,0.2)"
-              : "rgba(16,185,129,0.2)",
-            borderColor: stockBajo
-              ? "rgba(239,68,68,0.3)"
-              : "rgba(16,185,129,0.3)",
-            color: stockBajo ? "#fca5a5" : "#6ee7b7",
-          }}
+          className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold border ${stockBajo ? "bg-red-500/20 border-red-500/30 text-red-300" : "bg-emerald-500/20 border-emerald-500/30 text-emerald-300"}`}
         >
-          {stockBajo ? (
-            <>
-              <AlertTriangle size={10} /> Stock bajo
-            </>
-          ) : (
-            <>
-              <CheckCircle size={10} /> OK
-            </>
-          )}
+          {stockBajo ? <AlertTriangle size={10} /> : <CheckCircle size={10} />}
+          {stockBajo ? "Stock bajo" : "OK"}
         </div>
       </div>
 
-      {/* Contenido */}
-      <div
-        style={{
-          flex: 1,
-          padding: "10px 12px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 6,
-        }}
-      >
+      <div className="flex-1 p-2.5 flex flex-col gap-1.5">
         <div>
-          <p style={{ fontSize: 9, fontFamily: "monospace", color: "#64748b" }}>
-            {p.codigo}
-          </p>
-          <h3
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "#e2e8f0",
-              lineHeight: 1.2,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
+          <p className="text-[9px] font-mono text-[#64748b]">{p.codigo}</p>
+          <h3 className="text-sm font-semibold text-[#e2e8f0] leading-tight truncate">
             {p.nombre}
           </h3>
           {p.categoria && (
-            <span
-              style={{
-                display: "inline-block",
-                marginTop: 4,
-                fontSize: 8,
-                background: "rgba(255,255,255,0.05)",
-                color: "#94a3b8",
-                padding: "1px 8px",
-                borderRadius: 12,
-                border: "0.5px solid rgba(255,255,255,0.06)",
-              }}
-            >
+            <span className="inline-block mt-1 text-[8px] bg-white/5 text-[#94a3b8] px-2 py-0.5 rounded-full border border-white/5">
               {p.categoria}
             </span>
           )}
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            background: "rgba(0,0,0,0.2)",
-            borderRadius: 8,
-            padding: "4px 10px",
-            border: "0.5px solid rgba(255,255,255,0.05)",
-          }}
-        >
+        <div className="flex justify-between bg-black/20 rounded-lg px-2.5 py-1 border border-white/5">
           <div>
-            <p
-              style={{
-                fontSize: 7,
-                color: "#64748b",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
+            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">
               Precio
             </p>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: "#e2e8f0",
-                fontFamily: "monospace",
-              }}
-            >
+            <p className="text-sm font-bold text-[#e2e8f0] font-mono">
               ${p.precio?.toLocaleString()}
             </p>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <p
-              style={{
-                fontSize: 7,
-                color: "#64748b",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
+          <div className="text-right">
+            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">
               Stock
             </p>
             <p
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                fontFamily: "monospace",
-                color: stockBajo ? "#fca5a5" : "#e2e8f0",
-              }}
+              className={`text-sm font-bold font-mono ${stockBajo ? "text-red-300" : "text-[#e2e8f0]"}`}
             >
               {p.stock_actual}
             </p>
@@ -383,90 +186,27 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
         </div>
 
         {p.proveedor && (
-          <p
-            style={{
-              fontSize: 8,
-              color: "#64748b",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-            title={p.proveedor}
-          >
+          <p className="text-[8px] text-[#64748b] truncate" title={p.proveedor}>
             {p.proveedor}
           </p>
         )}
 
-        <div style={{ display: "flex", gap: 4, marginTop: 2 }}>
+        <div className="flex gap-1 mt-0.5">
           <button
             onClick={() => onEdit(item)}
-            style={{
-              flex: 1,
-              background: "rgba(255,255,255,0.05)",
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              borderRadius: 6,
-              padding: "4px 0",
-              fontSize: 9,
-              color: "#94a3b8",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 4,
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.1)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.05)")
-            }
+            className="flex-1 bg-white/5 border border-white/10 rounded-md py-1 text-[9px] text-[#94a3b8] cursor-pointer flex items-center justify-center gap-1 hover:bg-white/10 transition-colors"
           >
             <Edit size={11} /> Editar
           </button>
           <button
             onClick={() => onReponer(p)}
-            style={{
-              flex: 1,
-              background: "rgba(79,142,247,0.12)",
-              border: "0.5px solid rgba(79,142,247,0.2)",
-              borderRadius: 6,
-              padding: "4px 0",
-              fontSize: 9,
-              color: "#4f8ef7",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 4,
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "rgba(79,142,247,0.2)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "rgba(79,142,247,0.12)")
-            }
+            className="flex-1 bg-blue-500/20 border border-blue-500/30 rounded-md py-1 text-[9px] text-[#4f8ef7] cursor-pointer flex items-center justify-center gap-1 hover:bg-blue-500/30 transition-colors"
           >
             <ShoppingCart size={11} /> Reponer
           </button>
           <button
             onClick={() => onDelete(item)}
-            style={{
-              padding: "4px 8px",
-              background: "rgba(255,255,255,0.05)",
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              borderRadius: 6,
-              fontSize: 9,
-              color: "#64748b",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#ef4444")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#64748b")}
+            className="px-2 bg-white/5 border border-white/10 rounded-md text-[9px] text-[#64748b] cursor-pointer flex items-center justify-center hover:text-red-500 transition-colors"
           >
             <Trash2 size={11} />
           </button>
@@ -529,7 +269,7 @@ const Inventario = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
 
-  // ========== API (sin cambios) ==========
+  // ========== API ==========
   const fetchAllData = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -566,7 +306,7 @@ const Inventario = () => {
     setCurrentPage(1);
   }, [searchTerm, categoriaSeleccionada]);
 
-  // ========== HANDLERS (sin cambios) ==========
+  // ========== HANDLERS ==========
   const openCreateModal = useCallback(() => {
     setEditingProduct(null);
     setProductForm({
@@ -731,8 +471,10 @@ const Inventario = () => {
 
   const totalPages = Math.ceil(filteredProductos.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedProducts = filteredProductos.slice(startIndex, endIndex);
+  const paginatedProducts = filteredProductos.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const goToPage = (page) => {
     setCurrentPage(Math.min(Math.max(1, page), totalPages));
@@ -745,67 +487,29 @@ const Inventario = () => {
   );
   const hasImagesForCategory = availableImages.length > 0;
 
-  if (loading)
+  if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "3px solid transparent",
-            borderTop: "3px solid #4f8ef7",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
-      <div
-        style={{
-          background: "rgba(239,68,68,0.1)",
-          border: "1px solid #ef4444",
-          borderRadius: 12,
-          padding: "24px 32px",
-          textAlign: "center",
-          color: "#ef4444",
-        }}
-      >
-        <AlertTriangle size={32} style={{ marginBottom: 8 }} />
+      <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444]">
+        <AlertTriangle size={32} className="mx-auto mb-2" />
         <p>{error}</p>
       </div>
     );
+  }
 
   const totalProductos = resumen?.total_productos || 0;
   const stockBajo = resumen?.productos_stock_bajo || 0;
   const valorInventario = resumen?.valor_total_inventario || 0;
 
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 12,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-        color: "#e2e8f0",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-3 font-sans overflow-hidden text-[#e2e8f0]">
       <AnimatePresence>
         {successMsg && (
           <Toast
@@ -823,92 +527,37 @@ const Inventario = () => {
         )}
       </AnimatePresence>
 
-      {/* ── HEADER ── */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      {/* HEADER */}
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Package size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Inventario
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>
+            <p className="text-[9px] text-[#64748b]">
               Gestión de productos y reposiciones
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-            }}
-          >
-            <div
-              style={{
-                background: "#252836",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 7,
-                padding: "4px 8px",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-              }}
-            >
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <div className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 flex items-center gap-1">
               <Search size={13} color="#64748b" />
               <input
                 type="text"
                 placeholder="Buscar..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  outline: "none",
-                  color: "#e2e8f0",
-                  fontSize: 11,
-                  width: 100,
-                }}
+                className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-24"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "#64748b",
-                    cursor: "pointer",
-                    padding: 2,
-                  }}
+                  className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
                 >
                   <X size={12} />
                 </button>
@@ -918,17 +567,7 @@ const Inventario = () => {
             <select
               value={categoriaSeleccionada}
               onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-              style={{
-                background: "#252836",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 7,
-                padding: "4px 8px",
-                fontSize: 11,
-                color: "#94a3b8",
-                outline: "none",
-                cursor: "pointer",
-                height: 28,
-              }}
+              className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] outline-none cursor-pointer h-7"
             >
               <option value="">Todas</option>
               {categoriasExistentes.map((cat) => (
@@ -940,38 +579,14 @@ const Inventario = () => {
 
             <button
               onClick={fetchAllData}
-              style={{
-                background: "#252836",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 7,
-                width: 28,
-                height: 28,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                color: "#94a3b8",
-              }}
+              className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
             >
               <RefreshCw size={13} />
             </button>
 
             <button
               onClick={openCreateModal}
-              style={{
-                background: "#4f8ef7",
-                border: "none",
-                borderRadius: 7,
-                padding: "4px 12px",
-                fontSize: 11,
-                fontWeight: 500,
-                color: "#fff",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                height: 28,
-              }}
+              className="bg-[#4f8ef7] border-none rounded-md px-3 py-1 text-xs font-medium text-white cursor-pointer flex items-center gap-1 h-7"
             >
               <Plus size={13} /> Nuevo
             </button>
@@ -979,25 +594,10 @@ const Inventario = () => {
         </div>
       </div>
 
-      {/* ── CONTENIDO PRINCIPAL (scrollable) ── */}
-      <div
-        style={{
-          flex: 1,
-          overflow: "auto",
-          minHeight: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-        }}
-      >
-        {/* ── MÉTRICAS ── */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 10,
-          }}
-        >
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="flex-1 overflow-auto min-h-0 flex flex-col gap-3">
+        {/* MÉTRICAS */}
+        <div className="grid grid-cols-3 gap-2.5">
           <MetricCard
             title="Total productos"
             value={totalProductos}
@@ -1018,58 +618,19 @@ const Inventario = () => {
           />
         </div>
 
-        {/* ── GALERÍA DE PRODUCTOS ── */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 12,
-            border: "0.5px solid rgba(255,255,255,0.08)",
-            padding: 14,
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <h2
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "#e2e8f0",
-              }}
-            >
+        {/* GALERÍA DE PRODUCTOS */}
+        <div className="bg-[#252836] rounded-xl border border-white/10 p-3.5 flex-1 flex flex-col">
+          <div className="flex justify-between items-center mb-2.5">
+            <h2 className="text-sm font-semibold text-[#e2e8f0]">
               Productos
-              <span
-                style={{
-                  marginLeft: 6,
-                  fontSize: 12,
-                  fontWeight: 400,
-                  color: "#64748b",
-                }}
-              >
+              <span className="ml-1.5 text-xs font-normal text-[#64748b]">
                 ({filteredProductos.length})
               </span>
             </h2>
             {categoriaSeleccionada && (
               <button
                 onClick={() => setCategoriaSeleccionada("")}
-                style={{
-                  fontSize: 10,
-                  color: "#94a3b8",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                }}
+                className="text-[10px] text-[#94a3b8] bg-transparent border-none cursor-pointer flex items-center gap-1"
               >
                 <X size={12} /> Quitar filtro
               </button>
@@ -1077,29 +638,13 @@ const Inventario = () => {
           </div>
 
           {filteredProductos.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "32px 0",
-                color: "#64748b",
-              }}
-            >
-              <Package
-                size={32}
-                style={{ margin: "0 auto 8px", color: "#4a5568" }}
-              />
-              <p style={{ fontSize: 13 }}>No se encontraron productos</p>
+            <div className="text-center py-8 text-[#64748b]">
+              <Package size={32} className="mx-auto mb-2 text-[#4a5568]" />
+              <p className="text-sm">No se encontraron productos</p>
             </div>
           ) : (
             <>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-                  gap: 12,
-                  flex: 1,
-                }}
-              >
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3 flex-1">
                 {paginatedProducts.map((item) => (
                   <ProductCard
                     key={item.producto.codigo}
@@ -1111,52 +656,22 @@ const Inventario = () => {
                 ))}
               </div>
 
-              {/* ── PAGINACIÓN ── */}
               {totalPages > 1 && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
-                    marginTop: 12,
-                    paddingTop: 10,
-                    borderTop: "0.5px solid rgba(255,255,255,0.05)",
-                  }}
-                >
+                <div className="flex items-center justify-center gap-1.5 mt-3 pt-2.5 border-t border-white/5">
                   <button
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
-                    style={{
-                      padding: "4px 10px",
-                      borderRadius: 4,
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      color: "#94a3b8",
-                      fontSize: 11,
-                      cursor: currentPage === 1 ? "default" : "pointer",
-                      opacity: currentPage === 1 ? 0.4 : 1,
-                    }}
+                    className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
                   >
                     <ChevronLeft size={14} />
                   </button>
-                  <span style={{ fontSize: 12, color: "#94a3b8" }}>
+                  <span className="text-xs text-[#94a3b8]">
                     {currentPage} / {totalPages}
                   </span>
                   <button
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    style={{
-                      padding: "4px 10px",
-                      borderRadius: 4,
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      color: "#94a3b8",
-                      fontSize: 11,
-                      cursor:
-                        currentPage === totalPages ? "default" : "pointer",
-                      opacity: currentPage === totalPages ? 0.4 : 1,
-                    }}
+                    className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
                   >
                     <ChevronRight size={14} />
                   </button>
@@ -1167,183 +682,67 @@ const Inventario = () => {
         </div>
       </div>
 
-      {/* ── BOTÓN FLOTANTE DEL CARRITO ── */}
+      {/* BOTÓN FLOTANTE DEL CARRITO */}
       <motion.button
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setShowCarritoModal(true)}
-        style={{
-          position: "fixed",
-          bottom: 24,
-          right: 24,
-          zIndex: 40,
-          background: "linear-gradient(135deg, #4f8ef7, #3b6fc9)",
-          border: "none",
-          borderRadius: 12,
-          padding: "8px 14px",
-          boxShadow: "0 8px 24px rgba(79,142,247,0.4)",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: "#fff",
-          cursor: "pointer",
-          fontFamily: "system-ui, sans-serif",
-        }}
+        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#4f8ef7] to-[#3b6fc9] border-none rounded-xl px-3.5 py-2 shadow-lg flex items-center gap-2 text-white cursor-pointer font-sans"
+        style={{ boxShadow: "0 8px 24px rgba(79,142,247,0.4)" }}
       >
         <ShoppingCart size={17} />
-        <span style={{ fontSize: 11, fontWeight: 600 }}>
+        <span className="text-[11px] font-semibold">
           {carritoCount > 0
             ? `${carritoCount} ítem${carritoCount !== 1 ? "s" : ""}`
             : "Carrito"}
         </span>
         {carritoCount > 0 && (
-          <span
-            style={{
-              position: "absolute",
-              top: -6,
-              right: -6,
-              background: "#ef4444",
-              color: "#fff",
-              fontSize: 8,
-              fontWeight: 700,
-              borderRadius: "50%",
-              width: 18,
-              height: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "2px solid #1a1d27",
-            }}
-          >
+          <span className="absolute -top-1.5 -right-1.5 bg-[#ef4444] text-white text-[8px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center border-2 border-[#1a1d27]">
             {carritoCount > 99 ? "99+" : carritoCount}
           </span>
         )}
       </motion.button>
 
-      {/* ── MODALES (sin cambios, solo estilo inline) ── */}
+      {/* MODALES */}
+
       {/* Modal Cantidad */}
       <AnimatePresence>
         {showCantidadModal && selectedProducto && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setShowCantidadModal(false)}
             />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 320,
-                padding: 20,
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative bg-[#1a1d27] border border-white/10 rounded-xl w-full max-w-[320px] p-5 shadow-2xl"
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 12,
-                }}
-              >
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    background: "rgba(79,142,247,0.15)",
-                    border: "0.5px solid rgba(79,142,247,0.3)",
-                    borderRadius: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 bg-blue-500/15 border border-blue-500/30 rounded-lg flex items-center justify-center">
                   <ShoppingCart size={14} color="#4f8ef7" />
                 </div>
                 <div>
-                  <p
-                    style={{
-                      fontSize: 8,
-                      color: "#64748b",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
+                  <p className="text-[8px] text-[#64748b] uppercase tracking-wider">
                     Reponer
                   </p>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: "#e2e8f0",
-                      lineHeight: 1.2,
-                    }}
-                  >
+                  <p className="text-sm font-semibold text-[#e2e8f0] leading-tight">
                     {selectedProducto.nombre}
                   </p>
                 </div>
               </div>
 
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 10,
-                  color: "#94a3b8",
-                  marginBottom: 4,
-                }}
-              >
+              <label className="block text-[10px] text-[#94a3b8] mb-1">
                 Cantidad a solicitar
               </label>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  background: "#252836",
-                  border: "0.5px solid rgba(255,255,255,0.08)",
-                  borderRadius: 8,
-                  padding: 4,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="flex items-center gap-1.5 bg-[#252836] border border-white/10 rounded-lg p-1 mb-3">
                 <button
                   onClick={() => setCantidadReponer((c) => Math.max(1, c - 1))}
-                  style={{
-                    width: 28,
-                    height: 28,
-                    background: "rgba(255,255,255,0.05)",
-                    border: "none",
-                    borderRadius: 6,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className="w-7 h-7 bg-white/5 border-none rounded-md text-[#94a3b8] cursor-pointer flex items-center justify-center"
                 >
                   <Minus size={12} />
                 </button>
@@ -1356,66 +755,27 @@ const Inventario = () => {
                     )
                   }
                   min="1"
-                  style={{
-                    flex: 1,
-                    background: "transparent",
-                    border: "none",
-                    outline: "none",
-                    color: "#e2e8f0",
-                    fontSize: 16,
-                    fontWeight: 700,
-                    textAlign: "center",
-                  }}
+                  className="flex-1 bg-transparent border-none outline-none text-[#e2e8f0] text-base font-bold text-center"
                   autoFocus
                 />
                 <button
                   onClick={() => setCantidadReponer((c) => c + 1)}
-                  style={{
-                    width: 28,
-                    height: 28,
-                    background: "rgba(255,255,255,0.05)",
-                    border: "none",
-                    borderRadius: 6,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className="w-7 h-7 bg-white/5 border-none rounded-md text-[#94a3b8] cursor-pointer flex items-center justify-center"
                 >
                   <PlusIcon size={12} />
                 </button>
               </div>
 
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="flex gap-2">
                 <button
                   onClick={() => setShowCantidadModal(false)}
-                  style={{
-                    flex: 1,
-                    padding: "6px 0",
-                    background: "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.08)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 py-1.5 bg-[#252836] border border-white/10 rounded-lg text-xs text-[#94a3b8] cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={confirmarAgregar}
-                  style={{
-                    flex: 1,
-                    padding: "6px 0",
-                    background: "#4f8ef7",
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 py-1.5 bg-[#4f8ef7] border-none rounded-lg text-xs font-semibold text-white cursor-pointer"
                 >
                   Agregar
                 </button>
@@ -1428,27 +788,12 @@ const Inventario = () => {
       {/* Modal Confirmar Eliminar */}
       <AnimatePresence>
         {showDeleteModal && productoAEliminar && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => {
                 setShowDeleteModal(false);
                 setProductoAEliminar(null);
@@ -1458,91 +803,43 @@ const Inventario = () => {
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(239,68,68,0.3)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 400,
-                padding: 24,
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative bg-[#1a1d27] border border-red-500/30 rounded-xl w-full max-w-[400px] p-6 shadow-2xl"
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 12,
-                }}
-              >
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    background: "rgba(239,68,68,0.15)",
-                    border: "0.5px solid rgba(239,68,68,0.3)",
-                    borderRadius: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-9 h-9 bg-red-500/15 border border-red-500/30 rounded-lg flex items-center justify-center">
                   <Trash2 size={16} color="#ef4444" />
                 </div>
                 <div>
-                  <h3
-                    style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}
-                  >
+                  <h3 className="text-sm font-bold text-[#e2e8f0]">
                     Confirmar eliminación
                   </h3>
-                  <p style={{ fontSize: 10, color: "#64748b" }}>
+                  <p className="text-[10px] text-[#64748b]">
                     Esta acción no se puede deshacer
                   </p>
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 16 }}>
+              <p className="text-sm text-[#94a3b8] mb-4">
                 ¿Estás seguro de eliminar el producto{" "}
-                <span style={{ color: "#e2e8f0", fontWeight: 600 }}>
+                <span className="text-[#e2e8f0] font-semibold">
                   {productoAEliminar.producto.nombre}
                 </span>
                 ?
               </p>
 
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="flex gap-2">
                 <button
                   onClick={() => {
                     setShowDeleteModal(false);
                     setProductoAEliminar(null);
                   }}
-                  style={{
-                    flex: 1,
-                    padding: "8px 0",
-                    background: "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.08)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 py-2 bg-[#252836] border border-white/10 rounded-lg text-xs text-[#94a3b8] cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleDelete}
-                  style={{
-                    flex: 1,
-                    padding: "8px 0",
-                    background: "#ef4444",
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 py-2 bg-[#ef4444] border-none rounded-lg text-xs font-semibold text-white cursor-pointer"
                 >
                   Eliminar
                 </button>
@@ -1552,28 +849,15 @@ const Inventario = () => {
         )}
       </AnimatePresence>
 
-      {/* ── DRAWER CARRITO (con inline styles) ── */}
+      {/* DRAWER CARRITO */}
       <AnimatePresence>
         {showCarritoModal && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex justify-end">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.5)",
-                backdropFilter: "blur(2px)",
-              }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               onClick={() => setShowCarritoModal(false)}
             />
             <motion.div
@@ -1581,62 +865,20 @@ const Inventario = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
               transition={{ type: "spring", damping: 28, stiffness: 260 }}
-              style={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 340,
-                background: "#1a1d27",
-                borderLeft: "0.5px solid rgba(255,255,255,0.08)",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                boxShadow: "0 0 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative w-full max-w-[340px] bg-[#1a1d27] border-l border-white/10 h-full flex flex-col shadow-2xl"
             >
               {/* Header */}
-              <div
-                style={{
-                  flexShrink: 0,
-                  padding: "16px 16px 12px",
-                  borderBottom: "0.5px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        background: "rgba(79,142,247,0.12)",
-                        border: "0.5px solid rgba(79,142,247,0.2)",
-                        borderRadius: 8,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
+              <div className="flex-shrink-0 px-4 py-3 border-b border-white/5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 bg-blue-500/15 border border-blue-500/20 rounded-lg flex items-center justify-center">
                       <ShoppingCart size={14} color="#4f8ef7" />
                     </div>
                     <div>
-                      <h2
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#e2e8f0",
-                          lineHeight: 1.2,
-                        }}
-                      >
+                      <h2 className="text-sm font-bold text-[#e2e8f0] leading-tight">
                         Carrito
                       </h2>
-                      <p style={{ fontSize: 9, color: "#64748b" }}>
+                      <p className="text-[9px] text-[#64748b]">
                         {carritoCount === 0
                           ? "Sin productos"
                           : `${carritoCount} producto${carritoCount !== 1 ? "s" : ""}`}
@@ -1645,14 +887,7 @@ const Inventario = () => {
                   </div>
                   <button
                     onClick={() => setShowCarritoModal(false)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      color: "#64748b",
-                      cursor: "pointer",
-                      padding: 4,
-                      borderRadius: 4,
-                    }}
+                    className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded"
                   >
                     <X size={16} />
                   </button>
@@ -1660,53 +895,16 @@ const Inventario = () => {
               </div>
 
               {/* Items */}
-              <div
-                style={{
-                  flex: 1,
-                  overflowY: "auto",
-                  padding: "10px 14px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                }}
-              >
+              <div className="flex-1 overflow-y-auto px-3.5 py-2.5 flex flex-col gap-2">
                 {carritoItems.length === 0 ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "100%",
-                      textAlign: "center",
-                      padding: "24px 0",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 56,
-                        height: 56,
-                        background: "#252836",
-                        border: "0.5px solid rgba(255,255,255,0.06)",
-                        borderRadius: 12,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginBottom: 10,
-                      }}
-                    >
+                  <div className="flex flex-col items-center justify-center h-full text-center py-6">
+                    <div className="w-14 h-14 bg-[#252836] border border-white/5 rounded-xl flex items-center justify-center mb-2.5">
                       <ShoppingCart size={24} color="#4a5568" />
                     </div>
-                    <p
-                      style={{
-                        color: "#94a3b8",
-                        fontSize: 13,
-                        fontWeight: 500,
-                      }}
-                    >
+                    <p className="text-[#94a3b8] text-sm font-medium">
                       Carrito vacío
                     </p>
-                    <p style={{ color: "#64748b", fontSize: 10, marginTop: 2 }}>
+                    <p className="text-[#64748b] text-[10px] mt-0.5">
                       Agrega productos desde el inventario
                     </p>
                   </div>
@@ -1718,64 +916,20 @@ const Inventario = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
-                      style={{
-                        background: "#252836",
-                        borderRadius: 8,
-                        border: "0.5px solid rgba(255,255,255,0.05)",
-                        padding: "10px 12px",
-                        display: "flex",
-                        gap: 8,
-                        alignItems: "flex-start",
-                      }}
+                      className="bg-[#252836] rounded-lg border border-white/5 p-2.5 flex gap-2 items-start"
                     >
-                      <div
-                        style={{
-                          width: 28,
-                          height: 28,
-                          background: "rgba(79,142,247,0.08)",
-                          borderRadius: 6,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
-                      >
+                      <div className="w-7 h-7 bg-blue-500/10 rounded-md flex items-center justify-center flex-shrink-0">
                         <Package size={12} color="#4f8ef7" />
                       </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <p
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 600,
-                            color: "#e2e8f0",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-semibold text-[#e2e8f0] truncate">
                           {item.nombre}
                         </p>
-                        <p style={{ fontSize: 8, color: "#64748b" }}>
+                        <p className="text-[8px] text-[#64748b]">
                           {item.codigo} · ${item.precio.toLocaleString()}/u
                         </p>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            marginTop: 4,
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 4,
-                              background: "rgba(0,0,0,0.3)",
-                              borderRadius: 4,
-                              padding: "1px 4px",
-                            }}
-                          >
+                        <div className="flex items-center justify-between mt-1">
+                          <div className="flex items-center gap-1 bg-black/30 rounded px-1 py-0.5">
                             <button
                               onClick={() =>
                                 actualizarCantidad(
@@ -1783,28 +937,11 @@ const Inventario = () => {
                                   item.cantidad - 1,
                                 )
                               }
-                              style={{
-                                background: "transparent",
-                                border: "none",
-                                color: "#94a3b8",
-                                cursor: "pointer",
-                                padding: 2,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
+                              className="bg-transparent border-none text-[#94a3b8] cursor-pointer p-0.5 flex items-center justify-center"
                             >
                               <Minus size={8} />
                             </button>
-                            <span
-                              style={{
-                                fontSize: 10,
-                                fontFamily: "monospace",
-                                color: "#e2e8f0",
-                                width: 18,
-                                textAlign: "center",
-                              }}
-                            >
+                            <span className="text-[10px] font-mono text-[#e2e8f0] w-4.5 text-center">
                               {item.cantidad}
                             </span>
                             <button
@@ -1814,50 +951,19 @@ const Inventario = () => {
                                   item.cantidad + 1,
                                 )
                               }
-                              style={{
-                                background: "transparent",
-                                border: "none",
-                                color: "#94a3b8",
-                                cursor: "pointer",
-                                padding: 2,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
+                              className="bg-transparent border-none text-[#94a3b8] cursor-pointer p-0.5 flex items-center justify-center"
                             >
                               <PlusIcon size={8} />
                             </button>
                           </div>
-                          <span
-                            style={{
-                              fontSize: 12,
-                              fontWeight: 700,
-                              color: "#e2e8f0",
-                              fontFamily: "monospace",
-                            }}
-                          >
+                          <span className="text-xs font-bold text-[#e2e8f0] font-mono">
                             ${(item.precio * item.cantidad).toLocaleString()}
                           </span>
                         </div>
                       </div>
                       <button
                         onClick={() => eliminarDelCarrito(item.codigo)}
-                        style={{
-                          background: "transparent",
-                          border: "none",
-                          color: "#64748b",
-                          cursor: "pointer",
-                          padding: 4,
-                          borderRadius: 4,
-                          flexShrink: 0,
-                          transition: "color 0.2s",
-                        }}
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.color = "#ef4444")
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.color = "#64748b")
-                        }
+                        className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded flex-shrink-0 hover:text-red-500 transition-colors"
                       >
                         <Trash2 size={12} />
                       </button>
@@ -1868,57 +974,19 @@ const Inventario = () => {
 
               {/* Footer */}
               {carritoItems.length > 0 && (
-                <div
-                  style={{
-                    flexShrink: 0,
-                    borderTop: "0.5px solid rgba(255,255,255,0.06)",
-                    padding: "12px 14px 16px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#252836",
-                      borderRadius: 8,
-                      padding: "8px 12px",
-                      border: "0.5px solid rgba(255,255,255,0.04)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        fontSize: 10,
-                      }}
-                    >
-                      <span style={{ color: "#94a3b8" }}>Productos</span>
-                      <span
-                        style={{ color: "#e2e8f0", fontFamily: "monospace" }}
-                      >
+                <div className="flex-shrink-0 border-t border-white/5 px-3.5 py-3 flex flex-col gap-2">
+                  <div className="bg-[#252836] rounded-lg px-3 py-2 border border-white/5">
+                    <div className="flex justify-between text-[10px]">
+                      <span className="text-[#94a3b8]">Productos</span>
+                      <span className="text-[#e2e8f0] font-mono">
                         {carritoCount}
                       </span>
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "baseline",
-                        marginTop: 2,
-                      }}
-                    >
-                      <span style={{ fontSize: 10, color: "#94a3b8" }}>
+                    <div className="flex justify-between items-baseline mt-0.5">
+                      <span className="text-[10px] text-[#94a3b8]">
                         Total estimado
                       </span>
-                      <span
-                        style={{
-                          fontSize: 18,
-                          fontWeight: 700,
-                          color: "#e2e8f0",
-                          fontFamily: "monospace",
-                        }}
-                      >
+                      <span className="text-lg font-bold text-[#e2e8f0] font-mono">
                         ${totalGeneral.toLocaleString()}
                       </span>
                     </div>
@@ -1929,34 +997,10 @@ const Inventario = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={handleGenerarPedido}
                     disabled={carritoLoading}
-                    style={{
-                      width: "100%",
-                      padding: "10px 0",
-                      background: "linear-gradient(135deg, #10b981, #059669)",
-                      border: "none",
-                      borderRadius: 8,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: "#fff",
-                      cursor: carritoLoading ? "default" : "pointer",
-                      opacity: carritoLoading ? 0.6 : 1,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 6,
-                    }}
+                    className="w-full py-2.5 bg-gradient-to-r from-[#10b981] to-[#059669] border-none rounded-lg text-sm font-semibold text-white cursor-pointer disabled:opacity-60 flex items-center justify-center gap-1.5"
                   >
                     {carritoLoading ? (
-                      <span
-                        style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: "50%",
-                          border: "2px solid rgba(255,255,255,0.3)",
-                          borderTop: "2px solid #fff",
-                          animation: "spin 0.8s linear infinite",
-                        }}
-                      />
+                      <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                     ) : (
                       <>
                         <Sparkles size={14} /> Generar pedido
@@ -1968,31 +1012,7 @@ const Inventario = () => {
                     onClick={() => {
                       if (window.confirm("¿Vaciar carrito?")) vaciarCarrito();
                     }}
-                    style={{
-                      width: "100%",
-                      padding: "8px 0",
-                      background: "transparent",
-                      border: "0.5px solid rgba(255,255,255,0.06)",
-                      borderRadius: 8,
-                      fontSize: 10,
-                      fontWeight: 500,
-                      color: "#64748b",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 6,
-                      transition: "color 0.2s, border-color 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#ef4444";
-                      e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#64748b";
-                      e.currentTarget.style.borderColor =
-                        "rgba(255,255,255,0.06)";
-                    }}
+                    className="w-full py-2 bg-transparent border border-white/5 rounded-lg text-[10px] font-medium text-[#64748b] cursor-pointer flex items-center justify-center gap-1.5 hover:text-red-500 hover:border-red-500/30 transition-colors"
                   >
                     <Trash2 size={12} /> Vaciar carrito
                   </button>
@@ -2003,96 +1023,39 @@ const Inventario = () => {
         )}
       </AnimatePresence>
 
-      {/* ── MODAL CREAR/EDITAR PRODUCTO ── */}
+      {/* MODAL CREAR/EDITAR PRODUCTO */}
       <AnimatePresence>
         {showProductModal && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setShowProductModal(false)}
             />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 680,
-                maxHeight: "90vh",
-                overflow: "hidden",
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-                display: "flex",
-                flexDirection: "column",
-              }}
+              className="relative bg-[#1a1d27] border border-white/10 rounded-xl w-full max-w-[680px] max-h-[90vh] overflow-hidden shadow-2xl flex flex-col"
             >
               {/* Header */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "12px 18px",
-                  borderBottom: "0.5px solid rgba(255,255,255,0.06)",
-                  flexShrink: 0,
-                }}
-              >
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>
+              <div className="flex items-center justify-between px-4.5 py-3 border-b border-white/5 flex-shrink-0">
+                <h3 className="text-sm font-bold text-[#e2e8f0]">
                   {editingProduct ? "Editar producto" : "Nuevo producto"}
                 </h3>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div className="flex gap-2">
                   <button
                     onClick={() => setShowProductModal(false)}
-                    style={{
-                      padding: "4px 12px",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.08)",
-                      borderRadius: 6,
-                      fontSize: 11,
-                      color: "#94a3b8",
-                      cursor: "pointer",
-                    }}
+                    className="px-3 py-1 bg-[#252836] border border-white/10 rounded-md text-[11px] text-[#94a3b8] cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
                     onClick={handleSaveProduct}
                     disabled={saving}
-                    style={{
-                      padding: "4px 12px",
-                      background: "#4f8ef7",
-                      border: "none",
-                      borderRadius: 6,
-                      fontSize: 11,
-                      fontWeight: 500,
-                      color: "#fff",
-                      cursor: saving ? "default" : "pointer",
-                      opacity: saving ? 0.6 : 1,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                    }}
+                    className="px-3 py-1 bg-[#4f8ef7] border-none rounded-md text-[11px] font-medium text-white cursor-pointer disabled:opacity-60 flex items-center gap-1"
                   >
                     <Save size={12} /> {saving ? "Guardando..." : "Guardar"}
                   </button>
@@ -2100,36 +1063,12 @@ const Inventario = () => {
               </div>
 
               {/* Body */}
-              <div
-                style={{
-                  flex: 1,
-                  overflowY: "auto",
-                  padding: "16px 18px",
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 16,
-                }}
-              >
+              <div className="flex-1 overflow-y-auto p-4.5 grid grid-cols-2 gap-4">
                 {/* Columna izquierda */}
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 10 }}
-                >
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 8,
-                    }}
-                  >
+                <div className="flex flex-col gap-2.5">
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Código *
                       </label>
                       <input
@@ -2142,28 +1081,11 @@ const Inventario = () => {
                           })
                         }
                         disabled={!!editingProduct}
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                          disabled: !!editingProduct ? { opacity: 0.5 } : {},
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none disabled:opacity-50"
                       />
                     </div>
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Nombre *
                       </label>
                       <input
@@ -2175,36 +1097,14 @@ const Inventario = () => {
                             nombre: e.target.value,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none"
                       />
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 8,
-                    }}
-                  >
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Categoría
                       </label>
                       <input
@@ -2217,28 +1117,11 @@ const Inventario = () => {
                             categoria: e.target.value,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                          placeholder: { color: "#64748b" },
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none placeholder:text-[#64748b]"
                       />
                     </div>
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Proveedor
                       </label>
                       <select
@@ -2249,16 +1132,7 @@ const Inventario = () => {
                             proveedor_id: e.target.value,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none"
                       >
                         <option value="">Seleccionar</option>
                         {proveedores.map((prov) => (
@@ -2270,22 +1144,9 @@ const Inventario = () => {
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1fr",
-                      gap: 8,
-                    }}
-                  >
+                  <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Stock
                       </label>
                       <input
@@ -2298,27 +1159,11 @@ const Inventario = () => {
                             stock_actual: parseFloat(e.target.value) || 0,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none"
                       />
                     </div>
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Costo
                       </label>
                       <input
@@ -2331,27 +1176,11 @@ const Inventario = () => {
                             costo: parseFloat(e.target.value) || 0,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none"
                       />
                     </div>
                     <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 9,
-                          color: "#94a3b8",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
                         Precio *
                       </label>
                       <input
@@ -2364,29 +1193,18 @@ const Inventario = () => {
                             precio: parseFloat(e.target.value) || 0,
                           })
                         }
-                        style={{
-                          width: "100%",
-                          background: "#252836",
-                          border: "0.5px solid rgba(255,255,255,0.08)",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          outline: "none",
-                        }}
+                        className="w-full bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#e2e8f0] outline-none"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Columna derecha */}
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                >
-                  <label style={{ fontSize: 9, color: "#94a3b8" }}>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[9px] text-[#94a3b8]">
                     Imagen del producto
                   </label>
-                  <div style={{ display: "flex", gap: 6 }}>
+                  <div className="flex gap-1.5">
                     {[
                       { key: "upload", icon: Upload, label: "Subir" },
                       { key: "existing", icon: FolderOpen, label: "Carpeta" },
@@ -2395,27 +1213,11 @@ const Inventario = () => {
                         key={key}
                         type="button"
                         onClick={() => setImageSource(key)}
-                        style={{
-                          flex: 1,
-                          padding: "4px 0",
-                          borderRadius: 6,
-                          fontSize: 9,
-                          border: "0.5px solid",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: 4,
-                          background:
-                            imageSource === key
-                              ? "rgba(79,142,247,0.15)"
-                              : "transparent",
-                          borderColor:
-                            imageSource === key
-                              ? "rgba(79,142,247,0.3)"
-                              : "rgba(255,255,255,0.06)",
-                          color: imageSource === key ? "#4f8ef7" : "#94a3b8",
-                        }}
+                        className={`flex-1 py-1 rounded-md text-[9px] border flex items-center justify-center gap-1 cursor-pointer transition-colors ${
+                          imageSource === key
+                            ? "bg-blue-500/15 border-blue-500/30 text-[#4f8ef7]"
+                            : "bg-transparent border-white/5 text-[#94a3b8]"
+                        }`}
                       >
                         <Icon size={10} /> {label}
                       </button>
@@ -2435,45 +1237,19 @@ const Inventario = () => {
                             : "",
                         })
                       }
-                      style={{
-                        width: "100%",
-                        fontSize: 10,
-                        background: "#252836",
-                        border: "0.5px solid rgba(255,255,255,0.08)",
-                        borderRadius: 6,
-                        padding: "4px 8px",
-                        color: "#94a3b8",
-                      }}
+                      className="w-full text-[10px] bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-[#94a3b8]"
                     />
                   ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 4,
-                      }}
-                    >
-                      <p style={{ fontSize: 9, color: "#64748b" }}>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[9px] text-[#64748b]">
                         Categoría:{" "}
-                        <span style={{ color: "#e2e8f0" }}>
+                        <span className="text-[#e2e8f0]">
                           {productForm.categoria || "(sin categoría)"}
                         </span>
                       </p>
                       {productForm.categoria ? (
                         hasImagesForCategory ? (
-                          <div
-                            style={{
-                              display: "grid",
-                              gridTemplateColumns: "repeat(3, 1fr)",
-                              gap: 6,
-                              maxHeight: 160,
-                              overflowY: "auto",
-                              padding: 4,
-                              background: "rgba(0,0,0,0.2)",
-                              borderRadius: 6,
-                              border: "0.5px solid rgba(255,255,255,0.04)",
-                            }}
-                          >
+                          <div className="grid grid-cols-3 gap-1.5 max-h-40 overflow-y-auto p-1 bg-black/20 rounded-md border border-white/5">
                             {availableImages.map((img, idx) => (
                               <div
                                 key={idx}
@@ -2485,69 +1261,30 @@ const Inventario = () => {
                                     imagenUrl: img.path,
                                   });
                                 }}
-                                style={{
-                                  cursor: "pointer",
-                                  border:
-                                    selectedExistingImage === img.path
-                                      ? "1px solid #4f8ef7"
-                                      : "1px solid transparent",
-                                  borderRadius: 6,
-                                  overflow: "hidden",
-                                  transition: "border-color 0.2s",
-                                }}
+                                className={`cursor-pointer rounded-md overflow-hidden transition-all ${
+                                  selectedExistingImage === img.path
+                                    ? "ring-1 ring-[#4f8ef7]"
+                                    : ""
+                                }`}
                               >
                                 <img
                                   src={img.path}
                                   alt={img.name}
-                                  style={{
-                                    width: "100%",
-                                    height: 56,
-                                    objectFit: "cover",
-                                  }}
+                                  className="w-full h-14 object-cover"
                                 />
-                                <p
-                                  style={{
-                                    fontSize: 7,
-                                    color: "#64748b",
-                                    textAlign: "center",
-                                    padding: "2px 0",
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                >
+                                <p className="text-[7px] text-[#64748b] text-center py-0.5 truncate">
                                   {img.name}
                                 </p>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <p
-                            style={{
-                              fontSize: 10,
-                              color: "#64748b",
-                              background: "rgba(0,0,0,0.2)",
-                              borderRadius: 6,
-                              padding: "8px",
-                              textAlign: "center",
-                              border: "0.5px solid rgba(255,255,255,0.04)",
-                            }}
-                          >
+                          <p className="text-[10px] text-[#64748b] bg-black/20 rounded-md p-2 text-center border border-white/5">
                             No hay imágenes en esta carpeta
                           </p>
                         )
                       ) : (
-                        <p
-                          style={{
-                            fontSize: 10,
-                            color: "#f59e0b",
-                            background: "rgba(245,158,11,0.05)",
-                            borderRadius: 6,
-                            padding: "8px",
-                            textAlign: "center",
-                            border: "0.5px solid rgba(245,158,11,0.15)",
-                          }}
-                        >
+                        <p className="text-[10px] text-[#f59e0b] bg-yellow-500/5 rounded-md p-2 text-center border border-yellow-500/15">
                           Ingresa una categoría primero
                         </p>
                       )}
@@ -2556,13 +1293,7 @@ const Inventario = () => {
 
                   {(productForm.imagenUrl || selectedExistingImage) && (
                     <div>
-                      <p
-                        style={{
-                          fontSize: 9,
-                          color: "#64748b",
-                          marginBottom: 2,
-                        }}
-                      >
+                      <p className="text-[9px] text-[#64748b] mb-0.5">
                         Vista previa
                       </p>
                       <img
@@ -2572,13 +1303,7 @@ const Inventario = () => {
                             : selectedExistingImage
                         }
                         alt="preview"
-                        style={{
-                          height: 64,
-                          width: 64,
-                          objectFit: "cover",
-                          borderRadius: 6,
-                          border: "0.5px solid rgba(255,255,255,0.06)",
-                        }}
+                        className="h-16 w-16 object-cover rounded-md border border-white/5"
                       />
                     </div>
                   )}

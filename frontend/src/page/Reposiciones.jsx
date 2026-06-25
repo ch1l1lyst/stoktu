@@ -33,36 +33,14 @@ const Toast = ({ message, type, onClose }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      style={{
-        position: "fixed",
-        top: 80,
-        right: 16,
-        zIndex: 9999,
-        background: "#252836",
-        border: `1px solid ${bgColor}40`,
-        borderRadius: 12,
-        padding: "10px 16px",
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-        color: "#e2e8f0",
-        fontSize: 12,
-        maxWidth: 320,
-        backdropFilter: "blur(8px)",
-      }}
+      className="fixed top-20 right-4 z-[9999] bg-[#252836] rounded-xl px-4 py-2.5 flex items-center gap-2.5 shadow-2xl text-[#e2e8f0] text-xs max-w-xs backdrop-blur-sm"
+      style={{ border: `1px solid ${bgColor}40` }}
     >
       <span style={{ color: bgColor }}>{type === "success" ? "✅" : "❌"}</span>
       <span>{message}</span>
       <button
         onClick={onClose}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#64748b",
-          cursor: "pointer",
-          padding: 2,
-        }}
+        className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
       >
         <X size={14} />
       </button>
@@ -83,42 +61,13 @@ const StatusBadge = ({ estado }) => {
   const Icon = s.icon;
   return (
     <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 4,
-        background: s.bg + "20",
-        color: s.bg,
-        padding: "2px 8px",
-        borderRadius: 12,
-        fontSize: 10,
-        fontWeight: 600,
-      }}
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+      style={{ background: s.bg + "20", color: s.bg }}
     >
       <Icon size={12} />
       {s.label}
     </span>
   );
-};
-
-// ========== ESTILOS REUTILIZABLES ==========
-const thStyle = {
-  textAlign: "left",
-  padding: "6px 8px",
-  fontWeight: 600,
-  color: "#94a3b8",
-  fontSize: 10,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-  whiteSpace: "nowrap",
-};
-
-const tdStyle = {
-  padding: "6px 8px",
-  verticalAlign: "middle",
-  fontSize: 11,
-  color: "#e2e8f0",
 };
 
 // ========== COMPONENTE PRINCIPAL ==========
@@ -128,11 +77,9 @@ const Reposiciones = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ---------- PAGINACIÓN LOCAL ----------
   const [paginaActual, setPaginaActual] = useState(1);
-  const [itemsPorPagina] = useState(8); // igual que antes
+  const [itemsPorPagina] = useState(8);
 
-  // Filtros
   const [month, setMonth] = useState(() => {
     const n = new Date();
     return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, "0")}`;
@@ -160,9 +107,8 @@ const Reposiciones = () => {
       if (search) params.search = search;
 
       const res = await api.get("/pedidos", { params });
-      // La respuesta es un array plano (sin paginación)
       setPedidos(res.data);
-      // Extraer opciones para filtros
+
       const proveedores = new Set();
       const productos = new Set();
       res.data.forEach((pedido) => {
@@ -231,12 +177,11 @@ const Reposiciones = () => {
   const inicio = (paginaActual - 1) * itemsPorPagina;
   const pedidosPagina = pedidosFiltrados.slice(inicio, inicio + itemsPorPagina);
 
-  // Resetear página al cambiar filtros
   useEffect(() => {
     setPaginaActual(1);
   }, [filtroEstado, filtroProveedor, filtroProducto, search, ordenFecha]);
 
-  // ========== PANEL LATERAL (sin cambios) ==========
+  // ========== PANEL LATERAL ==========
   const abrirPanel = (pedido) => {
     const hayPendiente = pedido.lineas?.some(
       (l) =>
@@ -351,44 +296,14 @@ const Reposiciones = () => {
   // ========== RENDER ==========
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "3px solid transparent",
-            borderTop: "3px solid #4f8ef7",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       <AnimatePresence>
         {successMsg && (
           <Toast
@@ -406,77 +321,31 @@ const Reposiciones = () => {
         )}
       </AnimatePresence>
 
-      {/* HEADER (sin cambios) */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      {/* HEADER */}
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Package size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Reposiciones
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>
+            <p className="text-[9px] text-[#64748b]">
               {pedidosFiltrados.length} registros
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="flex items-center gap-2">
           {/* Filtro mes */}
-          <div
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 10px",
-              fontSize: 11,
-              color: "#94a3b8",
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
+          <div className="bg-[#252836] border border-white/10 rounded-md px-2.5 py-1 text-xs text-[#94a3b8] flex items-center gap-1">
             <Calendar size={12} />
             <input
               type="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#94a3b8",
-                fontSize: 11,
-                cursor: "pointer",
-                width: 130,
-              }}
+              className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer w-32"
             />
           </div>
 
@@ -486,15 +355,7 @@ const Reposiciones = () => {
               e.preventDefault();
               fetchPedidos();
             }}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 flex items-center gap-1"
           >
             <Search size={13} color="#64748b" />
             <input
@@ -502,45 +363,21 @@ const Reposiciones = () => {
               placeholder="Buscar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#e2e8f0",
-                fontSize: 11,
-                width: 100,
-              }}
+              className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-24"
             />
             <button
               type="submit"
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#4f8ef7",
-                cursor: "pointer",
-                padding: "2px 4px",
-                fontSize: 11,
-              }}
+              className="bg-transparent border-none text-[#4f8ef7] cursor-pointer px-1 py-0.5 text-xs"
             >
               Buscar
             </button>
           </form>
 
-          {/* Filtros adicionales (selects) */}
+          {/* Filtros adicionales */}
           <select
             value={filtroEstado}
             onChange={(e) => setFiltroEstado(e.target.value)}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              fontSize: 11,
-              color: "#94a3b8",
-              outline: "none",
-              cursor: "pointer",
-              height: 28,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] outline-none cursor-pointer h-7"
           >
             <option value="">Estado</option>
             <option value="pendiente">Pendiente</option>
@@ -552,18 +389,7 @@ const Reposiciones = () => {
           <select
             value={filtroProveedor}
             onChange={(e) => setFiltroProveedor(e.target.value)}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              fontSize: 11,
-              color: "#94a3b8",
-              outline: "none",
-              cursor: "pointer",
-              height: 28,
-              maxWidth: 120,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] outline-none cursor-pointer h-7 max-w-[120px]"
           >
             <option value="">Proveedor</option>
             {proveedoresList.map((p) => (
@@ -576,18 +402,7 @@ const Reposiciones = () => {
           <select
             value={filtroProducto}
             onChange={(e) => setFiltroProducto(e.target.value)}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              fontSize: 11,
-              color: "#94a3b8",
-              outline: "none",
-              cursor: "pointer",
-              height: 28,
-              maxWidth: 120,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] outline-none cursor-pointer h-7 max-w-[120px]"
           >
             <option value="">Producto</option>
             {productosList.map((p) => (
@@ -607,19 +422,7 @@ const Reposiciones = () => {
                 `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
               );
             }}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              fontSize: 11,
-              color: "#94a3b8",
-              cursor: "pointer",
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] cursor-pointer h-7 flex items-center gap-1"
           >
             <X size={12} /> Limpiar
           </button>
@@ -628,19 +431,7 @@ const Reposiciones = () => {
             onClick={() =>
               setOrdenFecha(ordenFecha === "desc" ? "asc" : "desc")
             }
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              fontSize: 11,
-              color: "#94a3b8",
-              cursor: "pointer",
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] cursor-pointer h-7 flex items-center gap-1"
           >
             <Calendar size={12} />
             {ordenFecha === "desc" ? "↓" : "↑"}
@@ -648,18 +439,7 @@ const Reposiciones = () => {
 
           <button
             onClick={() => fetchPedidos()}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              width: 28,
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "#94a3b8",
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
           >
             <RefreshCw size={13} />
           </button>
@@ -667,42 +447,43 @@ const Reposiciones = () => {
       </div>
 
       {/* TABLA */}
-      <div style={{ flex: 1, overflow: "auto", minHeight: 0 }}>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            fontSize: 11,
-            color: "#e2e8f0",
-          }}
-        >
-          <thead
-            style={{
-              position: "sticky",
-              top: 0,
-              background: "#1a1d27",
-              zIndex: 10,
-            }}
-          >
+      <div className="flex-1 overflow-auto min-h-0">
+        <table className="w-full border-collapse text-xs text-[#e2e8f0]">
+          <thead className="sticky top-0 bg-[#1a1d27] z-10">
             <tr>
-              <th style={thStyle}>Pedido ID</th>
-              <th style={thStyle}>Proveedor</th>
-              <th style={thStyle}>Fecha</th>
-              <th style={thStyle}>Productos</th>
-              <th style={thStyle}>Solicitado</th>
-              <th style={thStyle}>Recibido</th>
-              <th style={thStyle}>Pendiente</th>
-              <th style={thStyle}>Estado</th>
-              <th style={{ ...thStyle, textAlign: "center" }}>Acción</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Pedido ID
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Proveedor
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Fecha
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Productos
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Solicitado
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Recibido
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Pendiente
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Estado
+              </th>
+              <th className="text-center px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Acción
+              </th>
             </tr>
           </thead>
           <tbody>
             {pedidosPagina.length === 0 ? (
               <tr>
-                <td
-                  colSpan={9}
-                  style={{ textAlign: "center", padding: 30, color: "#64748b" }}
-                >
+                <td colSpan={9} className="text-center py-8 text-[#64748b]">
                   No hay pedidos que coincidan
                 </td>
               </tr>
@@ -714,66 +495,59 @@ const Reposiciones = () => {
                 const soloLectura = !hayPendiente;
 
                 let rowBg = "transparent";
-                if (pedido.estado === "cancelado")
-                  rowBg = "rgba(239,68,68,0.08)";
-                else if (pedido.total_recibido > 0)
-                  rowBg = "rgba(16,185,129,0.06)";
-                else if (hayPendiente) rowBg = "rgba(245,158,11,0.06)";
+                if (pedido.estado === "cancelado") rowBg = "bg-red-500/10";
+                else if (pedido.total_recibido > 0) rowBg = "bg-emerald-500/10";
+                else if (hayPendiente) rowBg = "bg-amber-500/10";
 
                 return (
                   <tr
                     key={pedido.pedido_id}
-                    style={{
-                      borderBottom: "0.5px solid rgba(255,255,255,0.05)",
-                      background: rowBg,
-                    }}
+                    className={`border-b border-white/5 ${rowBg}`}
                   >
-                    <td style={tdStyle}>
-                      <span style={{ fontFamily: "monospace", fontSize: 10 }}>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      <span className="font-mono text-[10px]">
                         {pedido.pedido_id.substring(0, 8)}…
                       </span>
                     </td>
-                    <td style={tdStyle}>{pedido.proveedor || "N/A"}</td>
-                    <td style={tdStyle}>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {pedido.proveedor || "N/A"}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
                       {new Date(pedido.fecha_pedido).toLocaleDateString()}
                     </td>
-                    <td style={tdStyle}>{pedido.total_productos}</td>
-                    <td style={tdStyle}>{pedido.total_solicitado}</td>
-                    <td style={tdStyle}>{pedido.total_recibido}</td>
-                    <td style={tdStyle}>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {pedido.total_productos}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {pedido.total_solicitado}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {pedido.total_recibido}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
                       {pendienteTotal > 5 ? (
-                        <span style={{ color: "#ef4444", fontWeight: "bold" }}>
+                        <span className="text-red-400 font-bold">
                           {pendienteTotal}
                           <AlertCircle
                             size={12}
-                            style={{ marginLeft: 4, verticalAlign: "middle" }}
+                            className="inline ml-1 align-middle"
                           />
                         </span>
                       ) : (
                         pendienteTotal
                       )}
                     </td>
-                    <td style={tdStyle}>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
                       <StatusBadge estado={pedido.estado} />
                     </td>
-                    <td style={{ ...tdStyle, textAlign: "center" }}>
+                    <td className="px-2 py-1.5 align-middle text-center">
                       <button
                         onClick={() => abrirPanel(pedido)}
-                        style={{
-                          background: soloLectura
-                            ? "rgba(255,255,255,0.05)"
-                            : "rgba(79,142,247,0.15)",
-                          border: "none",
-                          borderRadius: 6,
-                          padding: "4px 8px",
-                          color: soloLectura ? "#64748b" : "#4f8ef7",
-                          cursor: "pointer",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 4,
-                          fontSize: 10,
-                          transition: "background 0.2s",
-                        }}
+                        className={`rounded px-2 py-1 text-[10px] inline-flex items-center gap-1 cursor-pointer transition-colors ${
+                          soloLectura
+                            ? "bg-white/5 text-[#64748b]"
+                            : "bg-[#4f8ef7]/15 text-[#4f8ef7] hover:bg-[#4f8ef7]/25"
+                        } border-none`}
                         title={soloLectura ? "Ver detalles" : "Editar pedido"}
                       >
                         {soloLectura ? <Eye size={12} /> : <Edit3 size={12} />}
@@ -787,40 +561,20 @@ const Reposiciones = () => {
         </table>
       </div>
 
-      {/* ========== PAGINACIÓN CON ESTILO DE VENTAS (pero local) ========== */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingTop: 6,
-          borderTop: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <span style={{ fontSize: 10, color: "#64748b" }}>
+      {/* PAGINACIÓN */}
+      <div className="flex items-center justify-between pt-1.5 border-t border-white/10 flex-shrink-0">
+        <span className="text-[10px] text-[#64748b]">
           Mostrando {pedidosPagina.length} de {pedidosFiltrados.length}
         </span>
-        <div style={{ display: "flex", gap: 4 }}>
-          {/* Botón Anterior */}
+        <div className="flex gap-1">
           <button
             onClick={() => setPaginaActual((p) => Math.max(1, p - 1))}
             disabled={paginaActual === 1}
-            style={{
-              padding: "4px 10px",
-              borderRadius: 4,
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              color: "#94a3b8",
-              fontSize: 11,
-              cursor: paginaActual === 1 ? "default" : "pointer",
-              opacity: paginaActual === 1 ? 0.4 : 1,
-            }}
+            className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
           >
             <ChevronLeft size={14} />
           </button>
 
-          {/* Generar botones de página con rango (igual que Ventas) */}
           {(() => {
             const total = totalPaginas;
             const current = paginaActual;
@@ -848,11 +602,7 @@ const Reposiciones = () => {
                 return (
                   <span
                     key={`ellipsis-${idx}`}
-                    style={{
-                      padding: "4px 6px",
-                      color: "#64748b",
-                      fontSize: 11,
-                    }}
+                    className="px-1.5 py-1 text-[#64748b] text-[11px]"
                   >
                     …
                   </span>
@@ -863,16 +613,11 @@ const Reposiciones = () => {
                 <button
                   key={page}
                   onClick={() => setPaginaActual(page)}
-                  style={{
-                    padding: "4px 10px",
-                    borderRadius: 4,
-                    background: page === current ? "#4f8ef7" : "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    color: page === current ? "#fff" : "#94a3b8",
-                    fontSize: 11,
-                    cursor: "pointer",
-                    fontWeight: page === current ? 600 : 400,
-                  }}
+                  className={`px-2.5 py-1 rounded border border-white/10 text-[11px] ${
+                    page === current
+                      ? "bg-[#4f8ef7] text-white font-semibold"
+                      : "bg-[#252836] text-[#94a3b8]"
+                  }`}
                 >
                   {page}
                 </button>
@@ -880,29 +625,19 @@ const Reposiciones = () => {
             });
           })()}
 
-          {/* Botón Siguiente */}
           <button
             onClick={() =>
               setPaginaActual((p) => Math.min(totalPaginas, p + 1))
             }
             disabled={paginaActual === totalPaginas}
-            style={{
-              padding: "4px 10px",
-              borderRadius: 4,
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              color: "#94a3b8",
-              fontSize: 11,
-              cursor: paginaActual === totalPaginas ? "default" : "pointer",
-              opacity: paginaActual === totalPaginas ? 0.4 : 1,
-            }}
+            className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
           >
             <ChevronRight size={14} />
           </button>
         </div>
       </div>
 
-      {/* PANEL LATERAL (sin cambios, se mantiene igual) */}
+      {/* PANEL LATERAL */}
       <AnimatePresence>
         {panelAbierto && pedidoEditando && (
           <>
@@ -911,13 +646,7 @@ const Reposiciones = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setPanelAbierto(false)}
-              style={{
-                position: "fixed",
-                inset: 0,
-                background: "rgba(0,0,0,0.4)",
-                zIndex: 40,
-                backdropFilter: "blur(2px)",
-              }}
+              className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
             />
 
             <motion.div
@@ -925,65 +654,27 @@ const Reposiciones = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              style={{
-                position: "fixed",
-                top: 12,
-                right: 12,
-                bottom: 12,
-                width: 340,
-                background: "#1a1d27",
-                borderRadius: 12,
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-                zIndex: 50,
-                display: "flex",
-                flexDirection: "column",
-                overflow: "hidden",
-              }}
+              className="fixed top-3 right-3 bottom-3 w-[340px] bg-[#1a1d27] rounded-xl border border-white/10 shadow-2xl z-50 flex flex-col overflow-hidden"
             >
               {/* Cabecera */}
-              <div
-                style={{
-                  padding: "12px 14px",
-                  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-                  flexShrink: 0,
-                }}
-              >
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
+              <div className="px-3.5 py-3 border-b border-white/10 flex-shrink-0">
+                <div className="flex justify-between">
                   <div>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 6 }}
-                    >
+                    <div className="flex items-center gap-1.5">
                       {pedidoEditando.soloLectura ? (
                         <Eye size={13} color="#64748b" />
                       ) : (
                         <Edit3 size={13} color="#4f8ef7" />
                       )}
-                      <span
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 500,
-                          color: "#e2e8f0",
-                        }}
-                      >
+                      <span className="text-[13px] font-medium text-[#e2e8f0]">
                         Pedido #{pedidoEditando.pedido_id.substring(0, 8)}…
                       </span>
                       <StatusBadge estado={pedidoEditando.estado} />
                     </div>
-                    <div
-                      style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}
-                    >
-                      <Building2
-                        size={10}
-                        style={{ display: "inline", marginRight: 4 }}
-                      />
+                    <div className="text-[10px] text-[#64748b] mt-0.5">
+                      <Building2 size={10} className="inline mr-1" />
                       {pedidoEditando.proveedor || "N/A"} ·{" "}
-                      <Calendar
-                        size={10}
-                        style={{ display: "inline", marginRight: 4 }}
-                      />
+                      <Calendar size={10} className="inline mr-1" />
                       {new Date(
                         pedidoEditando.fecha_pedido,
                       ).toLocaleDateString()}
@@ -991,28 +682,14 @@ const Reposiciones = () => {
                   </div>
                   <button
                     onClick={() => setPanelAbierto(false)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      color: "#64748b",
-                      cursor: "pointer",
-                      padding: 4,
-                      borderRadius: 4,
-                    }}
+                    className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded"
                   >
                     <X size={14} />
                   </button>
                 </div>
 
                 {/* Resumen */}
-                <div
-                  style={{
-                    marginTop: 8,
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, 1fr)",
-                    gap: 4,
-                  }}
-                >
+                <div className="mt-2 grid grid-cols-4 gap-1">
                   {[
                     { label: "Prods", value: pedidoEditando.total_productos },
                     {
@@ -1029,52 +706,26 @@ const Reposiciones = () => {
                   ].map(({ label, value }) => (
                     <div
                       key={label}
-                      style={{
-                        background: "#252836",
-                        borderRadius: 6,
-                        padding: "4px 0",
-                        textAlign: "center",
-                      }}
+                      className="bg-[#252836] rounded-md py-1 text-center"
                     >
-                      <div
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 600,
-                          color: "#e2e8f0",
-                        }}
-                      >
+                      <div className="text-[13px] font-semibold text-[#e2e8f0]">
                         {value}
                       </div>
-                      <div style={{ fontSize: 8, color: "#64748b" }}>
-                        {label}
-                      </div>
+                      <div className="text-[8px] text-[#64748b]">{label}</div>
                     </div>
                   ))}
                 </div>
 
                 {pedidoEditando.soloLectura && (
-                  <div
-                    style={{
-                      marginTop: 6,
-                      padding: "4px 8px",
-                      background: "#252836",
-                      borderRadius: 6,
-                      fontSize: 10,
-                      color: "#64748b",
-                      textAlign: "center",
-                    }}
-                  >
-                    <Eye
-                      size={12}
-                      style={{ verticalAlign: "middle", marginRight: 4 }}
-                    />
+                  <div className="mt-1.5 px-2 py-1 bg-[#252836] rounded-md text-[10px] text-[#64748b] text-center">
+                    <Eye size={12} className="inline mr-1 align-middle" />
                     Solo lectura — sin líneas pendientes
                   </div>
                 )}
               </div>
 
               {/* Lista de líneas */}
-              <div style={{ flex: 1, overflowY: "auto", padding: "10px 14px" }}>
+              <div className="flex-1 overflow-y-auto px-3.5 py-2.5">
                 {pedidoEditando.lineas.map((linea, index) => {
                   const pendiente =
                     linea.cantidad_solicitada - (linea._recibir || 0);
@@ -1090,61 +741,35 @@ const Reposiciones = () => {
                     pendienteReal > 0;
                   const mostrarCancelar = esEditable && !tieneRecibido;
 
-                  let bgColor = "rgba(37,40,54,0.5)";
-                  let borderColor = "rgba(255,255,255,0.05)";
+                  let bgColor = "bg-[#252836]/50";
+                  let borderColor = "border-white/5";
                   if (esCancelada) {
-                    bgColor = "rgba(239,68,68,0.12)";
-                    borderColor = "rgba(239,68,68,0.3)";
+                    bgColor = "bg-red-500/15";
+                    borderColor = "border-red-500/30";
                   } else if (pendiente === 0 && tieneRecibido) {
-                    bgColor = "rgba(16,185,129,0.08)";
-                    borderColor = "rgba(16,185,129,0.3)";
+                    bgColor = "bg-emerald-500/10";
+                    borderColor = "border-emerald-500/30";
                   } else if (tieneRecibido && pendiente > 0) {
-                    bgColor = "rgba(245,158,11,0.08)";
-                    borderColor = "rgba(245,158,11,0.3)";
+                    bgColor = "bg-amber-500/10";
+                    borderColor = "border-amber-500/30";
                   }
 
                   return (
                     <div
                       key={linea.id}
-                      style={{
-                        background: bgColor,
-                        border: `0.5px solid ${borderColor}`,
-                        borderRadius: 6,
-                        padding: "8px 10px",
-                        marginBottom: 6,
-                      }}
+                      className={`${bgColor} border ${borderColor} rounded-md p-2 mb-1.5`}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div
-                            style={{
-                              fontSize: 11,
-                              fontWeight: 500,
-                              color: "#e2e8f0",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
+                      <div className="flex justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[11px] font-medium text-[#e2e8f0] truncate">
                             {linea.producto_nombre || "Producto"}
                           </div>
-                          <div style={{ fontSize: 9, color: "#64748b" }}>
+                          <div className="text-[9px] text-[#64748b]">
                             SKU: {linea.producto_codigo || "N/A"}
                           </div>
                         </div>
                         {esEditable ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 4,
-                            }}
-                          >
+                          <div className="flex items-center gap-1">
                             <input
                               type="number"
                               value={linea._recibir}
@@ -1153,31 +778,15 @@ const Reposiciones = () => {
                               }
                               min="0"
                               max={linea.cantidad_solicitada}
-                              style={{
-                                width: 44,
-                                background: "#1a1d27",
-                                border: "0.5px solid rgba(255,255,255,0.1)",
-                                borderRadius: 4,
-                                padding: "2px 4px",
-                                fontSize: 10,
-                                color: "#e2e8f0",
-                                textAlign: "center",
-                                outline: "none",
-                              }}
+                              className="w-11 bg-[#1a1d27] border border-white/10 rounded px-1 py-0.5 text-[10px] text-[#e2e8f0] text-center outline-none"
                             />
-                            <span style={{ fontSize: 9, color: "#64748b" }}>
+                            <span className="text-[9px] text-[#64748b]">
                               /{linea.cantidad_solicitada}
                             </span>
                             {mostrarCancelar && (
                               <button
                                 onClick={() => handleCancelarToggle(index)}
-                                style={{
-                                  background: "transparent",
-                                  border: "none",
-                                  color: "#64748b",
-                                  cursor: "pointer",
-                                  padding: 2,
-                                }}
+                                className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
                                 title="Cancelar línea"
                               >
                                 <MinusCircle size={13} />
@@ -1185,80 +794,53 @@ const Reposiciones = () => {
                             )}
                           </div>
                         ) : (
-                          <div style={{ fontSize: 9, color: "#64748b" }}>
+                          <div className="text-[9px] text-[#64748b]">
                             {esCancelada ? "🔒 Cancelado" : "🔒 Completo"}
                           </div>
                         )}
                       </div>
 
                       {/* Stats */}
-                      <div
-                        style={{
-                          marginTop: 4,
-                          display: "flex",
-                          gap: 8,
-                          fontSize: 9,
-                          color: "#64748b",
-                          flexWrap: "wrap",
-                        }}
-                      >
+                      <div className="mt-1 flex gap-2 text-[9px] text-[#64748b] flex-wrap">
                         <span>
                           Sol:{" "}
-                          <span
-                            style={{
-                              color: "#e2e8f0",
-                              fontFamily: "monospace",
-                            }}
-                          >
+                          <span className="text-[#e2e8f0] font-mono">
                             {linea.cantidad_solicitada}
                           </span>
                         </span>
                         <span>
                           Rec:{" "}
-                          <span
-                            style={{
-                              color: "#e2e8f0",
-                              fontFamily: "monospace",
-                            }}
-                          >
+                          <span className="text-[#e2e8f0] font-mono">
                             {linea._recibir || 0}
                           </span>
                         </span>
                         {esCancelada && (
-                          <span style={{ color: "#ef4444" }}>
+                          <span className="text-red-400">
                             <XCircle
                               size={10}
-                              style={{ verticalAlign: "middle" }}
+                              className="inline align-middle"
                             />{" "}
                             Cancelada
                           </span>
                         )}
                         {!esCancelada && pendiente === 0 && tieneRecibido && (
-                          <span style={{ color: "#10b981" }}>
+                          <span className="text-emerald-400">
                             <CheckCircle
                               size={10}
-                              style={{ verticalAlign: "middle" }}
+                              className="inline align-middle"
                             />{" "}
                             Completa
                           </span>
                         )}
                         {!esCancelada && pendiente > 0 && tieneRecibido && (
-                          <span style={{ color: "#f59e0b" }}>
-                            <Clock
-                              size={10}
-                              style={{ verticalAlign: "middle" }}
-                            />{" "}
+                          <span className="text-amber-400">
+                            <Clock size={10} className="inline align-middle" />{" "}
                             {pendiente} pend.
                           </span>
                         )}
                         {modificada && esEditable && (
-                          <span
-                            style={{ color: "#4f8ef7", marginLeft: "auto" }}
-                          >
-                            <Edit3
-                              size={9}
-                              style={{ verticalAlign: "middle" }}
-                            />{" "}
+                          <span className="text-[#4f8ef7] ml-auto">
+                            <Edit3 size={9} className="inline align-middle" />{" "}
                             mod.
                           </span>
                         )}
@@ -1272,27 +854,11 @@ const Reposiciones = () => {
                           onChange={(e) =>
                             handleMotivoChange(index, e.target.value)
                           }
-                          style={{
-                            marginTop: 4,
-                            width: "100%",
-                            background: "#1a1d27",
-                            border: "0.5px solid rgba(255,255,255,0.1)",
-                            borderRadius: 4,
-                            padding: "2px 6px",
-                            fontSize: 9,
-                            color: "#e2e8f0",
-                            outline: "none",
-                          }}
+                          className="mt-1 w-full bg-[#1a1d27] border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-[#e2e8f0] outline-none"
                         />
                       )}
                       {esCancelada && linea._motivo && !esEditable && (
-                        <div
-                          style={{
-                            marginTop: 2,
-                            fontSize: 9,
-                            color: "#64748b",
-                          }}
-                        >
+                        <div className="mt-0.5 text-[9px] text-[#64748b]">
                           Motivo: {linea._motivo}
                         </div>
                       )}
@@ -1302,36 +868,13 @@ const Reposiciones = () => {
               </div>
 
               {/* Botones */}
-              <div
-                style={{
-                  padding: "10px 14px",
-                  borderTop: "0.5px solid rgba(255,255,255,0.08)",
-                  display: "flex",
-                  gap: 8,
-                  flexShrink: 0,
-                }}
-              >
+              <div className="px-3.5 py-2.5 border-t border-white/10 flex gap-2 flex-shrink-0">
                 {!pedidoEditando.soloLectura ? (
                   <>
                     <button
                       onClick={guardarPedido}
                       disabled={guardando}
-                      style={{
-                        flex: 1,
-                        background: "#4f8ef7",
-                        border: "none",
-                        borderRadius: 6,
-                        padding: "6px 12px",
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: "#fff",
-                        cursor: guardando ? "default" : "pointer",
-                        opacity: guardando ? 0.6 : 1,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 6,
-                      }}
+                      className="flex-1 bg-[#4f8ef7] border-none rounded-md px-3 py-1.5 text-xs font-medium text-white cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-60"
                     >
                       {guardando ? (
                         "Guardando..."
@@ -1343,15 +886,7 @@ const Reposiciones = () => {
                     </button>
                     <button
                       onClick={() => setPanelAbierto(false)}
-                      style={{
-                        background: "#252836",
-                        border: "0.5px solid rgba(255,255,255,0.1)",
-                        borderRadius: 6,
-                        padding: "6px 12px",
-                        fontSize: 11,
-                        color: "#94a3b8",
-                        cursor: "pointer",
-                      }}
+                      className="bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
                     >
                       Cancelar
                     </button>
@@ -1359,16 +894,7 @@ const Reposiciones = () => {
                 ) : (
                   <button
                     onClick={() => setPanelAbierto(false)}
-                    style={{
-                      width: "100%",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      borderRadius: 6,
-                      padding: "6px 12px",
-                      fontSize: 11,
-                      color: "#94a3b8",
-                      cursor: "pointer",
-                    }}
+                    className="w-full bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
                   >
                     Cerrar
                   </button>

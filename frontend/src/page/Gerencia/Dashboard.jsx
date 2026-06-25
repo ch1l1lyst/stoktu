@@ -61,9 +61,7 @@ const pieLabelPlugin = {
       if (typeof rawValue !== "number" || isNaN(rawValue) || rawValue === 0)
         return;
       const label = rawValue.toString();
-      const startAngle = arc.startAngle;
-      const endAngle = arc.endAngle;
-      const midAngle = (startAngle + endAngle) / 2;
+      const midAngle = (arc.startAngle + arc.endAngle) / 2;
       const x = centerX + Math.cos(midAngle) * labelRadius;
       const y = centerY + Math.sin(midAngle) * labelRadius;
       ctx.save();
@@ -78,14 +76,13 @@ const pieLabelPlugin = {
     });
   },
 };
-
 ChartJS.register(pieLabelPlugin);
 
 // ─── PLUGIN: etiquetas de valor a la derecha de las barras ────────────
 const barLabelPlugin = {
   id: "barLabel",
   afterDraw(chart) {
-    const { ctx, data, chartArea } = chart;
+    const { ctx, data } = chart;
     const dataset = data.datasets[0];
     if (!dataset) return;
     const meta = chart.getDatasetMeta(0);
@@ -107,7 +104,6 @@ const barLabelPlugin = {
     });
   },
 };
-
 ChartJS.register(barLabelPlugin);
 
 // ─── Paleta ──────────────────────────────────────────────────────────────
@@ -128,7 +124,6 @@ const fmt = (v) =>
     v ?? 0,
   );
 
-// ─── MetricCard ──────────────────────────────────────────────────────────
 const ACCENT = {
   blue: "#4f8ef7",
   emerald: "#10b981",
@@ -138,37 +133,21 @@ const ACCENT = {
   amber: "#f59e0b",
 };
 
+// ─── MetricCard (con Tailwind) ──────────────────────────────────────────
 function MetricCard({ label, value, icon: Icon, color }) {
   const ac = ACCENT[color];
   return (
     <div
-      style={{
-        background: "#252836",
-        borderRadius: 8,
-        padding: "14px 16px",
-        borderLeft: `4px solid ${ac}`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-      }}
+      className="bg-[#252836] rounded-lg p-3 flex items-center justify-between shadow-md"
+      style={{ borderLeft: `4px solid ${ac}` }}
     >
       <div>
-        <p
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            color: "#94a3b8",
-            textTransform: "uppercase",
-          }}
-        >
+        <p className="text-[11px] font-semibold text-[#94a3b8] uppercase">
           {label}
         </p>
-        <p style={{ fontSize: 18, fontWeight: 600, color: "#f1f5f9" }}>
-          {value}
-        </p>
+        <p className="text-lg font-semibold text-[#f1f5f9]">{value}</p>
       </div>
-      <Icon size={22} color={ac} style={{ opacity: 0.7, flexShrink: 0 }} />
+      <Icon size={22} color={ac} className="opacity-70 flex-shrink-0" />
     </div>
   );
 }
@@ -204,72 +183,31 @@ function Dashboard() {
     }
   }
 
-  // ── calcular posición del tooltip ──────────────────────────────────────
   const updateTooltipPosition = () => {
     if (cardRef.current) {
       const rect = cardRef.current.getBoundingClientRect();
-      setTooltipPosition({
-        top: rect.bottom + 8,
-        left: rect.left,
-      });
+      setTooltipPosition({ top: rect.bottom + 8, left: rect.left });
     }
   };
-
   const handleMouseEnter = () => {
     updateTooltipPosition();
     setShowTooltip(true);
   };
-
-  const handleMouseLeave = () => {
-    setShowTooltip(false);
-  };
+  const handleMouseLeave = () => setShowTooltip(false);
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "3px solid transparent",
-            borderTop: "3px solid #4f8ef7",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(239,68,68,0.1)",
-            border: "1px solid #ef4444",
-            borderRadius: 12,
-            padding: "24px 32px",
-            textAlign: "center",
-            color: "#ef4444",
-          }}
-        >
-          <AlertTriangle size={32} style={{ marginBottom: 8 }} />
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444]">
+          <AlertTriangle size={32} className="mx-auto mb-2" />
           <p>{error || "Datos no disponibles"}</p>
         </div>
       </div>
@@ -293,13 +231,12 @@ function Dashboard() {
 
   // ── Datos gráficos ────────────────────────────────────────────────────
   const lineData = {
-    labels: ventas_diarias.map((d) => {
-      const date = new Date(d.fecha);
-      return date.toLocaleDateString("es-ES", {
+    labels: ventas_diarias.map((d) =>
+      new Date(d.fecha).toLocaleDateString("es-ES", {
         day: "2-digit",
         month: "short",
-      });
-    }),
+      }),
+    ),
     datasets: [
       {
         label: "Ventas ($)",
@@ -315,7 +252,6 @@ function Dashboard() {
       },
     ],
   };
-
   const lineOpts = {
     responsive: true,
     maintainAspectRatio: false,
@@ -347,7 +283,6 @@ function Dashboard() {
       },
     ],
   };
-
   const barOpts = {
     indexAxis: "y",
     responsive: true,
@@ -383,7 +318,6 @@ function Dashboard() {
       },
     ],
   };
-
   const pieOpts = {
     responsive: true,
     maintainAspectRatio: false,
@@ -405,119 +339,43 @@ function Dashboard() {
     },
   };
 
-  // ──────────────────────────────────────────────────────────────────────
+  // ─── Render ────────────────────────────────────────────────────────────
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       {/* HEADER */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Zap size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Dashboard
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>Panel de control</p>
+            <p className="text-[9px] text-[#64748b]">Panel de control</p>
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 10px",
-              fontSize: 11,
-              color: "#94a3b8",
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
+        <div className="flex items-center gap-2">
+          <div className="bg-[#252836] border border-white/10 rounded-md px-2.5 py-1 text-xs text-[#94a3b8] flex items-center gap-1">
             <Calendar size={12} />
             <input
               type="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#94a3b8",
-                fontSize: 11,
-                cursor: "pointer",
-              }}
+              className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer"
             />
           </div>
           <button
             onClick={fetchData}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              width: 28,
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "#94a3b8",
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
           >
             <RefreshCw size={13} />
           </button>
         </div>
       </div>
 
-      {/* ─── MÉTRICAS (5) ────────────────────────────────────────────────────────── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5,1fr)",
-          gap: 10,
-          flexShrink: 0,
-        }}
-      >
+      {/* MÉTRICAS */}
+      <div className="grid grid-cols-5 gap-2.5 flex-shrink-0">
         <MetricCard
           label="Ventas"
           value={fmt(indicadores.total_ventas)}
@@ -543,200 +401,95 @@ function Dashboard() {
           color="amber"
         />
 
-        {/* ─── TARJETA STOCK CRÍTICO CON TOOLTIP FIJO ─── */}
+        {/* Stock crítico con tooltip */}
         <div
           ref={cardRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          style={{ position: "relative" }}
+          className="relative"
         >
           <div
+            className="bg-[#252836] rounded-lg p-3 flex items-center justify-between shadow-md cursor-help"
             style={{
-              background: "#252836",
-              borderRadius: 8,
-              padding: "14px 16px",
               borderLeft: `4px solid ${totalCritico > 0 ? "#ef4444" : "#10b981"}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-              cursor: "help",
             }}
           >
             <div>
-              <p
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "#94a3b8",
-                  textTransform: "uppercase",
-                }}
-              >
+              <p className="text-[11px] font-semibold text-[#94a3b8] uppercase">
                 Stock crítico
               </p>
-              <p style={{ fontSize: 18, fontWeight: 600, color: "#f1f5f9" }}>
+              <p className="text-lg font-semibold text-[#f1f5f9]">
                 {totalCritico}
               </p>
             </div>
             <AlertTriangle
               size={22}
               color={totalCritico > 0 ? "#ef4444" : "#10b981"}
-              style={{ opacity: 0.7 }}
+              className="opacity-70"
             />
           </div>
 
-          {/* ─── TOOLTIP FIJO ─── */}
           {showTooltip && (
             <div
+              className="fixed z-[9999] w-72 max-h-48 overflow-y-auto bg-[#1e293b] rounded-lg p-2.5 shadow-2xl border border-white/10 pointer-events-none"
               style={{
-                position: "fixed",
-                zIndex: 9999,
                 top: tooltipPosition.top,
                 left: Math.min(tooltipPosition.left, window.innerWidth - 300),
-                width: 280,
-                maxHeight: 200,
-                overflowY: "auto",
-                background: "#1e293b",
-                borderRadius: 8,
-                padding: "10px 12px",
-                boxShadow: "0 15px 40px rgba(0,0,0,0.7)",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                pointerEvents: "none",
               }}
             >
               {productosCriticos.length === 0 ? (
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    textAlign: "center",
-                  }}
-                >
+                <p className="text-xs text-[#94a3b8] text-center">
                   ✅ No hay productos críticos
                 </p>
               ) : (
-                <div>
-                  <p
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      color: "#94a3b8",
-                      marginBottom: 6,
-                    }}
-                  >
+                <>
+                  <p className="text-[11px] font-semibold text-[#94a3b8] mb-1.5">
                     Productos con alerta:
                   </p>
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      margin: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 4,
-                    }}
-                  >
-                    {/* Mostrar solo los primeros 4 productos */}
+                  <ul className="list-none p-0 m-0 flex flex-col gap-1">
                     {productosCriticos.slice(0, 4).map((p) => (
                       <li
                         key={p.codigo}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          fontSize: 12,
-                          color: "#e2e8f0",
-                          borderBottom: "0.5px solid rgba(255,255,255,0.05)",
-                          paddingBottom: 4,
-                        }}
+                        className="flex justify-between text-xs text-[#e2e8f0] border-b border-white/5 pb-1"
                       >
                         <span>
                           <span
+                            className="inline-block w-2 h-2 rounded-full mr-1.5"
                             style={{
-                              display: "inline-block",
-                              width: 8,
-                              height: 8,
-                              borderRadius: "50%",
-                              marginRight: 6,
                               background:
                                 p.tipo === "Sin stock" ? "#ef4444" : "#f59e0b",
                             }}
                           />
                           {p.nombre}
                         </span>
-                        <span style={{ color: "#94a3b8", fontSize: 10 }}>
+                        <span className="text-[#94a3b8] text-[10px]">
                           {p.tipo === "Sin stock" ? "0" : p.stock_actual}
                         </span>
                       </li>
                     ))}
-                    {/* Mensaje de "más productos" si hay más de 4 */}
                     {productosCriticos.length > 4 && (
-                      <li
-                        style={{
-                          fontSize: 11,
-                          color: "#94a3b8",
-                          textAlign: "center",
-                          paddingTop: 4,
-                          borderTop: "0.5px solid rgba(255,255,255,0.05)",
-                          marginTop: 2,
-                        }}
-                      >
+                      <li className="text-[11px] text-[#94a3b8] text-center pt-1 border-t border-white/5 mt-0.5">
                         + {productosCriticos.length - 4} productos más
                       </li>
                     )}
                   </ul>
-                </div>
+                </>
               )}
             </div>
           )}
         </div>
       </div>
 
-      {/* ─── GRÁFICOS EN 3 COLUMNAS ────────────────────────────────────────────────── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gap: 10,
-          flex: 1,
-          minHeight: 0,
-        }}
-      >
-        {/* Pastel Categorías */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 10,
-            padding: "10px 12px",
-            display: "flex",
-            flexDirection: "column",
-            minHeight: 0,
-            overflow: "hidden",
-          }}
-        >
-          <p
-            style={{
-              fontSize: 10,
-              fontWeight: 500,
-              color: "#94a3b8",
-              marginBottom: 4,
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              flexShrink: 0,
-            }}
-          >
+      {/* GRÁFICOS */}
+      <div className="grid grid-cols-3 gap-2.5 flex-1 min-h-0">
+        {/* Pastel */}
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0 overflow-hidden">
+          <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <Package size={13} color="#4f8ef7" /> Categorías
           </p>
-          <div style={{ flex: 1, position: "relative", minHeight: 100 }}>
+          <div className="flex-1 relative min-h-[100px]">
             {grafico_pastel.length === 0 ? (
-              <p
-                style={{
-                  fontSize: 11,
-                  color: "#64748b",
-                  textAlign: "center",
-                  marginTop: 10,
-                }}
-              >
+              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
                 Sin datos
               </p>
             ) : (
@@ -745,41 +498,14 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Barras Sectores */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 10,
-            padding: "10px 12px",
-            display: "flex",
-            flexDirection: "column",
-            minHeight: 0,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 10,
-              fontWeight: 500,
-              color: "#94a3b8",
-              marginBottom: 4,
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              flexShrink: 0,
-            }}
-          >
+        {/* Barras */}
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0">
+          <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <MapPin size={13} color="#f59e0b" /> Sectores
           </p>
-          <div style={{ flex: 1, position: "relative", minHeight: 80 }}>
+          <div className="flex-1 relative min-h-[80px]">
             {sectores_ventas.length === 0 ? (
-              <p
-                style={{
-                  fontSize: 11,
-                  color: "#64748b",
-                  textAlign: "center",
-                  marginTop: 10,
-                }}
-              >
+              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
                 Sin datos
               </p>
             ) : (
@@ -788,41 +514,14 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Líneas Ventas Diarias */}
-        <div
-          style={{
-            background: "#252836",
-            borderRadius: 10,
-            padding: "10px 12px",
-            display: "flex",
-            flexDirection: "column",
-            minHeight: 0,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 10,
-              fontWeight: 500,
-              color: "#94a3b8",
-              marginBottom: 4,
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              flexShrink: 0,
-            }}
-          >
+        {/* Líneas */}
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0">
+          <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <TrendingUp size={13} color="#10b981" /> Ventas diarias
           </p>
-          <div style={{ flex: 1, position: "relative", minHeight: 80 }}>
+          <div className="flex-1 relative min-h-[80px]">
             {ventas_diarias.length === 0 ? (
-              <p
-                style={{
-                  fontSize: 11,
-                  color: "#64748b",
-                  textAlign: "center",
-                  marginTop: 10,
-                }}
-              >
+              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
                 Sin datos
               </p>
             ) : (

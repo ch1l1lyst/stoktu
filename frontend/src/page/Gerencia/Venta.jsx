@@ -37,7 +37,6 @@ const Ventas = () => {
   });
   const [search, setSearch] = useState("");
 
-  // Cargar ventas al cambiar mes, búsqueda o página
   useEffect(() => {
     fetchVentas(1);
   }, [month, search]);
@@ -49,7 +48,6 @@ const Ventas = () => {
       const params = { page };
       if (month) params.month = month;
       if (search) params.search = search;
-
       const res = await api.get("/ventas", { params });
       setVentas(res.data.data);
       setPagination({
@@ -84,7 +82,6 @@ const Ventas = () => {
     fetchVentas(1);
   };
 
-  // Estado badge
   const EstadoBadge = ({ estado }) => {
     const styles = {
       completado: { bg: "#10b981", icon: CheckCircle, label: "Completado" },
@@ -95,17 +92,8 @@ const Ventas = () => {
     const Icon = s.icon;
     return (
       <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 4,
-          background: s.bg + "20",
-          color: s.bg,
-          padding: "2px 8px",
-          borderRadius: 12,
-          fontSize: 10,
-          fontWeight: 600,
-        }}
+        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+        style={{ background: s.bg + "20", color: s.bg }}
       >
         <Icon size={12} />
         {s.label}
@@ -115,50 +103,17 @@ const Ventas = () => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "3px solid transparent",
-            borderTop: "3px solid #4f8ef7",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(239,68,68,0.1)",
-            border: "1px solid #ef4444",
-            borderRadius: 12,
-            padding: "24px 32px",
-            textAlign: "center",
-            color: "#ef4444",
-          }}
-        >
-          <AlertTriangle size={32} style={{ marginBottom: 8 }} />
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444]">
+          <AlertTriangle size={32} className="mx-auto mb-2" />
           <p>{error}</p>
         </div>
       </div>
@@ -166,106 +121,39 @@ const Ventas = () => {
   }
 
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       {/* HEADER */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Package size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Ventas
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>
+            <p className="text-[9px] text-[#64748b]">
               {pagination.total} registros
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="flex items-center gap-2">
           {/* Filtro mes */}
-          <div
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 10px",
-              fontSize: 11,
-              color: "#94a3b8",
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
+          <div className="bg-[#252836] border border-white/10 rounded-md px-2.5 py-1 text-xs text-[#94a3b8] flex items-center gap-1">
             <Calendar size={12} />
             <input
               type="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#94a3b8",
-                fontSize: 11,
-                cursor: "pointer",
-                width: 130,
-              }}
+              className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer w-32"
             />
           </div>
 
           {/* Búsqueda */}
           <form
             onSubmit={handleSearch}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 flex items-center gap-1"
           >
             <Search size={13} color="#64748b" />
             <input
@@ -273,31 +161,13 @@ const Ventas = () => {
               placeholder="Buscar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#e2e8f0",
-                fontSize: 11,
-                width: 120,
-              }}
+              className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-28"
             />
           </form>
 
           <button
             onClick={() => fetchVentas(1)}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              width: 28,
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "#94a3b8",
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
           >
             <RefreshCw size={13} />
           </button>
@@ -305,86 +175,92 @@ const Ventas = () => {
       </div>
 
       {/* TABLA */}
-      <div style={{ flex: 1, overflow: "auto", minHeight: 0 }}>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            fontSize: 11,
-            color: "#e2e8f0",
-          }}
-        >
-          <thead
-            style={{
-              position: "sticky",
-              top: 0,
-              background: "#1a1d27",
-              zIndex: 10,
-            }}
-          >
+      <div className="flex-1 overflow-auto min-h-0">
+        <table className="w-full border-collapse text-xs text-[#e2e8f0]">
+          <thead className="sticky top-0 bg-[#1a1d27] z-10">
             <tr>
-              <th style={thStyle}># Pedido</th>
-              <th style={thStyle}>Producto</th>
-              <th style={thStyle}>Cant.</th>
-              <th style={thStyle}>Precio</th>
-              <th style={thStyle}>Total</th>
-              <th style={thStyle}>Cliente</th>
-              <th style={thStyle}>Sector</th>
-              <th style={thStyle}>Vendedor</th>
-              <th style={thStyle}>Estado</th>
-              <th style={thStyle}>Fecha</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                # Pedido
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Producto
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Cant.
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Precio
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Total
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Cliente
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Sector
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Vendedor
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Estado
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Fecha
+              </th>
             </tr>
           </thead>
           <tbody>
             {ventas.length === 0 ? (
               <tr>
-                <td
-                  colSpan={10}
-                  style={{ textAlign: "center", padding: 30, color: "#64748b" }}
-                >
+                <td colSpan={10} className="text-center py-8 text-[#64748b]">
                   No hay ventas registradas
                 </td>
               </tr>
             ) : (
               ventas.map((v) => (
-                <tr
-                  key={v.id}
-                  style={{ borderBottom: "0.5px solid rgba(255,255,255,0.05)" }}
-                >
-                  <td style={tdStyle}>{v.numero_pedido || "—"}</td>
-                  <td style={tdStyle}>
-                    <span style={{ fontSize: 10, color: "#94a3b8" }}>
+                <tr key={v.id} className="border-b border-white/5">
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    {v.numero_pedido || "—"}
+                  </td>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    <span className="text-[10px] text-[#94a3b8]">
                       {v.producto_codigo}
                     </span>
                     <br />
-                    <span style={{ fontSize: 10, fontWeight: 500 }}>
+                    <span className="text-[10px] font-medium">
                       {v.producto?.nombre || "Sin producto"}
                     </span>
                   </td>
-                  <td style={tdStyle}>{v.cantidad}</td>
-                  <td style={tdStyle}>{fmt(v.precio_unitario)}</td>
-                  <td style={tdStyle}>{fmt(v.cantidad * v.precio_unitario)}</td>
-                  <td style={tdStyle}>
-                    <span
-                      style={{ display: "flex", alignItems: "center", gap: 3 }}
-                    >
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    {v.cantidad}
+                  </td>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    {fmt(v.precio_unitario)}
+                  </td>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    {fmt(v.cantidad * v.precio_unitario)}
+                  </td>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    <span className="flex items-center gap-1">
                       <User size={10} color="#64748b" />
                       {v.cliente || "—"}
                     </span>
                   </td>
-                  <td style={tdStyle}>
-                    <span
-                      style={{ display: "flex", alignItems: "center", gap: 3 }}
-                    >
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    <span className="flex items-center gap-1">
                       <MapPin size={10} color="#64748b" />
                       {v.sector || "—"}
                     </span>
                   </td>
-                  <td style={tdStyle}>{v.vendedor_nombre || "—"}</td>
-                  <td style={tdStyle}>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
+                    {v.vendedor_nombre || "—"}
+                  </td>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
                     <EstadoBadge estado={v.estado_pedido} />
                   </td>
-                  <td style={tdStyle}>
+                  <td className="px-2 py-1.5 align-middle text-[11px]">
                     {new Date(v.fecha).toLocaleDateString("es-ES", {
                       day: "2-digit",
                       month: "short",
@@ -398,22 +274,13 @@ const Ventas = () => {
         </table>
       </div>
 
-      {/* ========== PAGINACIÓN CON RANGO (igual que Reposiciones) ========== */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingTop: 6,
-          borderTop: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <span style={{ fontSize: 10, color: "#64748b" }}>
+      {/* PAGINACIÓN */}
+      <div className="flex items-center justify-between pt-1.5 border-t border-white/10 flex-shrink-0">
+        <span className="text-[10px] text-[#64748b]">
           Mostrando {ventas.length} de {pagination.total}
         </span>
-        <div style={{ display: "flex", gap: 4 }}>
-          {/* Botón Anterior */}
+        <div className="flex gap-1">
+          {/* Anterior */}
           <button
             onClick={() => {
               const prev = pagination.links?.find(
@@ -425,29 +292,11 @@ const Ventas = () => {
               !pagination.links?.find((l) => l.label === "&laquo; Anterior")
                 ?.url
             }
-            style={{
-              padding: "4px 10px",
-              borderRadius: 4,
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              color: "#94a3b8",
-              fontSize: 11,
-              cursor: pagination.links?.find(
-                (l) => l.label === "&laquo; Anterior",
-              )?.url
-                ? "pointer"
-                : "default",
-              opacity: pagination.links?.find(
-                (l) => l.label === "&laquo; Anterior",
-              )?.url
-                ? 1
-                : 0.4,
-            }}
+            className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
           >
             <ChevronLeft size={14} />
           </button>
 
-          {/* Generar rango de páginas (igual que en Reposiciones) */}
           {(() => {
             const total = pagination.last_page;
             const current = pagination.current_page;
@@ -475,18 +324,13 @@ const Ventas = () => {
                 return (
                   <span
                     key={`ellipsis-${idx}`}
-                    style={{
-                      padding: "4px 6px",
-                      color: "#64748b",
-                      fontSize: 11,
-                    }}
+                    className="px-1.5 py-1 text-[#64748b] text-[11px]"
                   >
                     …
                   </span>
                 );
               }
               const page = Number(item);
-              // Buscar el link correspondiente para esta página
               const link = pagination.links?.find(
                 (l) => parseInt(l.label) === page,
               );
@@ -494,16 +338,7 @@ const Ventas = () => {
                 <button
                   key={page}
                   onClick={() => goToPage(link?.url)}
-                  style={{
-                    padding: "4px 10px",
-                    borderRadius: 4,
-                    background: page === current ? "#4f8ef7" : "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    color: page === current ? "#fff" : "#94a3b8",
-                    fontSize: 11,
-                    cursor: link?.url ? "pointer" : "default",
-                    fontWeight: page === current ? 600 : 400,
-                  }}
+                  className={`px-2.5 py-1 rounded border border-white/10 text-[11px] ${page === current ? "bg-[#4f8ef7] text-white font-semibold" : "bg-[#252836] text-[#94a3b8]"}`}
                 >
                   {page}
                 </button>
@@ -511,7 +346,7 @@ const Ventas = () => {
             });
           })()}
 
-          {/* Botón Siguiente */}
+          {/* Siguiente */}
           <button
             onClick={() => {
               const next = pagination.links?.find(
@@ -523,24 +358,7 @@ const Ventas = () => {
               !pagination.links?.find((l) => l.label === "Siguiente &raquo;")
                 ?.url
             }
-            style={{
-              padding: "4px 10px",
-              borderRadius: 4,
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              color: "#94a3b8",
-              fontSize: 11,
-              cursor: pagination.links?.find(
-                (l) => l.label === "Siguiente &raquo;",
-              )?.url
-                ? "pointer"
-                : "default",
-              opacity: pagination.links?.find(
-                (l) => l.label === "Siguiente &raquo;",
-              )?.url
-                ? 1
-                : 0.4,
-            }}
+            className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
           >
             <ChevronRight size={14} />
           </button>
@@ -548,24 +366,6 @@ const Ventas = () => {
       </div>
     </div>
   );
-};
-
-// Estilos reutilizables
-const thStyle = {
-  textAlign: "left",
-  padding: "6px 8px",
-  fontWeight: 600,
-  color: "#94a3b8",
-  fontSize: 10,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-};
-
-const tdStyle = {
-  padding: "6px 8px",
-  verticalAlign: "middle",
-  fontSize: 11,
 };
 
 export default Ventas;

@@ -17,26 +17,6 @@ import {
 } from "lucide-react";
 import api from "../api/axiosConfig";
 
-// ========== ESTILOS REUTILIZABLES (igual que Ventas) ==========
-const thStyle = {
-  textAlign: "left",
-  padding: "6px 8px",
-  fontWeight: 600,
-  color: "#94a3b8",
-  fontSize: 10,
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-  whiteSpace: "nowrap",
-};
-
-const tdStyle = {
-  padding: "6px 8px",
-  verticalAlign: "middle",
-  fontSize: 11,
-  color: "#e2e8f0",
-};
-
 // ========== TOAST ==========
 const Toast = ({ message, type, onClose }) => {
   useEffect(() => {
@@ -50,36 +30,14 @@ const Toast = ({ message, type, onClose }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      style={{
-        position: "fixed",
-        top: 80,
-        right: 16,
-        zIndex: 9999,
-        background: "#252836",
-        border: `1px solid ${bgColor}40`,
-        borderRadius: 12,
-        padding: "10px 16px",
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-        color: "#e2e8f0",
-        fontSize: 12,
-        maxWidth: 320,
-        backdropFilter: "blur(8px)",
-      }}
+      className="fixed top-20 right-4 z-[9999] bg-[#252836] rounded-xl px-4 py-2.5 flex items-center gap-2.5 shadow-2xl text-[#e2e8f0] text-xs max-w-xs backdrop-blur-sm"
+      style={{ border: `1px solid ${bgColor}40` }}
     >
       <span style={{ color: bgColor }}>{type === "success" ? "✅" : "❌"}</span>
       <span>{message}</span>
       <button
         onClick={onClose}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#64748b",
-          cursor: "pointer",
-          padding: 2,
-        }}
+        className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
       >
         <X size={14} />
       </button>
@@ -96,11 +54,9 @@ const Proveedores = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Paginación local
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Modal de creación/edición
   const [showModal, setShowModal] = useState(false);
   const [editingProveedor, setEditingProveedor] = useState(null);
   const [formData, setFormData] = useState({
@@ -111,10 +67,9 @@ const Proveedores = () => {
   });
   const [saving, setSaving] = useState(false);
 
-  // Modal de confirmación
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [proveedorAccion, setProveedorAccion] = useState(null);
-  const [accionTipo, setAccionTipo] = useState(""); // "desactivar" | "reactivar"
+  const [accionTipo, setAccionTipo] = useState("");
 
   // ========== API ==========
   const fetchProveedores = async (incluirInactivos = true) => {
@@ -243,50 +198,17 @@ const Proveedores = () => {
   // ========== RENDER ==========
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "3px solid transparent",
-            borderTop: "3px solid #4f8ef7",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 48px)",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(239,68,68,0.1)",
-            border: "1px solid #ef4444",
-            borderRadius: 12,
-            padding: "24px 32px",
-            textAlign: "center",
-            color: "#ef4444",
-          }}
-        >
-          <AlertTriangle size={32} style={{ marginBottom: 8 }} />
+      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+        <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444]">
+          <AlertTriangle size={32} className="mx-auto mb-2" />
           <p>{error}</p>
         </div>
       </div>
@@ -294,20 +216,7 @@ const Proveedores = () => {
   }
 
   return (
-    <div
-      style={{
-        background: "#1a1d27",
-        borderRadius: 12,
-        padding: 14,
-        width: "100%",
-        height: "calc(100vh - 48px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        fontFamily: "system-ui, sans-serif",
-        overflow: "hidden",
-      }}
-    >
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       <AnimatePresence>
         {successMsg && (
           <Toast
@@ -326,85 +235,36 @@ const Proveedores = () => {
       </AnimatePresence>
 
       {/* HEADER */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 6,
-          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 30,
-              height: 30,
-              background: "#4f5cf7",
-              borderRadius: 7,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
             <Building2 size={15} color="#fff" />
           </div>
           <div>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: "#e2e8f0",
-                lineHeight: 1.2,
-              }}
-            >
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
               Proveedores
             </p>
-            <p style={{ fontSize: 9, color: "#64748b" }}>
+            <p className="text-[9px] text-[#64748b]">
               {proveedores.length} registros
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="flex items-center gap-2">
           {/* Búsqueda */}
-          <div
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              padding: "4px 8px",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
+          <div className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 flex items-center gap-1">
             <Search size={13} color="#64748b" />
             <input
               type="text"
               placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#e2e8f0",
-                fontSize: 11,
-                width: 120,
-              }}
+              className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-28"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "#64748b",
-                  cursor: "pointer",
-                  padding: 2,
-                }}
+                className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
               >
                 <X size={12} />
               </button>
@@ -413,38 +273,14 @@ const Proveedores = () => {
 
           <button
             onClick={() => fetchProveedores(true)}
-            style={{
-              background: "#252836",
-              border: "0.5px solid rgba(255,255,255,0.1)",
-              borderRadius: 7,
-              width: 28,
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "#94a3b8",
-            }}
+            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
           >
             <RefreshCw size={13} />
           </button>
 
           <button
             onClick={openCreateModal}
-            style={{
-              background: "#4f8ef7",
-              border: "none",
-              borderRadius: 7,
-              padding: "4px 12px",
-              fontSize: 11,
-              fontWeight: 500,
-              color: "#fff",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              height: 28,
-            }}
+            className="bg-[#4f8ef7] border-none rounded-md px-3 py-1 text-xs font-medium text-white cursor-pointer flex items-center gap-1 h-7"
           >
             <Plus size={13} /> Nuevo
           </button>
@@ -452,39 +288,34 @@ const Proveedores = () => {
       </div>
 
       {/* TABLA */}
-      <div style={{ flex: 1, overflow: "auto", minHeight: 0 }}>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            fontSize: 11,
-            color: "#e2e8f0",
-          }}
-        >
-          <thead
-            style={{
-              position: "sticky",
-              top: 0,
-              background: "#1a1d27",
-              zIndex: 10,
-            }}
-          >
+      <div className="flex-1 overflow-auto min-h-0">
+        <table className="w-full border-collapse text-xs text-[#e2e8f0]">
+          <thead className="sticky top-0 bg-[#1a1d27] z-10">
             <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Nombre</th>
-              <th style={thStyle}>Teléfono</th>
-              <th style={thStyle}>Email</th>
-              <th style={thStyle}>Estado</th>
-              <th style={{ ...thStyle, textAlign: "center" }}>Acciones</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                ID
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Nombre
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Teléfono
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Email
+              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Estado
+              </th>
+              <th className="text-center px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody>
             {paginatedProveedores.length === 0 ? (
               <tr>
-                <td
-                  colSpan={6}
-                  style={{ textAlign: "center", padding: 30, color: "#64748b" }}
-                >
+                <td colSpan={6} className="text-center py-8 text-[#64748b]">
                   No se encontraron proveedores
                 </td>
               </tr>
@@ -492,68 +323,36 @@ const Proveedores = () => {
               paginatedProveedores.map((prov) => {
                 const isActive = prov.deleted_at === null;
                 return (
-                  <tr
-                    key={prov.id}
-                    style={{
-                      borderBottom: "0.5px solid rgba(255,255,255,0.05)",
-                    }}
-                  >
-                    <td style={tdStyle}>
-                      <span style={{ fontFamily: "monospace", fontSize: 10 }}>
-                        {prov.id}
-                      </span>
+                  <tr key={prov.id} className="border-b border-white/5">
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      <span className="font-mono text-[10px]">{prov.id}</span>
                     </td>
-                    <td style={tdStyle}>{prov.nombre}</td>
-                    <td style={tdStyle}>{prov.telefono || "—"}</td>
-                    <td style={tdStyle}>{prov.email || "—"}</td>
-                    <td style={tdStyle}>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {prov.nombre}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {prov.telefono || "—"}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
+                      {prov.email || "—"}
+                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">
                       <span
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 4,
-                          padding: "2px 8px",
-                          borderRadius: 12,
-                          fontSize: 10,
-                          fontWeight: 600,
-                          background: isActive
-                            ? "rgba(16,185,129,0.2)"
-                            : "rgba(239,68,68,0.2)",
-                          color: isActive ? "#10b981" : "#ef4444",
-                        }}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${isActive ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`}
                       >
                         {isActive ? (
-                          <>
-                            <CheckCircle size={10} /> Activo
-                          </>
+                          <CheckCircle size={10} />
                         ) : (
-                          <>
-                            <XCircle size={10} /> Inactivo
-                          </>
+                          <XCircle size={10} />
                         )}
+                        {isActive ? "Activo" : "Inactivo"}
                       </span>
                     </td>
-                    <td style={{ ...tdStyle, textAlign: "center" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          gap: 4,
-                        }}
-                      >
+                    <td className="px-2 py-1.5 align-middle text-center">
+                      <div className="flex justify-center gap-1">
                         <button
                           onClick={() => openEditModal(prov)}
-                          style={{
-                            background: "rgba(255,255,255,0.05)",
-                            border: "none",
-                            borderRadius: 6,
-                            padding: "4px 6px",
-                            color: "#94a3b8",
-                            cursor: "pointer",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
+                          className="bg-white/5 border-none rounded px-1.5 py-1 text-[#94a3b8] cursor-pointer inline-flex items-center justify-center"
                           title="Editar"
                         >
                           <Edit size={12} />
@@ -561,17 +360,7 @@ const Proveedores = () => {
                         {isActive ? (
                           <button
                             onClick={() => confirmDesactivar(prov)}
-                            style={{
-                              background: "rgba(255,255,255,0.05)",
-                              border: "none",
-                              borderRadius: 6,
-                              padding: "4px 6px",
-                              color: "#94a3b8",
-                              cursor: "pointer",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
+                            className="bg-white/5 border-none rounded px-1.5 py-1 text-[#94a3b8] cursor-pointer inline-flex items-center justify-center"
                             title="Desactivar"
                           >
                             <Trash2 size={12} />
@@ -579,17 +368,7 @@ const Proveedores = () => {
                         ) : (
                           <button
                             onClick={() => confirmReactivar(prov)}
-                            style={{
-                              background: "rgba(255,255,255,0.05)",
-                              border: "none",
-                              borderRadius: 6,
-                              padding: "4px 6px",
-                              color: "#94a3b8",
-                              cursor: "pointer",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
+                            className="bg-white/5 border-none rounded px-1.5 py-1 text-[#94a3b8] cursor-pointer inline-flex items-center justify-center"
                             title="Reactivar"
                           >
                             <RefreshCw size={12} />
@@ -605,36 +384,18 @@ const Proveedores = () => {
         </table>
       </div>
 
-      {/* PAGINACIÓN (estilo Ventas) */}
+      {/* PAGINACIÓN */}
       {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingTop: 6,
-            borderTop: "0.5px solid rgba(255,255,255,0.08)",
-            flexShrink: 0,
-          }}
-        >
-          <span style={{ fontSize: 10, color: "#64748b" }}>
+        <div className="flex items-center justify-between pt-1.5 border-t border-white/10 flex-shrink-0">
+          <span className="text-[10px] text-[#64748b]">
             Mostrando {paginatedProveedores.length} de{" "}
             {filteredProveedores.length}
           </span>
-          <div style={{ display: "flex", gap: 4 }}>
+          <div className="flex gap-1">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              style={{
-                padding: "4px 10px",
-                borderRadius: 4,
-                background: "#252836",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                color: "#94a3b8",
-                fontSize: 11,
-                cursor: currentPage === 1 ? "default" : "pointer",
-                opacity: currentPage === 1 ? 0.4 : 1,
-              }}
+              className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
             >
               <ChevronLeft size={14} />
             </button>
@@ -643,16 +404,7 @@ const Proveedores = () => {
               <button
                 key={num}
                 onClick={() => setCurrentPage(num)}
-                style={{
-                  padding: "4px 10px",
-                  borderRadius: 4,
-                  background: num === currentPage ? "#4f8ef7" : "#252836",
-                  border: "0.5px solid rgba(255,255,255,0.1)",
-                  color: num === currentPage ? "#fff" : "#94a3b8",
-                  fontSize: 11,
-                  cursor: "pointer",
-                  fontWeight: num === currentPage ? 600 : 400,
-                }}
+                className={`px-2.5 py-1 rounded border border-white/10 text-[11px] ${num === currentPage ? "bg-[#4f8ef7] text-white font-semibold" : "bg-[#252836] text-[#94a3b8]"}`}
               >
                 {num}
               </button>
@@ -661,16 +413,7 @@ const Proveedores = () => {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              style={{
-                padding: "4px 10px",
-                borderRadius: 4,
-                background: "#252836",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                color: "#94a3b8",
-                fontSize: 11,
-                cursor: currentPage === totalPages ? "default" : "pointer",
-                opacity: currentPage === totalPages ? 0.4 : 1,
-              }}
+              className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
             >
               <ChevronRight size={14} />
             </button>
@@ -678,90 +421,38 @@ const Proveedores = () => {
         </div>
       )}
 
-      {/* MODAL CREAR/EDITAR */}
+      {/* ── MODAL CREAR/EDITAR ── */}
       <AnimatePresence>
         {showModal && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setShowModal(false)}
             />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 420,
-                padding: 20,
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative bg-[#1a1d27] border border-white/10 rounded-xl w-full max-w-[420px] p-5 shadow-2xl"
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 16,
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: "#e2e8f0",
-                  }}
-                >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-base font-semibold text-[#e2e8f0]">
                   {editingProveedor ? "Editar proveedor" : "Nuevo proveedor"}
                 </h3>
                 <button
                   onClick={() => setShowModal(false)}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "#64748b",
-                    cursor: "pointer",
-                    padding: 4,
-                  }}
+                  className="bg-transparent border-none text-[#64748b] cursor-pointer p-1"
                 >
                   <X size={18} />
                 </button>
               </div>
 
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 12 }}
-              >
+              <div className="flex flex-col gap-3">
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 10,
-                      color: "#94a3b8",
-                      marginBottom: 4,
-                    }}
-                  >
+                  <label className="block text-[10px] text-[#94a3b8] mb-1">
                     ID *
                   </label>
                   <input
@@ -771,29 +462,12 @@ const Proveedores = () => {
                       setFormData({ ...formData, id: e.target.value })
                     }
                     disabled={!!editingProveedor}
-                    style={{
-                      width: "100%",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      borderRadius: 7,
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      color: "#e2e8f0",
-                      outline: "none",
-                      ...(editingProveedor ? { opacity: 0.5 } : {}),
-                    }}
+                    className={`w-full bg-[#252836] border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-[#e2e8f0] outline-none ${editingProveedor ? "opacity-50" : ""}`}
                     placeholder="Ej: PROV-001"
                   />
                 </div>
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 10,
-                      color: "#94a3b8",
-                      marginBottom: 4,
-                    }}
-                  >
+                  <label className="block text-[10px] text-[#94a3b8] mb-1">
                     Nombre *
                   </label>
                   <input
@@ -802,28 +476,12 @@ const Proveedores = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, nombre: e.target.value })
                     }
-                    style={{
-                      width: "100%",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      borderRadius: 7,
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      color: "#e2e8f0",
-                      outline: "none",
-                    }}
+                    className="w-full bg-[#252836] border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-[#e2e8f0] outline-none"
                     placeholder="Nombre del proveedor"
                   />
                 </div>
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 10,
-                      color: "#94a3b8",
-                      marginBottom: 4,
-                    }}
-                  >
+                  <label className="block text-[10px] text-[#94a3b8] mb-1">
                     Teléfono
                   </label>
                   <input
@@ -832,28 +490,12 @@ const Proveedores = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, telefono: e.target.value })
                     }
-                    style={{
-                      width: "100%",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      borderRadius: 7,
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      color: "#e2e8f0",
-                      outline: "none",
-                    }}
+                    className="w-full bg-[#252836] border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-[#e2e8f0] outline-none"
                     placeholder="+593 99 999 9999"
                   />
                 </div>
                 <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 10,
-                      color: "#94a3b8",
-                      marginBottom: 4,
-                    }}
-                  >
+                  <label className="block text-[10px] text-[#94a3b8] mb-1">
                     Email
                   </label>
                   <input
@@ -862,74 +504,26 @@ const Proveedores = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    style={{
-                      width: "100%",
-                      background: "#252836",
-                      border: "0.5px solid rgba(255,255,255,0.1)",
-                      borderRadius: 7,
-                      padding: "6px 10px",
-                      fontSize: 12,
-                      color: "#e2e8f0",
-                      outline: "none",
-                    }}
+                    className="w-full bg-[#252836] border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-[#e2e8f0] outline-none"
                     placeholder="proveedor@empresa.com"
                   />
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  marginTop: 18,
-                }}
-              >
+              <div className="flex gap-2.5 mt-4">
                 <button
                   onClick={() => setShowModal(false)}
-                  style={{
-                    flex: 1,
-                    background: "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    borderRadius: 7,
-                    padding: "6px 12px",
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  style={{
-                    flex: 1,
-                    background: "#4f8ef7",
-                    border: "none",
-                    borderRadius: 7,
-                    padding: "6px 12px",
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: "#fff",
-                    cursor: saving ? "default" : "pointer",
-                    opacity: saving ? 0.6 : 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
-                  }}
+                  className={`flex-1 bg-[#4f8ef7] border-none rounded-md px-3 py-1.5 text-xs font-medium text-white cursor-pointer flex items-center justify-center gap-1.5 ${saving ? "opacity-60" : ""}`}
                 >
                   {saving ? (
-                    <span
-                      style={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: "50%",
-                        border: "2px solid #fff",
-                        borderTopColor: "transparent",
-                        animation: "spin 0.8s linear infinite",
-                      }}
-                    />
+                    <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
                   ) : (
                     <>
                       <Save size={14} /> Guardar
@@ -942,72 +536,26 @@ const Proveedores = () => {
         )}
       </AnimatePresence>
 
-      {/* MODAL CONFIRMACIÓN */}
+      {/* ── MODAL CONFIRMACIÓN ── */}
       <AnimatePresence>
         {showConfirmModal && proveedorAccion && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 16,
-            }}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0.7)",
-                backdropFilter: "blur(4px)",
-              }}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setShowConfirmModal(false)}
             />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
-              style={{
-                position: "relative",
-                background: "#1a1d27",
-                border: "0.5px solid rgba(255,255,255,0.1)",
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 400,
-                padding: 20,
-                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
-              }}
+              className="relative bg-[#1a1d27] border border-white/10 rounded-xl w-full max-w-[400px] p-5 shadow-2xl"
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="flex items-center gap-3 mb-3">
                 <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    background:
-                      accionTipo === "desactivar"
-                        ? "rgba(239,68,68,0.15)"
-                        : "rgba(16,185,129,0.15)",
-                    border:
-                      accionTipo === "desactivar"
-                        ? "0.5px solid rgba(239,68,68,0.3)"
-                        : "0.5px solid rgba(16,185,129,0.3)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${accionTipo === "desactivar" ? "bg-red-500/15 border-red-500/30" : "bg-emerald-500/15 border-emerald-500/30"} border`}
                 >
                   {accionTipo === "desactivar" ? (
                     <AlertTriangle size={18} color="#ef4444" />
@@ -1016,59 +564,33 @@ const Proveedores = () => {
                   )}
                 </div>
                 <div>
-                  <h4
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: "#e2e8f0",
-                    }}
-                  >
+                  <h4 className="text-[15px] font-semibold text-[#e2e8f0]">
                     {accionTipo === "desactivar"
                       ? "Desactivar proveedor"
                       : "Reactivar proveedor"}
                   </h4>
-                  <p style={{ fontSize: 11, color: "#94a3b8" }}>
+                  <p className="text-[11px] text-[#94a3b8]">
                     Esta acción cambiará el estado
                   </p>
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, color: "#e2e8f0", marginBottom: 18 }}>
+              <p className="text-[13px] text-[#e2e8f0] mb-4">
                 {accionTipo === "desactivar"
                   ? `¿Desactivar "${proveedorAccion.nombre}"?`
                   : `¿Reactivar "${proveedorAccion.nombre}"?`}
               </p>
 
-              <div style={{ display: "flex", gap: 10 }}>
+              <div className="flex gap-2.5">
                 <button
                   onClick={() => setShowConfirmModal(false)}
-                  style={{
-                    flex: 1,
-                    background: "#252836",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    borderRadius: 7,
-                    padding: "6px 12px",
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    cursor: "pointer",
-                  }}
+                  className="flex-1 bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleToggleEstado}
-                  style={{
-                    flex: 1,
-                    background:
-                      accionTipo === "desactivar" ? "#ef4444" : "#10b981",
-                    border: "none",
-                    borderRadius: 7,
-                    padding: "6px 12px",
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: "#fff",
-                    cursor: "pointer",
-                  }}
+                  className={`flex-1 rounded-md px-3 py-1.5 text-xs font-medium text-white cursor-pointer ${accionTipo === "desactivar" ? "bg-[#ef4444]" : "bg-[#10b981]"}`}
                 >
                   {accionTipo === "desactivar" ? "Desactivar" : "Reactivar"}
                 </button>
