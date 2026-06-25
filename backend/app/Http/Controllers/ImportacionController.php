@@ -11,19 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class ImportacionController extends Controller
 {
-    /**
-     * Obtiene el historial de importaciones con el usuario que las realizó,
-     * ordenadas de más reciente a más antigua.
-     */
     public function index()
     {
         return Importacion::with('user')->orderBy('created_at', 'desc')->get();
     }
 
-    /**
-     * Valida un archivo CSV/TXT sin importar los datos.
-     * Retorna un resumen con filas válidas e inválidas, y los errores encontrados.
-     */
     public function validateImport(Request $request)
     {
         $request->validate([
@@ -47,10 +39,6 @@ class ImportacionController extends Controller
         return response()->json($result, 200);
     }
 
-    /**
-     * Importa definitivamente un archivo CSV/TXT, creando registros de ventas,
-     * descontando stock y guardando el historial de importación.
-     */
     public function import(Request $request)
     {
         $request->validate([
@@ -60,17 +48,16 @@ class ImportacionController extends Controller
         $file = $request->file('archivo');
         $result = $this->processCsv($file, true);
 
+        // Si hay un error (incluyendo duplicado), devolver con el código que corresponda
         if (isset($result['error'])) {
-            return response()->json(['message' => $result['error']], 422);
+            // Si es duplicado, usar 409; si no, 422
+            $status = isset($result['importacion_id']) ? 409 : 422;
+            return response()->json($result, $status);
         }
 
         return response()->json($result, 200);
     }
 
-    /**
-     * Procesa el archivo CSV: lee, valida, busca vendedor por nombre,
-     * y según el modo (dry-run o import) retorna validación o ejecuta la importación.
-     */
     private function processCsv($file, $importMode = false)
     {
         $contenido = file_get_contents($file->getPathname());
@@ -83,11 +70,12 @@ class ImportacionController extends Controller
         if ($importMode) {
             $existing = Importacion::where('hash', $hash)->first();
             if ($existing) {
-                return response()->json([
+                // Retornar array con error y datos adicionales (NO JsonResponse)
+                return [
                     'error' => 'Este archivo ya fue importado anteriormente.',
                     'importacion_id' => $existing->id,
                     'fecha' => $existing->created_at,
-                ], 409);
+                ];
             }
         }
 
@@ -125,7 +113,7 @@ class ImportacionController extends Controller
                 $idx = array_search($name, $header);
                 if ($idx !== false) break;
             }
-            if ($idx === false && !in_array($target, ['cliente', 'cedula', 'sector', 'vendedor'])) {
+            if ($idx === false && !in_array($target, ['cliente', 'cedula', 'sector', 'vendedor', 'forma_pago'])) {
                 fclose($handle);
                 return ['error' => "Columna requerida no encontrada: '$target'. Cabeceras: " . implode(', ', $rawHeader)];
             }
@@ -146,7 +134,7 @@ class ImportacionController extends Controller
             foreach ($indices as $target => $idx) {
                 $rowData[$target] = trim($data[$idx] ?? '');
             }
-            foreach (['cliente', 'cedula', 'sector', 'vendedor'] as $campo) {
+            foreach (['cliente', 'cedula', 'sector', 'vendedor', 'forma_pago'] as $campo) {
                 if (!isset($rowData[$campo])) {
                     $rowData[$campo] = null;
                 }
@@ -224,7 +212,6 @@ class ImportacionController extends Controller
 
             $vendedorId = null;
             if (!empty($vendedorNombre)) {
-                // Buscar por nombre completo (que ya viene en el CSV)
                 $user = User::where('name', $vendedorNombre)->first();
                 if ($user) {
                     $vendedorId = $user->id;
@@ -233,7 +220,6 @@ class ImportacionController extends Controller
                 }
             }
 
-            // Guardar en $rows
             $rows[] = [
                 'linea'           => $lineNumber,
                 'producto'        => $producto,
@@ -247,12 +233,9 @@ class ImportacionController extends Controller
                 'cliente'         => $rowData['cliente'] ?? null,
                 'cedula'          => $rowData['cedula'] ?? null,
                 'sector'          => $rowData['sector'] ?? null,
-                'vendedor_id'     => $vendedorId,            // Solo ID
+                'vendedor_id'     => $vendedorId,
                 'forma_pago'      => $rowData['forma_pago'] ?? null,
                 'errores'         => $lineErrors,
-                
-
-
             ];
         }
         fclose($handle);
@@ -293,20 +276,20 @@ class ImportacionController extends Controller
         DB::beginTransaction();
         try {
             foreach ($validRows as $row) {
-                    Venta::create([
-                        'producto_codigo' => $row['productoCodigo'],
-                        'cantidad'        => $row['cantidad'],
-                        'precio_unitario' => $row['precio'],
-                        'fecha'           => $row['fecha'],
-                        'numero_pedido'   => $row['numero_pedido'] ?? null,
-                        'estado_pedido'   => $row['estado_pedido'] ?? null,
-                        'observaciones'   => $row['observaciones'] ?? null,
-                        'cliente'         => $row['cliente'] ?? null,
-                        'cedula'          => $row['cedula'] ?? null,
-                        'sector'          => $row['sector'] ?? null,
-                        'vendedor_id'     => $row['vendedor_id'] ?? null,    
-                        'forma_pago'      => $row['forma_pago'] ?? null
-                    ]);
+                Venta::create([
+                    'producto_codigo' => $row['productoCodigo'],
+                    'cantidad'        => $row['cantidad'],
+                    'precio_unitario' => $row['precio'],
+                    'fecha'           => $row['fecha'],
+                    'numero_pedido'   => $row['numero_pedido'] ?? null,
+                    'estado_pedido'   => $row['estado_pedido'] ?? null,
+                    'observaciones'   => $row['observaciones'] ?? null,
+                    'cliente'         => $row['cliente'] ?? null,
+                    'cedula'          => $row['cedula'] ?? null,
+                    'sector'          => $row['sector'] ?? null,
+                    'vendedor_id'     => $row['vendedor_id'] ?? null,
+                    'forma_pago'      => $row['forma_pago'] ?? null,
+                ]);
 
                 if ($row['producto']) {
                     $row['producto']->stock_actual -= $row['cantidad'];
