@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
   FileUp,
@@ -9,10 +9,11 @@ import {
   History,
   RefreshCw,
   X,
+  AlertTriangle,
 } from "lucide-react";
 import api from "../api/axiosConfig";
 
-// ========== ESTILOS REUTILIZABLES (igual que en Ventas) ==========
+// ========== ESTILOS REUTILIZABLES ==========
 const thStyle = {
   textAlign: "left",
   padding: "6px 8px",
@@ -40,6 +41,8 @@ const ImportarVentas = () => {
   const [importaciones, setImportaciones] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const fileInputRef = useRef(null);
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [duplicateInfo, setDuplicateInfo] = useState(null); // <-- NUEVO ESTADO
 
   useEffect(() => {
     fetchImportaciones();
@@ -67,6 +70,8 @@ const ImportarVentas = () => {
       setFile(selected);
       setPreview(null);
       setImportResult(null);
+      setShowDuplicateModal(false);
+      setDuplicateInfo(null);
     } else {
       alert("Solo archivos CSV o TXT");
       setFile(null);
@@ -105,11 +110,24 @@ const ImportarVentas = () => {
       resetForm();
       fetchImportaciones();
     } catch (err) {
-      const msg =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Error en importación";
-      alert(msg);
+      const errorData = err.response?.data;
+      // Verificar si es error de duplicado (status 409 o mensaje específico)
+      if (
+        err.response?.status === 409 ||
+        errorData?.message?.includes("ya fue importado anteriormente") ||
+        errorData?.error?.includes("ya fue importado")
+      ) {
+        setDuplicateInfo({
+          mensaje: errorData.message || errorData.error || "Archivo duplicado",
+          importacion_id: errorData.importacion_id,
+          fecha: errorData.fecha,
+        });
+        setShowDuplicateModal(true);
+      } else {
+        const msg =
+          errorData?.message || errorData?.error || "Error en importación";
+        alert(msg);
+      }
       console.error("Error detallado:", err.response?.data);
     } finally {
       setUploading(false);
@@ -120,6 +138,8 @@ const ImportarVentas = () => {
     setFile(null);
     setPreview(null);
     setImportResult(null);
+    setShowDuplicateModal(false);
+    setDuplicateInfo(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -592,6 +612,153 @@ const ImportarVentas = () => {
           )}
         </div>
       </div>
+
+      {/* ========== MODAL DE DUPLICADO ========== */}
+      <AnimatePresence>
+        {showDuplicateModal && duplicateInfo && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(0,0,0,0.7)",
+                backdropFilter: "blur(4px)",
+              }}
+              onClick={() => {
+                setShowDuplicateModal(false);
+                setDuplicateInfo(null);
+              }}
+            />
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0, y: 12 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 12 }}
+              style={{
+                position: "relative",
+                background: "#1a1d27",
+                border: "0.5px solid rgba(255,255,255,0.1)",
+                borderRadius: 12,
+                width: "100%",
+                maxWidth: 420,
+                padding: 20,
+                boxShadow: "0 16px 48px rgba(0,0,0,0.6)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  marginBottom: 12,
+                }}
+              >
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 10,
+                    background: "rgba(245,158,11,0.15)",
+                    border: "0.5px solid rgba(245,158,11,0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <AlertTriangle size={18} color="#f59e0b" />
+                </div>
+                <div>
+                  <h4
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: "#e2e8f0",
+                    }}
+                  >
+                    Archivo duplicado
+                  </h4>
+                  <p style={{ fontSize: 11, color: "#94a3b8" }}>
+                    Este archivo ya fue importado anteriormente
+                  </p>
+                </div>
+              </div>
+
+              <p style={{ fontSize: 13, color: "#e2e8f0", marginBottom: 8 }}>
+                {duplicateInfo.mensaje}
+              </p>
+              {duplicateInfo.fecha && (
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: "#64748b",
+                    marginBottom: 16,
+                  }}
+                >
+                  📅 Importado el:{" "}
+                  {new Date(duplicateInfo.fecha).toLocaleString()}
+                </p>
+              )}
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  justifyContent: "flex-end",
+                }}
+              >
+                <button
+                  onClick={() => {
+                    setShowDuplicateModal(false);
+                    setDuplicateInfo(null);
+                  }}
+                  style={{
+                    background: "#252836",
+                    border: "0.5px solid rgba(255,255,255,0.1)",
+                    borderRadius: 7,
+                    padding: "6px 16px",
+                    fontSize: 12,
+                    color: "#94a3b8",
+                    cursor: "pointer",
+                  }}
+                >
+                  Cerrar
+                </button>
+                <button
+                  onClick={() => {
+                    setShowDuplicateModal(false);
+                    setDuplicateInfo(null);
+                    resetForm();
+                  }}
+                  style={{
+                    background: "#4f8ef7",
+                    border: "none",
+                    borderRadius: 7,
+                    padding: "6px 16px",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: "#fff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Entendido
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

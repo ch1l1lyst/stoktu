@@ -83,11 +83,11 @@ class ImportacionController extends Controller
         if ($importMode) {
             $existing = Importacion::where('hash', $hash)->first();
             if ($existing) {
-                return [
+                return response()->json([
                     'error' => 'Este archivo ya fue importado anteriormente.',
                     'importacion_id' => $existing->id,
                     'fecha' => $existing->created_at,
-                ];
+                ], 409);
             }
         }
 
@@ -115,6 +115,7 @@ class ImportacionController extends Controller
             'cedula'          => ['cedula', 'ci', 'numero_cedula', 'ced'],
             'sector'          => ['sector', 'zona', 'area', 'region'],
             'vendedor'        => ['vendedor', 'seller', 'vendedor_nombre'],
+            'forma_pago'      => ['forma_pago', 'payment', 'metodo_pago', 'pago'],
         ];
 
         $indices = [];
@@ -232,7 +233,7 @@ class ImportacionController extends Controller
                 }
             }
 
-            // Guardar en $rows (sin vendedor como texto, solo ID)
+            // Guardar en $rows
             $rows[] = [
                 'linea'           => $lineNumber,
                 'producto'        => $producto,
@@ -247,7 +248,11 @@ class ImportacionController extends Controller
                 'cedula'          => $rowData['cedula'] ?? null,
                 'sector'          => $rowData['sector'] ?? null,
                 'vendedor_id'     => $vendedorId,            // Solo ID
+                'forma_pago'      => $rowData['forma_pago'] ?? null,
                 'errores'         => $lineErrors,
+                
+
+
             ];
         }
         fclose($handle);
@@ -299,7 +304,8 @@ class ImportacionController extends Controller
                         'cliente'         => $row['cliente'] ?? null,
                         'cedula'          => $row['cedula'] ?? null,
                         'sector'          => $row['sector'] ?? null,
-                        'vendedor_id'     => $row['vendedor_id'] ?? null,  // Solo ID
+                        'vendedor_id'     => $row['vendedor_id'] ?? null,    
+                        'forma_pago'      => $row['forma_pago'] ?? null
                     ]);
 
                 if ($row['producto']) {

@@ -1,6 +1,5 @@
-
-
 ### 1. Ingresos Totales por Ventas
+
 **Fórmula:**  
 Suma de (`ventas.cantidad` × `ventas.precio_unitario`)  
 Solo ventas con `ventas.estado_pedido` = `'completado'` en el período.
@@ -11,6 +10,7 @@ Ves si el negocio está facturando bien, si las metas se cumplen y en qué meses
 ---
 
 ### 2. Margen Bruto de Ganancia
+
 **Fórmula:**  
 Suma de (`ventas.precio_unitario` − `productos.costo`) × `ventas.cantidad`  
 Uniendo cada venta completada con su producto.
@@ -21,10 +21,12 @@ Te muestra la ganancia real después de pagar lo vendido. Si es bajo, toca subir
 ---
 
 ### 3. Eficiencia de Proveedores
-**Incluye dos métricas:**  
+
+**Incluye dos métricas:**
+
 - **% Cumplimiento:**  
   (Suma de `reposiciones.cantidad_recibida` / Suma de `reposiciones.cantidad_solicitada`) × 100  
-  Solo reposiciones con estado `'recibido'`.  
+  Solo reposiciones con estado `'recibido'`.
 - **Plazo promedio de entrega:**  
   Promedio de (`reposiciones.fecha_recepcion` − `reposiciones.fecha_pedido`) en días, mismas reposiciones.
 
@@ -34,6 +36,7 @@ Identifica proveedores confiables y los que fallan. Así negocias condiciones, d
 ---
 
 ### 4. Alerta de Stock Bajo
+
 **Fórmula:**  
 Productos donde `productos.stock_actual` ≤ 5 (umbral ajustable).  
 Para más precisión:  
@@ -45,8 +48,10 @@ Evita que te quedes sin los productos estrella, previene pérdida de ventas y cl
 ---
 
 ### 5. Productividad por Vendedor
-**Fórmula (para cada vendedor con `users.rol = 'personal'`):**  
-- **Monto vendido:** Suma de (`ventas.cantidad` × `ventas.precio_unitario`) en ventas completadas.  
+
+**Fórmula (para cada vendedor con `users.rol = 'personal'`):**
+
+- **Monto vendido:** Suma de (`ventas.cantidad` × `ventas.precio_unitario`) en ventas completadas.
 - **Pedidos completados:** Conteo de esas mismas ventas.
 
 **Ayuda a decidir:**  
@@ -55,9 +60,11 @@ Sabes quién vende más, quién necesita ayuda, y te sirve para comisiones o pre
 ---
 
 ### 6. Rotación de Inventario
+
 **Fórmula:**  
-Costo total de productos vendidos (período) / Valor actual del inventario a costo  
-- **Numerador:** Suma de (`ventas.cantidad` × `productos.costo`) de ventas completadas.  
+Costo total de productos vendidos (período) / Valor actual del inventario a costo
+
+- **Numerador:** Suma de (`ventas.cantidad` × `productos.costo`) de ventas completadas.
 - **Denominador:** Suma de (`productos.stock_actual` × `productos.costo`) de todos los productos.
 
 **Ayuda a decidir:**  
@@ -66,6 +73,7 @@ Te dice cuántas veces renovaste el inventario en el período. Si el número es 
 ---
 
 ### 7. Días de Inventario
+
 **Fórmula:**  
 365 / Rotación de inventario (la del indicador 6).
 
@@ -76,10 +84,3 @@ Traduce la rotación a días promedio que tarda en venderse todo el inventario. 
 
 **Resumen:**  
 Con estos 7 indicadores tienes control total de ventas, rentabilidad, proveedores, stock crítico, fuerza de ventas y salud del inventario. Es justo lo que una gerencia necesita para tomar decisiones rápidas y basadas en datos reales.
-
-hazlo en una imagen bien redactado
-
-PONLE COMO TIUTLO ALGO RELACIONADO COMO KPI´s de stoktu o no se 
-vamos
-hazlo elegante, sencillo, minimalista y horizontal
-mi logo es CH ponlo de tamaño chiqutito de color verde y que sea vea gotico mi logo

@@ -13,7 +13,8 @@ return new class extends Migration
             $table->string('numero_pedido', 50)->nullable();
             $table->string('cliente', 150)->nullable();
             $table->string('cedula', 20)->nullable();
-            $table->string('sector', 100)->nullable();
+            $table->string('forma_pago', 50)->nullable();
+            $table->string('sector', 50)->nullable();
             $table->foreignId('vendedor_id')->nullable()->constrained('users')->nullOnDelete(); 
             $table->string('producto_codigo', 20);
             $table->integer('cantidad');

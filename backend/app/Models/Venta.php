@@ -20,6 +20,7 @@ class Venta extends Model
         'cedula', 
         'sector',
         'vendedor_id',
+        'forma_pago',
     ];
 
     protected $casts = [
