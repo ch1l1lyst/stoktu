@@ -88,6 +88,7 @@ class ProductosSeeder extends Seeder
             ['codigo' => 'PT089', 'nombre' => 'PISER', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 1.65, 'precio' => 2.22, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/otros/DID_PISER.PNG'],
             ['codigo' => 'PT088', 'nombre' => 'SUAVIZANTE', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 0.56, 'precio' => 0.82, 'proveedor_id' => 'PROV007', 'imagen' => '/src/assets/productos/otros/DID_SUAVISANTE.PNG'],
             ['codigo' => 'PTAP96', 'nombre' => 'ALCOHOL POTABLE PURO', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 1.81, 'precio' => 2.45, 'proveedor_id' => 'PROV005', 'imagen' => '/src/assets/productos/otros/DID_ALCOHOLPOTABLEPURO.PNG'],
+            
             ['codigo' => 'PT999', 'nombre' => 'ECO CLEAN', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 2.10, 'precio' => 3.50, 'proveedor_id' => 'PROV003', 'imagen' => '/src/assets/productos/sanitizantes/DID_ECOCLEAN.PNG'],
             ['codigo' => 'PT998', 'nombre' => 'DESENGRASE TOTAL', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 2.45, 'precio' => 4.10, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/desengrasantes/DID_DESENGRASETOTAL.PNG'],
             ['codigo' => 'PT997', 'nombre' => 'PERFUME INDUSTRIAL', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 3.80, 'precio' => 6.25, 'proveedor_id' => 'PROV007', 'imagen' => '/src/assets/productos/otros/DID_PERFUMEINDUSTRIAL.PNG'],
