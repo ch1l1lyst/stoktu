@@ -49,7 +49,7 @@ class InventarioController extends Controller
             ->groupBy('producto_codigo')
             ->orderBy('total_vendido', 'desc')
             ->limit(3)
-            ->with('producto:id,nombre')
+            ->with('producto:codigo,nombre')
             ->get()
             ->map(fn($item) => [
                 'codigo' => $item->producto_codigo,

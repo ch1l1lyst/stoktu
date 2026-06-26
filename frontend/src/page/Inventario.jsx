@@ -26,10 +26,7 @@ import {
 } from "lucide-react";
 
 // ========== CARGA AUTOMÁTICA DE IMÁGENES ==========
-const imageModules = import.meta.glob(
-  "/src/assets/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
-  { eager: true, import: "default" },
-);
+const imageModules = import.meta.glob("/src/assets/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true, import: "default" });
 
 const imagesByCategory = {
   desengrasantes: [],
@@ -66,10 +63,7 @@ const Toast = ({ message, type, onClose }) => {
     >
       <span style={{ color: bgColor }}>{type === "success" ? "✅" : "❌"}</span>
       <span>{message}</span>
-      <button
-        onClick={onClose}
-        className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
-      >
+      <button onClick={onClose} className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5">
         <X size={14} />
       </button>
     </motion.div>
@@ -98,15 +92,9 @@ const MetricCard = memo(({ title, value, icon: Icon, accent }) => {
   const colors = accentColors[accent] || accentColors.blue;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-[#252836] rounded-xl border border-white/10 p-3.5 flex items-center justify-between"
-    >
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-[#252836] rounded-xl border border-white/10 p-3.5 flex items-center justify-between">
       <div>
-        <p className="text-[9px] font-semibold text-[#94a3b8] uppercase tracking-wider">
-          {title}
-        </p>
+        <p className="text-[9px] font-semibold text-[#94a3b8] uppercase tracking-wider">{title}</p>
         <p className="text-xl font-bold text-[#e2e8f0] mt-0.5">{value}</p>
       </div>
       <div
@@ -134,15 +122,7 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
       className="bg-[#252836] rounded-xl border border-white/10 overflow-hidden flex flex-col cursor-default transition-all duration-200 hover:bg-white/5 hover:border-white/15"
     >
       <div className="bg-black/30 h-36 flex items-center justify-center relative overflow-hidden">
-        {p.imagen ? (
-          <img
-            src={p.imagen}
-            alt={p.nombre}
-            className="max-h-full max-w-full object-contain p-2"
-          />
-        ) : (
-          <Package size={36} color="#4a5568" />
-        )}
+        {p.imagen ? <img src={p.imagen} alt={p.nombre} className="max-h-full max-w-full object-contain p-2" /> : <Package size={36} color="#4a5568" />}
         <div
           className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold border ${stockBajo ? "bg-red-500/20 border-red-500/30 text-red-300" : "bg-emerald-500/20 border-emerald-500/30 text-emerald-300"}`}
         >
@@ -154,34 +134,18 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
       <div className="flex-1 p-2.5 flex flex-col gap-1.5">
         <div>
           <p className="text-[9px] font-mono text-[#64748b]">{p.codigo}</p>
-          <h3 className="text-sm font-semibold text-[#e2e8f0] leading-tight truncate">
-            {p.nombre}
-          </h3>
-          {p.categoria && (
-            <span className="inline-block mt-1 text-[8px] bg-white/5 text-[#94a3b8] px-2 py-0.5 rounded-full border border-white/5">
-              {p.categoria}
-            </span>
-          )}
+          <h3 className="text-sm font-semibold text-[#e2e8f0] leading-tight truncate">{p.nombre}</h3>
+          {p.categoria && <span className="inline-block mt-1 text-[8px] bg-white/5 text-[#94a3b8] px-2 py-0.5 rounded-full border border-white/5">{p.categoria}</span>}
         </div>
 
         <div className="flex justify-between bg-black/20 rounded-lg px-2.5 py-1 border border-white/5">
           <div>
-            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">
-              Precio
-            </p>
-            <p className="text-sm font-bold text-[#e2e8f0] font-mono">
-              ${p.precio?.toLocaleString()}
-            </p>
+            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">Precio</p>
+            <p className="text-sm font-bold text-[#e2e8f0] font-mono">${p.precio?.toLocaleString()}</p>
           </div>
           <div className="text-right">
-            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">
-              Stock
-            </p>
-            <p
-              className={`text-sm font-bold font-mono ${stockBajo ? "text-red-300" : "text-[#e2e8f0]"}`}
-            >
-              {p.stock_actual}
-            </p>
+            <p className="text-[7px] text-[#64748b] uppercase tracking-wider">Stock</p>
+            <p className={`text-sm font-bold font-mono ${stockBajo ? "text-red-300" : "text-[#e2e8f0]"}`}>{p.stock_actual}</p>
           </div>
         </div>
 
@@ -218,17 +182,7 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
 
 // ========== COMPONENTE PRINCIPAL ==========
 const Inventario = () => {
-  const {
-    items: carritoItems,
-    totalItems: carritoCount,
-    agregarAlCarrito,
-    eliminarDelCarrito,
-    actualizarCantidad,
-    vaciarCarrito,
-    generarPedido,
-    loading: carritoLoading,
-    totalGeneral,
-  } = useCarrito();
+  const { items: carritoItems, totalItems: carritoCount, agregarAlCarrito, eliminarDelCarrito, actualizarCantidad, vaciarCarrito, generarPedido, loading: carritoLoading, totalGeneral } = useCarrito();
 
   // Estados (sin cambios)
   const [productos, setProductos] = useState([]);
@@ -274,10 +228,7 @@ const Inventario = () => {
     setLoading(true);
     setError("");
     try {
-      const [productosRes, resumenRes] = await Promise.all([
-        api.get("/inventario"),
-        api.get("/inventario/resumen"),
-      ]);
+      const [productosRes, resumenRes] = await Promise.all([api.get("/inventario"), api.get("/inventario/resumen")]);
       setProductos(productosRes.data);
       setResumen(resumenRes.data);
     } catch (err) {
@@ -345,9 +296,7 @@ const Inventario = () => {
 
   const handleSaveProduct = useCallback(async () => {
     if (!productForm.codigo || !productForm.nombre || productForm.precio <= 0) {
-      setErrorMsg(
-        "Completa los campos obligatorios: código, nombre y precio > 0",
-      );
+      setErrorMsg("Completa los campos obligatorios: código, nombre y precio > 0");
       return;
     }
     setSaving(true);
@@ -383,19 +332,11 @@ const Inventario = () => {
       fetchAllData();
     } catch (err) {
       console.error(err);
-      setErrorMsg(
-        err.response?.data?.message || "Error al guardar el producto",
-      );
+      setErrorMsg(err.response?.data?.message || "Error al guardar el producto");
     } finally {
       setSaving(false);
     }
-  }, [
-    productForm,
-    imageSource,
-    selectedExistingImage,
-    editingProduct,
-    fetchAllData,
-  ]);
+  }, [productForm, imageSource, selectedExistingImage, editingProduct, fetchAllData]);
 
   const confirmDelete = (item) => {
     setProductoAEliminar(item);
@@ -446,45 +387,28 @@ const Inventario = () => {
   };
 
   // ========== DATOS DERIVADOS ==========
-  const categoriasExistentes = useMemo(
-    () => [
-      ...new Set(
-        productos.map((item) => item.producto.categoria).filter(Boolean),
-      ),
-    ],
-    [productos],
-  );
+  const categoriasExistentes = useMemo(() => [...new Set(productos.map((item) => item.producto.categoria).filter(Boolean))], [productos]);
 
   const filteredProductos = useMemo(() => {
     return productos.filter((item) => {
       const p = item.producto;
       const term = searchTerm.toLowerCase();
-      const matchesSearch =
-        p.codigo.toLowerCase().includes(term) ||
-        p.nombre.toLowerCase().includes(term);
-      const matchesCategoria = categoriaSeleccionada
-        ? p.categoria === categoriaSeleccionada
-        : true;
+      const matchesSearch = p.codigo.toLowerCase().includes(term) || p.nombre.toLowerCase().includes(term);
+      const matchesCategoria = categoriaSeleccionada ? p.categoria === categoriaSeleccionada : true;
       return matchesSearch && matchesCategoria;
     });
   }, [productos, searchTerm, categoriaSeleccionada]);
 
   const totalPages = Math.ceil(filteredProductos.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedProducts = filteredProductos.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
+  const paginatedProducts = filteredProductos.slice(startIndex, startIndex + itemsPerPage);
 
   const goToPage = (page) => {
     setCurrentPage(Math.min(Math.max(1, page), totalPages));
   };
 
   const currentCategory = productForm.categoria?.toLowerCase() || "";
-  const availableImages = useMemo(
-    () => imagesByCategory[currentCategory] || [],
-    [currentCategory],
-  );
+  const availableImages = useMemo(() => imagesByCategory[currentCategory] || [], [currentCategory]);
   const hasImagesForCategory = availableImages.length > 0;
 
   if (loading) {
@@ -511,20 +435,8 @@ const Inventario = () => {
   return (
     <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-3 font-sans overflow-hidden text-[#e2e8f0]">
       <AnimatePresence>
-        {successMsg && (
-          <Toast
-            message={successMsg}
-            type="success"
-            onClose={() => setSuccessMsg("")}
-          />
-        )}
-        {errorMsg && (
-          <Toast
-            message={errorMsg}
-            type="error"
-            onClose={() => setErrorMsg("")}
-          />
-        )}
+        {successMsg && <Toast message={successMsg} type="success" onClose={() => setSuccessMsg("")} />}
+        {errorMsg && <Toast message={errorMsg} type="error" onClose={() => setErrorMsg("")} />}
       </AnimatePresence>
 
       {/* HEADER */}
@@ -534,12 +446,8 @@ const Inventario = () => {
             <Package size={15} color="#fff" />
           </div>
           <div>
-            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
-              Inventario
-            </p>
-            <p className="text-[9px] text-[#64748b]">
-              Gestión de productos y reposiciones
-            </p>
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">Inventario</p>
+            <p className="text-[9px] text-[#64748b]">Gestión de productos y reposiciones</p>
           </div>
         </div>
 
@@ -555,10 +463,7 @@ const Inventario = () => {
                 className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-24"
               />
               {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
-                >
+                <button onClick={() => setSearchTerm("")} className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5">
                   <X size={12} />
                 </button>
               )}
@@ -577,17 +482,11 @@ const Inventario = () => {
               ))}
             </select>
 
-            <button
-              onClick={fetchAllData}
-              className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
-            >
+            <button onClick={fetchAllData} className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]">
               <RefreshCw size={13} />
             </button>
 
-            <button
-              onClick={openCreateModal}
-              className="bg-[#4f8ef7] border-none rounded-md px-3 py-1 text-xs font-medium text-white cursor-pointer flex items-center gap-1 h-7"
-            >
+            <button onClick={openCreateModal} className="bg-[#4f8ef7] border-none rounded-md px-3 py-1 text-xs font-medium text-white cursor-pointer flex items-center gap-1 h-7">
               <Plus size={13} /> Nuevo
             </button>
           </div>
@@ -598,24 +497,9 @@ const Inventario = () => {
       <div className="flex-1 overflow-auto min-h-0 flex flex-col gap-3">
         {/* MÉTRICAS */}
         <div className="grid grid-cols-3 gap-2.5">
-          <MetricCard
-            title="Total productos"
-            value={totalProductos}
-            icon={Package}
-            accent="blue"
-          />
-          <MetricCard
-            title="Stock bajo"
-            value={stockBajo}
-            icon={AlertTriangle}
-            accent="red"
-          />
-          <MetricCard
-            title="Valor inventario"
-            value={`$${valorInventario.toLocaleString()}`}
-            icon={DollarSign}
-            accent="emerald"
-          />
+          <MetricCard title="Total productos" value={totalProductos} icon={Package} accent="blue" />
+          <MetricCard title="Stock bajo" value={stockBajo} icon={AlertTriangle} accent="red" />
+          <MetricCard title="Valor inventario" value={`$${valorInventario.toLocaleString()}`} icon={DollarSign} accent="emerald" />
         </div>
 
         {/* GALERÍA DE PRODUCTOS */}
@@ -623,15 +507,10 @@ const Inventario = () => {
           <div className="flex justify-between items-center mb-2.5">
             <h2 className="text-sm font-semibold text-[#e2e8f0]">
               Productos
-              <span className="ml-1.5 text-xs font-normal text-[#64748b]">
-                ({filteredProductos.length})
-              </span>
+              <span className="ml-1.5 text-xs font-normal text-[#64748b]">({filteredProductos.length})</span>
             </h2>
             {categoriaSeleccionada && (
-              <button
-                onClick={() => setCategoriaSeleccionada("")}
-                className="text-[10px] text-[#94a3b8] bg-transparent border-none cursor-pointer flex items-center gap-1"
-              >
+              <button onClick={() => setCategoriaSeleccionada("")} className="text-[10px] text-[#94a3b8] bg-transparent border-none cursor-pointer flex items-center gap-1">
                 <X size={12} /> Quitar filtro
               </button>
             )}
@@ -646,13 +525,7 @@ const Inventario = () => {
             <>
               <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3 flex-1">
                 {paginatedProducts.map((item) => (
-                  <ProductCard
-                    key={item.producto.codigo}
-                    item={item}
-                    onEdit={openEditModal}
-                    onDelete={confirmDelete}
-                    onReponer={openCantidadModal}
-                  />
+                  <ProductCard key={item.producto.codigo} item={item} onEdit={openEditModal} onDelete={confirmDelete} onReponer={openCantidadModal} />
                 ))}
               </div>
 
@@ -691,11 +564,7 @@ const Inventario = () => {
         style={{ boxShadow: "0 8px 24px rgba(79,142,247,0.4)" }}
       >
         <ShoppingCart size={17} />
-        <span className="text-[11px] font-semibold">
-          {carritoCount > 0
-            ? `${carritoCount} ítem${carritoCount !== 1 ? "s" : ""}`
-            : "Carrito"}
-        </span>
+        <span className="text-[11px] font-semibold">{carritoCount > 0 ? `${carritoCount} ítem${carritoCount !== 1 ? "s" : ""}` : "Carrito"}</span>
         {carritoCount > 0 && (
           <span className="absolute -top-1.5 -right-1.5 bg-[#ef4444] text-white text-[8px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center border-2 border-[#1a1d27]">
             {carritoCount > 99 ? "99+" : carritoCount}
@@ -709,13 +578,7 @@ const Inventario = () => {
       <AnimatePresence>
         {showCantidadModal && selectedProducto && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-              onClick={() => setShowCantidadModal(false)}
-            />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowCantidadModal(false)} />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -727,18 +590,12 @@ const Inventario = () => {
                   <ShoppingCart size={14} color="#4f8ef7" />
                 </div>
                 <div>
-                  <p className="text-[8px] text-[#64748b] uppercase tracking-wider">
-                    Reponer
-                  </p>
-                  <p className="text-sm font-semibold text-[#e2e8f0] leading-tight">
-                    {selectedProducto.nombre}
-                  </p>
+                  <p className="text-[8px] text-[#64748b] uppercase tracking-wider">Reponer</p>
+                  <p className="text-sm font-semibold text-[#e2e8f0] leading-tight">{selectedProducto.nombre}</p>
                 </div>
               </div>
 
-              <label className="block text-[10px] text-[#94a3b8] mb-1">
-                Cantidad a solicitar
-              </label>
+              <label className="block text-[10px] text-[#94a3b8] mb-1">Cantidad a solicitar</label>
               <div className="flex items-center gap-1.5 bg-[#252836] border border-white/10 rounded-lg p-1 mb-3">
                 <button
                   onClick={() => setCantidadReponer((c) => Math.max(1, c - 1))}
@@ -749,34 +606,21 @@ const Inventario = () => {
                 <input
                   type="number"
                   value={cantidadReponer}
-                  onChange={(e) =>
-                    setCantidadReponer(
-                      Math.max(1, parseInt(e.target.value) || 1),
-                    )
-                  }
+                  onChange={(e) => setCantidadReponer(Math.max(1, parseInt(e.target.value) || 1))}
                   min="1"
                   className="flex-1 bg-transparent border-none outline-none text-[#e2e8f0] text-base font-bold text-center"
                   autoFocus
                 />
-                <button
-                  onClick={() => setCantidadReponer((c) => c + 1)}
-                  className="w-7 h-7 bg-white/5 border-none rounded-md text-[#94a3b8] cursor-pointer flex items-center justify-center"
-                >
+                <button onClick={() => setCantidadReponer((c) => c + 1)} className="w-7 h-7 bg-white/5 border-none rounded-md text-[#94a3b8] cursor-pointer flex items-center justify-center">
                   <PlusIcon size={12} />
                 </button>
               </div>
 
               <div className="flex gap-2">
-                <button
-                  onClick={() => setShowCantidadModal(false)}
-                  className="flex-1 py-1.5 bg-[#252836] border border-white/10 rounded-lg text-xs text-[#94a3b8] cursor-pointer"
-                >
+                <button onClick={() => setShowCantidadModal(false)} className="flex-1 py-1.5 bg-[#252836] border border-white/10 rounded-lg text-xs text-[#94a3b8] cursor-pointer">
                   Cancelar
                 </button>
-                <button
-                  onClick={confirmarAgregar}
-                  className="flex-1 py-1.5 bg-[#4f8ef7] border-none rounded-lg text-xs font-semibold text-white cursor-pointer"
-                >
+                <button onClick={confirmarAgregar} className="flex-1 py-1.5 bg-[#4f8ef7] border-none rounded-lg text-xs font-semibold text-white cursor-pointer">
                   Agregar
                 </button>
               </div>
@@ -810,21 +654,13 @@ const Inventario = () => {
                   <Trash2 size={16} color="#ef4444" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#e2e8f0]">
-                    Confirmar eliminación
-                  </h3>
-                  <p className="text-[10px] text-[#64748b]">
-                    Esta acción no se puede deshacer
-                  </p>
+                  <h3 className="text-sm font-bold text-[#e2e8f0]">Confirmar eliminación</h3>
+                  <p className="text-[10px] text-[#64748b]">Esta acción no se puede deshacer</p>
                 </div>
               </div>
 
               <p className="text-sm text-[#94a3b8] mb-4">
-                ¿Estás seguro de eliminar el producto{" "}
-                <span className="text-[#e2e8f0] font-semibold">
-                  {productoAEliminar.producto.nombre}
-                </span>
-                ?
+                ¿Estás seguro de eliminar el producto <span className="text-[#e2e8f0] font-semibold">{productoAEliminar.producto.nombre}</span>?
               </p>
 
               <div className="flex gap-2">
@@ -837,10 +673,7 @@ const Inventario = () => {
                 >
                   Cancelar
                 </button>
-                <button
-                  onClick={handleDelete}
-                  className="flex-1 py-2 bg-[#ef4444] border-none rounded-lg text-xs font-semibold text-white cursor-pointer"
-                >
+                <button onClick={handleDelete} className="flex-1 py-2 bg-[#ef4444] border-none rounded-lg text-xs font-semibold text-white cursor-pointer">
                   Eliminar
                 </button>
               </div>
@@ -853,13 +686,7 @@ const Inventario = () => {
       <AnimatePresence>
         {showCarritoModal && (
           <div className="fixed inset-0 z-50 flex justify-end">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => setShowCarritoModal(false)}
-            />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowCarritoModal(false)} />
             <motion.div
               initial={{ x: "100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -875,20 +702,11 @@ const Inventario = () => {
                       <ShoppingCart size={14} color="#4f8ef7" />
                     </div>
                     <div>
-                      <h2 className="text-sm font-bold text-[#e2e8f0] leading-tight">
-                        Carrito
-                      </h2>
-                      <p className="text-[9px] text-[#64748b]">
-                        {carritoCount === 0
-                          ? "Sin productos"
-                          : `${carritoCount} producto${carritoCount !== 1 ? "s" : ""}`}
-                      </p>
+                      <h2 className="text-sm font-bold text-[#e2e8f0] leading-tight">Carrito</h2>
+                      <p className="text-[9px] text-[#64748b]">{carritoCount === 0 ? "Sin productos" : `${carritoCount} producto${carritoCount !== 1 ? "s" : ""}`}</p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setShowCarritoModal(false)}
-                    className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded"
-                  >
+                  <button onClick={() => setShowCarritoModal(false)} className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded">
                     <X size={16} />
                   </button>
                 </div>
@@ -901,12 +719,8 @@ const Inventario = () => {
                     <div className="w-14 h-14 bg-[#252836] border border-white/5 rounded-xl flex items-center justify-center mb-2.5">
                       <ShoppingCart size={24} color="#4a5568" />
                     </div>
-                    <p className="text-[#94a3b8] text-sm font-medium">
-                      Carrito vacío
-                    </p>
-                    <p className="text-[#64748b] text-[10px] mt-0.5">
-                      Agrega productos desde el inventario
-                    </p>
+                    <p className="text-[#94a3b8] text-sm font-medium">Carrito vacío</p>
+                    <p className="text-[#64748b] text-[10px] mt-0.5">Agrega productos desde el inventario</p>
                   </div>
                 ) : (
                   carritoItems.map((item) => (
@@ -922,43 +736,27 @@ const Inventario = () => {
                         <Package size={12} color="#4f8ef7" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-semibold text-[#e2e8f0] truncate">
-                          {item.nombre}
-                        </p>
+                        <p className="text-[11px] font-semibold text-[#e2e8f0] truncate">{item.nombre}</p>
                         <p className="text-[8px] text-[#64748b]">
                           {item.codigo} · ${item.precio.toLocaleString()}/u
                         </p>
                         <div className="flex items-center justify-between mt-1">
                           <div className="flex items-center gap-1 bg-black/30 rounded px-1 py-0.5">
                             <button
-                              onClick={() =>
-                                actualizarCantidad(
-                                  item.codigo,
-                                  item.cantidad - 1,
-                                )
-                              }
+                              onClick={() => actualizarCantidad(item.codigo, item.cantidad - 1)}
                               className="bg-transparent border-none text-[#94a3b8] cursor-pointer p-0.5 flex items-center justify-center"
                             >
                               <Minus size={8} />
                             </button>
-                            <span className="text-[10px] font-mono text-[#e2e8f0] w-4.5 text-center">
-                              {item.cantidad}
-                            </span>
+                            <span className="text-[10px] font-mono text-[#e2e8f0] w-4.5 text-center">{item.cantidad}</span>
                             <button
-                              onClick={() =>
-                                actualizarCantidad(
-                                  item.codigo,
-                                  item.cantidad + 1,
-                                )
-                              }
+                              onClick={() => actualizarCantidad(item.codigo, item.cantidad + 1)}
                               className="bg-transparent border-none text-[#94a3b8] cursor-pointer p-0.5 flex items-center justify-center"
                             >
                               <PlusIcon size={8} />
                             </button>
                           </div>
-                          <span className="text-xs font-bold text-[#e2e8f0] font-mono">
-                            ${(item.precio * item.cantidad).toLocaleString()}
-                          </span>
+                          <span className="text-xs font-bold text-[#e2e8f0] font-mono">${(item.precio * item.cantidad).toLocaleString()}</span>
                         </div>
                       </div>
                       <button
@@ -978,17 +776,11 @@ const Inventario = () => {
                   <div className="bg-[#252836] rounded-lg px-3 py-2 border border-white/5">
                     <div className="flex justify-between text-[10px]">
                       <span className="text-[#94a3b8]">Productos</span>
-                      <span className="text-[#e2e8f0] font-mono">
-                        {carritoCount}
-                      </span>
+                      <span className="text-[#e2e8f0] font-mono">{carritoCount}</span>
                     </div>
                     <div className="flex justify-between items-baseline mt-0.5">
-                      <span className="text-[10px] text-[#94a3b8]">
-                        Total estimado
-                      </span>
-                      <span className="text-lg font-bold text-[#e2e8f0] font-mono">
-                        ${totalGeneral.toLocaleString()}
-                      </span>
+                      <span className="text-[10px] text-[#94a3b8]">Total estimado</span>
+                      <span className="text-lg font-bold text-[#e2e8f0] font-mono">${totalGeneral.toLocaleString()}</span>
                     </div>
                   </div>
 
@@ -1027,13 +819,7 @@ const Inventario = () => {
       <AnimatePresence>
         {showProductModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-              onClick={() => setShowProductModal(false)}
-            />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowProductModal(false)} />
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -1042,14 +828,9 @@ const Inventario = () => {
             >
               {/* Header */}
               <div className="flex items-center justify-between px-4.5 py-3 border-b border-white/5 flex-shrink-0">
-                <h3 className="text-sm font-bold text-[#e2e8f0]">
-                  {editingProduct ? "Editar producto" : "Nuevo producto"}
-                </h3>
+                <h3 className="text-sm font-bold text-[#e2e8f0]">{editingProduct ? "Editar producto" : "Nuevo producto"}</h3>
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => setShowProductModal(false)}
-                    className="px-3 py-1 bg-[#252836] border border-white/10 rounded-md text-[11px] text-[#94a3b8] cursor-pointer"
-                  >
+                  <button onClick={() => setShowProductModal(false)} className="px-3 py-1 bg-[#252836] border border-white/10 rounded-md text-[11px] text-[#94a3b8] cursor-pointer">
                     Cancelar
                   </button>
                   <button
@@ -1068,9 +849,7 @@ const Inventario = () => {
                 <div className="flex flex-col gap-2.5">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Código *
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Código *</label>
                       <input
                         type="text"
                         value={productForm.codigo}
@@ -1085,9 +864,7 @@ const Inventario = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Nombre *
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Nombre *</label>
                       <input
                         type="text"
                         value={productForm.nombre}
@@ -1104,9 +881,7 @@ const Inventario = () => {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Categoría
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Categoría</label>
                       <input
                         type="text"
                         value={productForm.categoria}
@@ -1121,9 +896,7 @@ const Inventario = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Proveedor
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Proveedor</label>
                       <select
                         value={productForm.proveedor_id}
                         onChange={(e) =>
@@ -1146,9 +919,7 @@ const Inventario = () => {
 
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Stock
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Stock</label>
                       <input
                         type="number"
                         step="1"
@@ -1163,9 +934,7 @@ const Inventario = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Costo
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Costo</label>
                       <input
                         type="number"
                         step="0.01"
@@ -1180,9 +949,7 @@ const Inventario = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">
-                        Precio *
-                      </label>
+                      <label className="block text-[9px] text-[#94a3b8] mb-0.5">Precio *</label>
                       <input
                         type="number"
                         step="0.01"
@@ -1201,9 +968,7 @@ const Inventario = () => {
 
                 {/* Columna derecha */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] text-[#94a3b8]">
-                    Imagen del producto
-                  </label>
+                  <label className="text-[9px] text-[#94a3b8]">Imagen del producto</label>
                   <div className="flex gap-1.5">
                     {[
                       { key: "upload", icon: Upload, label: "Subir" },
@@ -1214,9 +979,7 @@ const Inventario = () => {
                         type="button"
                         onClick={() => setImageSource(key)}
                         className={`flex-1 py-1 rounded-md text-[9px] border flex items-center justify-center gap-1 cursor-pointer transition-colors ${
-                          imageSource === key
-                            ? "bg-blue-500/15 border-blue-500/30 text-[#4f8ef7]"
-                            : "bg-transparent border-white/5 text-[#94a3b8]"
+                          imageSource === key ? "bg-blue-500/15 border-blue-500/30 text-[#4f8ef7]" : "bg-transparent border-white/5 text-[#94a3b8]"
                         }`}
                       >
                         <Icon size={10} /> {label}
@@ -1232,9 +995,7 @@ const Inventario = () => {
                         setProductForm({
                           ...productForm,
                           imagen: e.target.files[0],
-                          imagenUrl: e.target.files[0]
-                            ? URL.createObjectURL(e.target.files[0])
-                            : "",
+                          imagenUrl: e.target.files[0] ? URL.createObjectURL(e.target.files[0]) : "",
                         })
                       }
                       className="w-full text-[10px] bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-[#94a3b8]"
@@ -1242,10 +1003,7 @@ const Inventario = () => {
                   ) : (
                     <div className="flex flex-col gap-1">
                       <p className="text-[9px] text-[#64748b]">
-                        Categoría:{" "}
-                        <span className="text-[#e2e8f0]">
-                          {productForm.categoria || "(sin categoría)"}
-                        </span>
+                        Categoría: <span className="text-[#e2e8f0]">{productForm.categoria || "(sin categoría)"}</span>
                       </p>
                       {productForm.categoria ? (
                         hasImagesForCategory ? (
@@ -1261,50 +1019,26 @@ const Inventario = () => {
                                     imagenUrl: img.path,
                                   });
                                 }}
-                                className={`cursor-pointer rounded-md overflow-hidden transition-all ${
-                                  selectedExistingImage === img.path
-                                    ? "ring-1 ring-[#4f8ef7]"
-                                    : ""
-                                }`}
+                                className={`cursor-pointer rounded-md overflow-hidden transition-all ${selectedExistingImage === img.path ? "ring-1 ring-[#4f8ef7]" : ""}`}
                               >
-                                <img
-                                  src={img.path}
-                                  alt={img.name}
-                                  className="w-full h-14 object-cover"
-                                />
-                                <p className="text-[7px] text-[#64748b] text-center py-0.5 truncate">
-                                  {img.name}
-                                </p>
+                                <img src={img.path} alt={img.name} className="w-full h-14 object-cover" />
+                                <p className="text-[7px] text-[#64748b] text-center py-0.5 truncate">{img.name}</p>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <p className="text-[10px] text-[#64748b] bg-black/20 rounded-md p-2 text-center border border-white/5">
-                            No hay imágenes en esta carpeta
-                          </p>
+                          <p className="text-[10px] text-[#64748b] bg-black/20 rounded-md p-2 text-center border border-white/5">No hay imágenes en esta carpeta</p>
                         )
                       ) : (
-                        <p className="text-[10px] text-[#f59e0b] bg-yellow-500/5 rounded-md p-2 text-center border border-yellow-500/15">
-                          Ingresa una categoría primero
-                        </p>
+                        <p className="text-[10px] text-[#f59e0b] bg-yellow-500/5 rounded-md p-2 text-center border border-yellow-500/15">Ingresa una categoría primero</p>
                       )}
                     </div>
                   )}
 
                   {(productForm.imagenUrl || selectedExistingImage) && (
                     <div>
-                      <p className="text-[9px] text-[#64748b] mb-0.5">
-                        Vista previa
-                      </p>
-                      <img
-                        src={
-                          imageSource === "upload"
-                            ? productForm.imagenUrl
-                            : selectedExistingImage
-                        }
-                        alt="preview"
-                        className="h-16 w-16 object-cover rounded-md border border-white/5"
-                      />
+                      <p className="text-[9px] text-[#64748b] mb-0.5">Vista previa</p>
+                      <img src={imageSource === "upload" ? productForm.imagenUrl : selectedExistingImage} alt="preview" className="h-16 w-16 object-cover rounded-md border border-white/5" />
                     </div>
                   )}
                 </div>
