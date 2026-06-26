@@ -40,6 +40,8 @@ class ProductosSeeder extends Seeder
             ['codigo' => 'PT135', 'nombre' => 'ACIMBAC', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 0.77, 'precio' => 1.12, 'proveedor_id' => 'PROV001', 'imagen' => '/src/assets/productos/sanitizantes/DID_ACIMBAC.PNG'],
             ['codigo' => 'PT136', 'nombre' => 'SANIMAN 1000', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 1.47, 'precio' => 2.15, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/sanitizantes/DID_SANIMAN.PNG'],
             ['codigo' => 'PT137', 'nombre' => 'SANI QUICK', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 2.65, 'precio' => 3.84, 'proveedor_id' => 'PROV004', 'imagen' => '/src/assets/productos/sanitizantes/DID_SANIQUICK.PNG'],
+            ['codigo' => 'PT996', 'nombre' => 'NEUTRALIZADOR DE OLORES', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 1.90, 'precio' => 3.10, 'proveedor_id' => 'PROV002', 'imagen' => '/src/assets/productos/sanitizantes/DID_NEUTRALIZADOR.PNG'],  // No hay stock  
+            ['codigo' => 'PT999', 'nombre' => 'ECO CLEAN', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 2.10, 'precio' => 3.50, 'proveedor_id' => 'PROV003', 'imagen' => '/src/assets/productos/sanitizantes/DID_ECOCLEAN.PNG'], // No hay stock
 
             // ========== DESENGRASANTES (35) ==========
             ['codigo' => 'PT004', 'nombre' => 'GARANTY CLEANER', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 4.38, 'precio' => 5.90, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/desengrasantes/DID_GARANTYCLEANER.PNG'],
@@ -77,6 +79,8 @@ class ProductosSeeder extends Seeder
             ['codigo' => 'PT132', 'nombre' => 'DETERLAV 100', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 2.28, 'precio' => 3.08, 'proveedor_id' => 'PROV008', 'imagen' => '/src/assets/productos/desengrasantes/DID_DETERLAV.PNG'],
             ['codigo' => 'PT133', 'nombre' => 'DETER GREEN', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 2.08, 'precio' => 2.90, 'proveedor_id' => 'PROV002', 'imagen' => '/src/assets/productos/desengrasantes/DID_DETERGREEN.PNG'],
             ['codigo' => 'PT138', 'nombre' => 'SOLOF', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 1.74, 'precio' => 2.52, 'proveedor_id' => 'PROV003', 'imagen' => '/src/assets/productos/desengrasantes/DID_SOLOF.PNG'],
+            ['codigo' => 'PT995', 'nombre' => 'LAVAVAJILLAS PROFESIONAL', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 1.75, 'precio' => 2.95, 'proveedor_id' => 'PROV005', 'imagen' => '/src/assets/productos/desengrasantes/DID_LAVAVAJILLASPRO.PNG'], // No hay stock
+            ['codigo' => 'PT998', 'nombre' => 'DESENGRASE TOTAL', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 2.45, 'precio' => 4.10, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/desengrasantes/DID_DESENGRASETOTAL.PNG'], // No hay stock
 
             // ========== OTROS PRODUCTOS (9) ==========
             ['codigo' => 'PT002', 'nombre' => 'MULTYLUBE', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 1.55, 'precio' => 2.00, 'proveedor_id' => 'PROV008', 'imagen' => '/src/assets/productos/otros/DID_MULTILUBE.PNG'],
@@ -88,12 +92,9 @@ class ProductosSeeder extends Seeder
             ['codigo' => 'PT089', 'nombre' => 'PISER', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 1.65, 'precio' => 2.22, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/otros/DID_PISER.PNG'],
             ['codigo' => 'PT088', 'nombre' => 'SUAVIZANTE', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 0.56, 'precio' => 0.82, 'proveedor_id' => 'PROV007', 'imagen' => '/src/assets/productos/otros/DID_SUAVISANTE.PNG'],
             ['codigo' => 'PTAP96', 'nombre' => 'ALCOHOL POTABLE PURO', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 1.81, 'precio' => 2.45, 'proveedor_id' => 'PROV005', 'imagen' => '/src/assets/productos/otros/DID_ALCOHOLPOTABLEPURO.PNG'],
+            ['codigo' => 'PT997', 'nombre' => 'PERFUME INDUSTRIAL', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 3.80, 'precio' => 6.25, 'proveedor_id' => 'PROV007', 'imagen' => '/src/assets/productos/otros/DID_PERFUMEINDUSTRIAL.PNG'], // No hay stock
             
-            ['codigo' => 'PT999', 'nombre' => 'ECO CLEAN', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 2.10, 'precio' => 3.50, 'proveedor_id' => 'PROV003', 'imagen' => '/src/assets/productos/sanitizantes/DID_ECOCLEAN.PNG'],
-            ['codigo' => 'PT998', 'nombre' => 'DESENGRASE TOTAL', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 2.45, 'precio' => 4.10, 'proveedor_id' => 'PROV006', 'imagen' => '/src/assets/productos/desengrasantes/DID_DESENGRASETOTAL.PNG'],
-            ['codigo' => 'PT997', 'nombre' => 'PERFUME INDUSTRIAL', 'categoria' => 'Otros', 'stock_actual' => 0, 'costo' => 3.80, 'precio' => 6.25, 'proveedor_id' => 'PROV007', 'imagen' => '/src/assets/productos/otros/DID_PERFUMEINDUSTRIAL.PNG'],
-            ['codigo' => 'PT996', 'nombre' => 'NEUTRALIZADOR DE OLORES', 'categoria' => 'Sanitizantes', 'stock_actual' => 0, 'costo' => 1.90, 'precio' => 3.10, 'proveedor_id' => 'PROV002', 'imagen' => '/src/assets/productos/sanitizantes/DID_NEUTRALIZADOR.PNG'],
-            ['codigo' => 'PT995', 'nombre' => 'LAVAVAJILLAS PROFESIONAL', 'categoria' => 'Desengrasantes', 'stock_actual' => 0, 'costo' => 1.75, 'precio' => 2.95, 'proveedor_id' => 'PROV005', 'imagen' => '/src/assets/productos/desengrasantes/DID_LAVAVAJILLASPRO.PNG'],
+            
         ];
 
         foreach ($productos as $p) {
