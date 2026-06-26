@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/ventas/import/validate', [ImportacionController::class, 'validateImport']);
     Route::post('/ventas/import', [ImportacionController::class, 'import']);
     Route::get('/importaciones', [ImportacionController::class, 'index']);
+    Route::delete('/importaciones/{id}', [ImportacionController::class, 'destroy']);
 
     // Reposiciones (Pedidos)
     Route::get('/pedidos', [ReposicionController::class, 'listarPedidos']);

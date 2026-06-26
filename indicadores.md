@@ -27,20 +27,17 @@ Te muestra la ganancia real después de pagar lo vendido. Si es bajo, toca subir
 - **% Cumplimiento:**  
   (Suma de `reposiciones.cantidad_recibida` / Suma de `reposiciones.cantidad_solicitada`) × 100  
   Solo reposiciones con estado `'recibido'`.
-- **Plazo promedio de entrega:**  
-  Promedio de (`reposiciones.fecha_recepcion` − `reposiciones.fecha_pedido`) en días, mismas reposiciones.
 
 **Ayuda a decidir:**  
-Identifica proveedores confiables y los que fallan. Así negocias condiciones, diversificas o ajustas tu inventario de seguridad.
+Identifica proveedores confiables y los que fallan
 
 ---
 
 ### 4. Alerta de Stock Bajo
 
 **Fórmula:**  
-Productos donde `productos.stock_actual` ≤ 5 (umbral ajustable).  
-Para más precisión:  
-**Cobertura en días** = `stock_actual` / (Promedio diario de ventas de ese producto en los últimos 30 días).
+Productos donde `productos.stock_actual` ≤ 30 (umbral ajustable).  
+Para más precisión:
 
 **Ayuda a decidir:**  
 Evita que te quedes sin los productos estrella, previene pérdida de ventas y clientes molestos.

@@ -13,14 +13,15 @@ class Venta extends Model
         'cantidad',
         'precio_unitario',
         'fecha',
-        'numero_pedido',    
+        'numero_pedido',
         'estado_pedido',
         'observaciones',
-        'cliente',  
-        'cedula', 
+        'cliente',
+        'cedula',
         'sector',
         'vendedor_id',
         'forma_pago',
+        'importacion_id',
     ];
 
     protected $casts = [
@@ -34,6 +35,11 @@ class Venta extends Model
 
     public function vendedor()
     {
-        return $this->belongsTo(User::class, 'vendedor_id', 'id'); 
+        return $this->belongsTo(User::class, 'vendedor_id', 'id');
+    }
+
+    public function importacion()
+    {
+        return $this->belongsTo(Importacion::class, 'importacion_id');
     }
 }

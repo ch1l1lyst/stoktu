@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\Importacion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ImportacionController extends Controller
@@ -14,6 +15,31 @@ class ImportacionController extends Controller
     public function index()
     {
         return Importacion::with('user')->orderBy('created_at', 'desc')->get();
+    }
+
+    public function destroy($id)
+    {
+        $importacion = Importacion::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            foreach ($importacion->ventas as $venta) {
+                if ($venta->producto) {
+                    $venta->producto->stock_actual += $venta->cantidad;
+                    $venta->producto->save();
+                }
+            }
+
+            $importacion->ventas()->delete();
+            $importacion->delete();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Importación eliminada correctamente.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'No se pudo eliminar la importación: ' . $e->getMessage()], 500);
+        }
     }
 
     public function validateImport(Request $request)
@@ -70,11 +96,10 @@ class ImportacionController extends Controller
         if ($importMode) {
             $existing = Importacion::where('hash', $hash)->first();
             if ($existing) {
-                // Retornar array con error y datos adicionales (NO JsonResponse)
                 return [
                     'error' => 'Este archivo ya fue importado anteriormente.',
                     'importacion_id' => $existing->id,
-                    'fecha' => $existing->created_at,
+                    'fecha' => $existing->fecha_importacion ?? $existing->created_at,
                 ];
             }
         }
@@ -275,6 +300,20 @@ class ImportacionController extends Controller
 
         DB::beginTransaction();
         try {
+            $importacion = Importacion::create([
+                'nombre_archivo'    => $file->getClientOriginalName(),
+                'hash'              => $hash,
+                'user_id'           => auth()->id(),
+                'fecha_importacion' => Carbon::now()->toDateString(),
+                'total_filas'       => $totalRows,
+                'insertadas'        => count($validRows),
+                'errores'           => count($invalidRows),
+                'detalle_errores'   => array_map(fn($r) => [
+                    'linea'   => $r['linea'],
+                    'errores' => $r['errores'],
+                ], $invalidRows),
+            ]);
+
             foreach ($validRows as $row) {
                 Venta::create([
                     'producto_codigo' => $row['productoCodigo'],
@@ -289,6 +328,7 @@ class ImportacionController extends Controller
                     'sector'          => $row['sector'] ?? null,
                     'vendedor_id'     => $row['vendedor_id'] ?? null,
                     'forma_pago'      => $row['forma_pago'] ?? null,
+                    'importacion_id'  => $importacion->id,
                 ]);
 
                 if ($row['producto']) {
@@ -296,19 +336,6 @@ class ImportacionController extends Controller
                     $row['producto']->save();
                 }
             }
-
-            $importacion = Importacion::create([
-                'nombre_archivo'    => $file->getClientOriginalName(),
-                'hash'              => $hash,
-                'user_id'           => auth()->id(),
-                'total_filas'       => $totalRows,
-                'insertadas'        => count($validRows),
-                'errores'           => count($invalidRows),
-                'detalle_errores'   => array_map(fn($r) => [
-                    'linea'   => $r['linea'],
-                    'errores' => $r['errores'],
-                ], $invalidRows),
-            ]);
 
             DB::commit();
 

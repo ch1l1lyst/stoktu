@@ -1,24 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api/axiosConfig";
-import {
-  Package,
-  RefreshCw,
-  X,
-  CheckCircle,
-  XCircle,
-  Clock,
-  ChevronLeft,
-  ChevronRight,
-  Building2,
-  Search,
-  Eye,
-  Calendar,
-  Save,
-  Edit3,
-  MinusCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Package, RefreshCw, X, CheckCircle, XCircle, Clock, ChevronLeft, ChevronRight, Building2, Search, Eye, Calendar, Save, Edit3, MinusCircle, AlertCircle } from "lucide-react";
 
 // ========== TOAST ==========
 const Toast = ({ message, type, onClose }) => {
@@ -38,10 +21,7 @@ const Toast = ({ message, type, onClose }) => {
     >
       <span style={{ color: bgColor }}>{type === "success" ? "✅" : "❌"}</span>
       <span>{message}</span>
-      <button
-        onClick={onClose}
-        className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
-      >
+      <button onClick={onClose} className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5">
         <X size={14} />
       </button>
     </motion.div>
@@ -60,10 +40,7 @@ const StatusBadge = ({ estado }) => {
   const s = config[key] || config.pendiente;
   const Icon = s.icon;
   return (
-    <span
-      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-      style={{ background: s.bg + "20", color: s.bg }}
-    >
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: s.bg + "20", color: s.bg }}>
       <Icon size={12} />
       {s.label}
     </span>
@@ -78,7 +55,7 @@ const Reposiciones = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [paginaActual, setPaginaActual] = useState(1);
-  const [itemsPorPagina] = useState(8);
+  const [itemsPorPagina] = useState(13);
 
   const [month, setMonth] = useState(() => {
     const n = new Date();
@@ -140,20 +117,13 @@ const Reposiciones = () => {
         (filtroEstado === "recibido" && pedido.estado === "recibido") ||
         (filtroEstado === "cancelado" && pedido.estado === "cancelado") ||
         (filtroEstado === "parcial" && pedido.estado === "parcial");
-      const matchProveedor = filtroProveedor
-        ? pedido.proveedor === filtroProveedor
-        : true;
-      const matchProducto = filtroProducto
-        ? pedido.lineas?.some((l) => l.producto_nombre === filtroProducto)
-        : true;
+      const matchProveedor = filtroProveedor ? pedido.proveedor === filtroProveedor : true;
+      const matchProducto = filtroProducto ? pedido.lineas?.some((l) => l.producto_nombre === filtroProducto) : true;
       const matchBusqueda =
         search === "" ||
         pedido.pedido_id.toLowerCase().includes(search.toLowerCase()) ||
-        (pedido.proveedor &&
-          pedido.proveedor.toLowerCase().includes(search.toLowerCase())) ||
-        pedido.lineas?.some((l) =>
-          l.producto_nombre?.toLowerCase().includes(search.toLowerCase()),
-        );
+        (pedido.proveedor && pedido.proveedor.toLowerCase().includes(search.toLowerCase())) ||
+        pedido.lineas?.some((l) => l.producto_nombre?.toLowerCase().includes(search.toLowerCase()));
       return matchEstado && matchProveedor && matchProducto && matchBusqueda;
     });
 
@@ -163,14 +133,7 @@ const Reposiciones = () => {
       return ordenFecha === "desc" ? dateB - dateA : dateA - dateB;
     });
     return resultado;
-  }, [
-    pedidos,
-    filtroEstado,
-    filtroProveedor,
-    filtroProducto,
-    search,
-    ordenFecha,
-  ]);
+  }, [pedidos, filtroEstado, filtroProveedor, filtroProducto, search, ordenFecha]);
 
   // ========== PAGINACIÓN LOCAL ==========
   const totalPaginas = Math.ceil(pedidosFiltrados.length / itemsPorPagina);
@@ -183,11 +146,7 @@ const Reposiciones = () => {
 
   // ========== PANEL LATERAL ==========
   const abrirPanel = (pedido) => {
-    const hayPendiente = pedido.lineas?.some(
-      (l) =>
-        l.estado !== "cancelado" &&
-        l.cantidad_solicitada - l.cantidad_recibida > 0,
-    );
+    const hayPendiente = pedido.lineas?.some((l) => l.estado !== "cancelado" && l.cantidad_solicitada - l.cantidad_recibida > 0);
     const soloLectura = !hayPendiente;
 
     const copia = {
@@ -209,10 +168,7 @@ const Reposiciones = () => {
     if (pedidoEditando?.soloLectura) return;
     setPedidoEditando((prev) => {
       const nuevasLineas = [...prev.lineas];
-      nuevasLineas[index]._recibir = Math.min(
-        Math.max(0, parseInt(value) || 0),
-        nuevasLineas[index].cantidad_solicitada,
-      );
+      nuevasLineas[index]._recibir = Math.min(Math.max(0, parseInt(value) || 0), nuevasLineas[index].cantidad_solicitada);
       nuevasLineas[index]._modificado = true;
       return { ...prev, lineas: nuevasLineas };
     });
@@ -223,8 +179,7 @@ const Reposiciones = () => {
     setPedidoEditando((prev) => {
       const nuevasLineas = [...prev.lineas];
       const nuevaCancelacion = !nuevasLineas[index]._cancelar;
-      if (nuevaCancelacion && (nuevasLineas[index]._recibir || 0) > 0)
-        return prev;
+      if (nuevaCancelacion && (nuevasLineas[index]._recibir || 0) > 0) return prev;
       nuevasLineas[index]._cancelar = nuevaCancelacion;
       nuevasLineas[index]._modificado = true;
       if (nuevaCancelacion && !nuevasLineas[index]._motivo) {
@@ -251,9 +206,7 @@ const Reposiciones = () => {
       if (!linea._modificado || linea._cancelar) continue;
       const recibir = Number(linea._recibir) || 0;
       if (recibir < 0 || recibir > linea.cantidad_solicitada) {
-        setErrorMsg(
-          `Cantidad inválida para ${linea.producto_nombre || "producto"}: debe estar entre 0 y ${linea.cantidad_solicitada}`,
-        );
+        setErrorMsg(`Cantidad inválida para ${linea.producto_nombre || "producto"}: debe estar entre 0 y ${linea.cantidad_solicitada}`);
         return;
       }
     }
@@ -276,18 +229,12 @@ const Reposiciones = () => {
           }
         }
       }
-      setSuccessMsg(
-        `✅ Pedido #${pedidoEditando.pedido_id.substring(0, 8)} guardado`,
-      );
+      setSuccessMsg(`✅ Pedido #${pedidoEditando.pedido_id.substring(0, 8)} guardado`);
       setPanelAbierto(false);
       await fetchPedidos();
     } catch (err) {
       console.error(err);
-      setErrorMsg(
-        err.response?.data?.error ||
-          err.response?.data?.message ||
-          "Error al guardar cambios",
-      );
+      setErrorMsg(err.response?.data?.error || err.response?.data?.message || "Error al guardar cambios");
     } finally {
       setGuardando(false);
     }
@@ -305,20 +252,8 @@ const Reposiciones = () => {
   return (
     <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       <AnimatePresence>
-        {successMsg && (
-          <Toast
-            message={successMsg}
-            type="success"
-            onClose={() => setSuccessMsg("")}
-          />
-        )}
-        {errorMsg && (
-          <Toast
-            message={errorMsg}
-            type="error"
-            onClose={() => setErrorMsg("")}
-          />
-        )}
+        {successMsg && <Toast message={successMsg} type="success" onClose={() => setSuccessMsg("")} />}
+        {errorMsg && <Toast message={errorMsg} type="error" onClose={() => setErrorMsg("")} />}
       </AnimatePresence>
 
       {/* HEADER */}
@@ -328,12 +263,8 @@ const Reposiciones = () => {
             <Package size={15} color="#fff" />
           </div>
           <div>
-            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
-              Reposiciones
-            </p>
-            <p className="text-[9px] text-[#64748b]">
-              {pedidosFiltrados.length} registros
-            </p>
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">Reposiciones</p>
+            <p className="text-[9px] text-[#64748b]">{pedidosFiltrados.length} registros</p>
           </div>
         </div>
 
@@ -341,12 +272,7 @@ const Reposiciones = () => {
           {/* Filtro mes */}
           <div className="bg-[#252836] border border-white/10 rounded-md px-2.5 py-1 text-xs text-[#94a3b8] flex items-center gap-1">
             <Calendar size={12} />
-            <input
-              type="month"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer w-32"
-            />
+            <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer w-32" />
           </div>
 
           {/* Búsqueda */}
@@ -358,17 +284,8 @@ const Reposiciones = () => {
             className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 flex items-center gap-1"
           >
             <Search size={13} color="#64748b" />
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-24"
-            />
-            <button
-              type="submit"
-              className="bg-transparent border-none text-[#4f8ef7] cursor-pointer px-1 py-0.5 text-xs"
-            >
+            <input type="text" placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-transparent border-none outline-none text-[#e2e8f0] text-xs w-24" />
+            <button type="submit" className="bg-transparent border-none text-[#4f8ef7] cursor-pointer px-1 py-0.5 text-xs">
               Buscar
             </button>
           </form>
@@ -418,9 +335,7 @@ const Reposiciones = () => {
               setFiltroProveedor("");
               setFiltroProducto("");
               setSearch("");
-              setMonth(
-                `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
-              );
+              setMonth(`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`);
             }}
             className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] cursor-pointer h-7 flex items-center gap-1"
           >
@@ -428,19 +343,14 @@ const Reposiciones = () => {
           </button>
 
           <button
-            onClick={() =>
-              setOrdenFecha(ordenFecha === "desc" ? "asc" : "desc")
-            }
+            onClick={() => setOrdenFecha(ordenFecha === "desc" ? "asc" : "desc")}
             className="bg-[#252836] border border-white/10 rounded-md px-2 py-1 text-xs text-[#94a3b8] cursor-pointer h-7 flex items-center gap-1"
           >
             <Calendar size={12} />
             {ordenFecha === "desc" ? "↓" : "↑"}
           </button>
 
-          <button
-            onClick={() => fetchPedidos()}
-            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
-          >
+          <button onClick={() => fetchPedidos()} className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]">
             <RefreshCw size={13} />
           </button>
         </div>
@@ -451,33 +361,15 @@ const Reposiciones = () => {
         <table className="w-full border-collapse text-xs text-[#e2e8f0]">
           <thead className="sticky top-0 bg-[#1a1d27] z-10">
             <tr>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Pedido ID
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Proveedor
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Fecha
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Productos
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Solicitado
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Recibido
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Pendiente
-              </th>
-              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Estado
-              </th>
-              <th className="text-center px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">
-                Acción
-              </th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Pedido ID</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Proveedor</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Fecha</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Productos</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Solicitado</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Recibido</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Pendiente</th>
+              <th className="text-left px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Estado</th>
+              <th className="text-center px-2 py-1.5 font-semibold text-[#94a3b8] text-[10px] uppercase tracking-wide border-b border-white/10 whitespace-nowrap">Acción</th>
             </tr>
           </thead>
           <tbody>
@@ -489,8 +381,7 @@ const Reposiciones = () => {
               </tr>
             ) : (
               pedidosPagina.map((pedido) => {
-                const pendienteTotal =
-                  pedido.total_solicitado - pedido.total_recibido;
+                const pendienteTotal = pedido.total_solicitado - pedido.total_recibido;
                 const hayPendiente = pendienteTotal > 0;
                 const soloLectura = !hayPendiente;
 
@@ -500,38 +391,20 @@ const Reposiciones = () => {
                 else if (hayPendiente) rowBg = "bg-amber-500/10";
 
                 return (
-                  <tr
-                    key={pedido.pedido_id}
-                    className={`border-b border-white/5 ${rowBg}`}
-                  >
+                  <tr key={pedido.pedido_id} className={`border-b border-white/5 ${rowBg}`}>
                     <td className="px-2 py-1.5 align-middle text-[11px]">
-                      <span className="font-mono text-[10px]">
-                        {pedido.pedido_id.substring(0, 8)}…
-                      </span>
+                      <span className="font-mono text-[10px]">{pedido.pedido_id.substring(0, 8)}…</span>
                     </td>
-                    <td className="px-2 py-1.5 align-middle text-[11px]">
-                      {pedido.proveedor || "N/A"}
-                    </td>
-                    <td className="px-2 py-1.5 align-middle text-[11px]">
-                      {new Date(pedido.fecha_pedido).toLocaleDateString()}
-                    </td>
-                    <td className="px-2 py-1.5 align-middle text-[11px]">
-                      {pedido.total_productos}
-                    </td>
-                    <td className="px-2 py-1.5 align-middle text-[11px]">
-                      {pedido.total_solicitado}
-                    </td>
-                    <td className="px-2 py-1.5 align-middle text-[11px]">
-                      {pedido.total_recibido}
-                    </td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">{pedido.proveedor || "N/A"}</td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">{new Date(pedido.fecha_pedido).toLocaleDateString()}</td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">{pedido.total_productos}</td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">{pedido.total_solicitado}</td>
+                    <td className="px-2 py-1.5 align-middle text-[11px]">{pedido.total_recibido}</td>
                     <td className="px-2 py-1.5 align-middle text-[11px]">
                       {pendienteTotal > 5 ? (
                         <span className="text-red-400 font-bold">
                           {pendienteTotal}
-                          <AlertCircle
-                            size={12}
-                            className="inline ml-1 align-middle"
-                          />
+                          <AlertCircle size={12} className="inline ml-1 align-middle" />
                         </span>
                       ) : (
                         pendienteTotal
@@ -544,9 +417,7 @@ const Reposiciones = () => {
                       <button
                         onClick={() => abrirPanel(pedido)}
                         className={`rounded px-2 py-1 text-[10px] inline-flex items-center gap-1 cursor-pointer transition-colors ${
-                          soloLectura
-                            ? "bg-white/5 text-[#64748b]"
-                            : "bg-[#4f8ef7]/15 text-[#4f8ef7] hover:bg-[#4f8ef7]/25"
+                          soloLectura ? "bg-white/5 text-[#64748b]" : "bg-[#4f8ef7]/15 text-[#4f8ef7] hover:bg-[#4f8ef7]/25"
                         } border-none`}
                         title={soloLectura ? "Ver detalles" : "Editar pedido"}
                       >
@@ -587,11 +458,7 @@ const Reposiciones = () => {
 
             range.push(1);
             if (left > 2) range.push("...");
-            for (
-              let i = Math.max(2, left);
-              i <= Math.min(total - 1, right);
-              i++
-            ) {
+            for (let i = Math.max(2, left); i <= Math.min(total - 1, right); i++) {
               if (i !== 1 && i !== total) range.push(i);
             }
             if (right < total - 1) range.push("...");
@@ -600,10 +467,7 @@ const Reposiciones = () => {
             return range.map((item, idx) => {
               if (item === "...") {
                 return (
-                  <span
-                    key={`ellipsis-${idx}`}
-                    className="px-1.5 py-1 text-[#64748b] text-[11px]"
-                  >
+                  <span key={`ellipsis-${idx}`} className="px-1.5 py-1 text-[#64748b] text-[11px]">
                     …
                   </span>
                 );
@@ -613,11 +477,7 @@ const Reposiciones = () => {
                 <button
                   key={page}
                   onClick={() => setPaginaActual(page)}
-                  className={`px-2.5 py-1 rounded border border-white/10 text-[11px] ${
-                    page === current
-                      ? "bg-[#4f8ef7] text-white font-semibold"
-                      : "bg-[#252836] text-[#94a3b8]"
-                  }`}
+                  className={`px-2.5 py-1 rounded border border-white/10 text-[11px] ${page === current ? "bg-[#4f8ef7] text-white font-semibold" : "bg-[#252836] text-[#94a3b8]"}`}
                 >
                   {page}
                 </button>
@@ -626,9 +486,7 @@ const Reposiciones = () => {
           })()}
 
           <button
-            onClick={() =>
-              setPaginaActual((p) => Math.min(totalPaginas, p + 1))
-            }
+            onClick={() => setPaginaActual((p) => Math.min(totalPaginas, p + 1))}
             disabled={paginaActual === totalPaginas}
             className="px-2.5 py-1 rounded bg-[#252836] border border-white/10 text-[#94a3b8] text-[11px] disabled:opacity-40"
           >
@@ -641,13 +499,7 @@ const Reposiciones = () => {
       <AnimatePresence>
         {panelAbierto && pedidoEditando && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setPanelAbierto(false)}
-              className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
-            />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setPanelAbierto(false)} className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm" />
 
             <motion.div
               initial={{ x: "100%", opacity: 0 }}
@@ -661,29 +513,17 @@ const Reposiciones = () => {
                 <div className="flex justify-between">
                   <div>
                     <div className="flex items-center gap-1.5">
-                      {pedidoEditando.soloLectura ? (
-                        <Eye size={13} color="#64748b" />
-                      ) : (
-                        <Edit3 size={13} color="#4f8ef7" />
-                      )}
-                      <span className="text-[13px] font-medium text-[#e2e8f0]">
-                        Pedido #{pedidoEditando.pedido_id.substring(0, 8)}…
-                      </span>
+                      {pedidoEditando.soloLectura ? <Eye size={13} color="#64748b" /> : <Edit3 size={13} color="#4f8ef7" />}
+                      <span className="text-[13px] font-medium text-[#e2e8f0]">Pedido #{pedidoEditando.pedido_id.substring(0, 8)}…</span>
                       <StatusBadge estado={pedidoEditando.estado} />
                     </div>
                     <div className="text-[10px] text-[#64748b] mt-0.5">
                       <Building2 size={10} className="inline mr-1" />
-                      {pedidoEditando.proveedor || "N/A"} ·{" "}
-                      <Calendar size={10} className="inline mr-1" />
-                      {new Date(
-                        pedidoEditando.fecha_pedido,
-                      ).toLocaleDateString()}
+                      {pedidoEditando.proveedor || "N/A"} · <Calendar size={10} className="inline mr-1" />
+                      {new Date(pedidoEditando.fecha_pedido).toLocaleDateString()}
                     </div>
                   </div>
-                  <button
-                    onClick={() => setPanelAbierto(false)}
-                    className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded"
-                  >
+                  <button onClick={() => setPanelAbierto(false)} className="bg-transparent border-none text-[#64748b] cursor-pointer p-1 rounded">
                     <X size={14} />
                   </button>
                 </div>
@@ -699,18 +539,11 @@ const Reposiciones = () => {
                     { label: "Recibido", value: pedidoEditando.total_recibido },
                     {
                       label: "Pendiente",
-                      value:
-                        pedidoEditando.total_solicitado -
-                        pedidoEditando.total_recibido,
+                      value: pedidoEditando.total_solicitado - pedidoEditando.total_recibido,
                     },
                   ].map(({ label, value }) => (
-                    <div
-                      key={label}
-                      className="bg-[#252836] rounded-md py-1 text-center"
-                    >
-                      <div className="text-[13px] font-semibold text-[#e2e8f0]">
-                        {value}
-                      </div>
+                    <div key={label} className="bg-[#252836] rounded-md py-1 text-center">
+                      <div className="text-[13px] font-semibold text-[#e2e8f0]">{value}</div>
                       <div className="text-[8px] text-[#64748b]">{label}</div>
                     </div>
                   ))}
@@ -727,18 +560,12 @@ const Reposiciones = () => {
               {/* Lista de líneas */}
               <div className="flex-1 overflow-y-auto px-3.5 py-2.5">
                 {pedidoEditando.lineas.map((linea, index) => {
-                  const pendiente =
-                    linea.cantidad_solicitada - (linea._recibir || 0);
+                  const pendiente = linea.cantidad_solicitada - (linea._recibir || 0);
                   const esCancelada = linea._cancelar;
                   const modificada = linea._modificado;
                   const tieneRecibido = (linea._recibir || 0) > 0;
-                  const pendienteReal =
-                    linea.cantidad_solicitada - (linea.cantidad_recibida || 0);
-                  const esEditable =
-                    !esCancelada &&
-                    !pedidoEditando.soloLectura &&
-                    linea.estado !== "cancelado" &&
-                    pendienteReal > 0;
+                  const pendienteReal = linea.cantidad_solicitada - (linea.cantidad_recibida || 0);
+                  const esEditable = !esCancelada && !pedidoEditando.soloLectura && linea.estado !== "cancelado" && pendienteReal > 0;
                   const mostrarCancelar = esEditable && !tieneRecibido;
 
                   let bgColor = "bg-[#252836]/50";
@@ -755,93 +582,60 @@ const Reposiciones = () => {
                   }
 
                   return (
-                    <div
-                      key={linea.id}
-                      className={`${bgColor} border ${borderColor} rounded-md p-2 mb-1.5`}
-                    >
+                    <div key={linea.id} className={`${bgColor} border ${borderColor} rounded-md p-2 mb-1.5`}>
                       <div className="flex justify-between">
                         <div className="flex-1 min-w-0">
-                          <div className="text-[11px] font-medium text-[#e2e8f0] truncate">
-                            {linea.producto_nombre || "Producto"}
-                          </div>
-                          <div className="text-[9px] text-[#64748b]">
-                            SKU: {linea.producto_codigo || "N/A"}
-                          </div>
+                          <div className="text-[11px] font-medium text-[#e2e8f0] truncate">{linea.producto_nombre || "Producto"}</div>
+                          <div className="text-[9px] text-[#64748b]">SKU: {linea.producto_codigo || "N/A"}</div>
                         </div>
                         {esEditable ? (
                           <div className="flex items-center gap-1">
                             <input
                               type="number"
                               value={linea._recibir}
-                              onChange={(e) =>
-                                handleCantidadChange(index, e.target.value)
-                              }
+                              onChange={(e) => handleCantidadChange(index, e.target.value)}
                               min="0"
                               max={linea.cantidad_solicitada}
                               className="w-11 bg-[#1a1d27] border border-white/10 rounded px-1 py-0.5 text-[10px] text-[#e2e8f0] text-center outline-none"
                             />
-                            <span className="text-[9px] text-[#64748b]">
-                              /{linea.cantidad_solicitada}
-                            </span>
+                            <span className="text-[9px] text-[#64748b]">/{linea.cantidad_solicitada}</span>
                             {mostrarCancelar && (
-                              <button
-                                onClick={() => handleCancelarToggle(index)}
-                                className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5"
-                                title="Cancelar línea"
-                              >
+                              <button onClick={() => handleCancelarToggle(index)} className="bg-transparent border-none text-[#64748b] cursor-pointer p-0.5" title="Cancelar línea">
                                 <MinusCircle size={13} />
                               </button>
                             )}
                           </div>
                         ) : (
-                          <div className="text-[9px] text-[#64748b]">
-                            {esCancelada ? "🔒 Cancelado" : "🔒 Completo"}
-                          </div>
+                          <div className="text-[9px] text-[#64748b]">{esCancelada ? "🔒 Cancelado" : "🔒 Completo"}</div>
                         )}
                       </div>
 
                       {/* Stats */}
                       <div className="mt-1 flex gap-2 text-[9px] text-[#64748b] flex-wrap">
                         <span>
-                          Sol:{" "}
-                          <span className="text-[#e2e8f0] font-mono">
-                            {linea.cantidad_solicitada}
-                          </span>
+                          Sol: <span className="text-[#e2e8f0] font-mono">{linea.cantidad_solicitada}</span>
                         </span>
                         <span>
-                          Rec:{" "}
-                          <span className="text-[#e2e8f0] font-mono">
-                            {linea._recibir || 0}
-                          </span>
+                          Rec: <span className="text-[#e2e8f0] font-mono">{linea._recibir || 0}</span>
                         </span>
                         {esCancelada && (
                           <span className="text-red-400">
-                            <XCircle
-                              size={10}
-                              className="inline align-middle"
-                            />{" "}
-                            Cancelada
+                            <XCircle size={10} className="inline align-middle" /> Cancelada
                           </span>
                         )}
                         {!esCancelada && pendiente === 0 && tieneRecibido && (
                           <span className="text-emerald-400">
-                            <CheckCircle
-                              size={10}
-                              className="inline align-middle"
-                            />{" "}
-                            Completa
+                            <CheckCircle size={10} className="inline align-middle" /> Completa
                           </span>
                         )}
                         {!esCancelada && pendiente > 0 && tieneRecibido && (
                           <span className="text-amber-400">
-                            <Clock size={10} className="inline align-middle" />{" "}
-                            {pendiente} pend.
+                            <Clock size={10} className="inline align-middle" /> {pendiente} pend.
                           </span>
                         )}
                         {modificada && esEditable && (
                           <span className="text-[#4f8ef7] ml-auto">
-                            <Edit3 size={9} className="inline align-middle" />{" "}
-                            mod.
+                            <Edit3 size={9} className="inline align-middle" /> mod.
                           </span>
                         )}
                       </div>
@@ -851,17 +645,11 @@ const Reposiciones = () => {
                           type="text"
                           placeholder="Motivo (opcional)"
                           value={linea._motivo}
-                          onChange={(e) =>
-                            handleMotivoChange(index, e.target.value)
-                          }
+                          onChange={(e) => handleMotivoChange(index, e.target.value)}
                           className="mt-1 w-full bg-[#1a1d27] border border-white/10 rounded px-1.5 py-0.5 text-[9px] text-[#e2e8f0] outline-none"
                         />
                       )}
-                      {esCancelada && linea._motivo && !esEditable && (
-                        <div className="mt-0.5 text-[9px] text-[#64748b]">
-                          Motivo: {linea._motivo}
-                        </div>
-                      )}
+                      {esCancelada && linea._motivo && !esEditable && <div className="mt-0.5 text-[9px] text-[#64748b]">Motivo: {linea._motivo}</div>}
                     </div>
                   );
                 })}
@@ -884,18 +672,12 @@ const Reposiciones = () => {
                         </>
                       )}
                     </button>
-                    <button
-                      onClick={() => setPanelAbierto(false)}
-                      className="bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
-                    >
+                    <button onClick={() => setPanelAbierto(false)} className="bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer">
                       Cancelar
                     </button>
                   </>
                 ) : (
-                  <button
-                    onClick={() => setPanelAbierto(false)}
-                    className="w-full bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer"
-                  >
+                  <button onClick={() => setPanelAbierto(false)} className="w-full bg-[#252836] border border-white/10 rounded-md px-3 py-1.5 text-xs text-[#94a3b8] cursor-pointer">
                     Cerrar
                   </button>
                 )}
