@@ -16,62 +16,76 @@ class ReposicionesSeeder extends Seeder
         // Excluir los 5 productos nuevos (sin stock)
         $excluir = ['PT999', 'PT998', 'PT997', 'PT996', 'PT995'];
 
-        // Obtener todos los productos (excepto los excluidos)
-        $productos = DB::table('productos')
+        // Obtener productos normales (todos excepto los excluidos)
+        $productosNormales = DB::table('productos')
             ->whereNotIn('codigo', $excluir)
             ->select('codigo', 'costo', 'proveedor_id')
             ->get();
 
-        if ($productos->isEmpty()) {
+        // Obtener los productos excluidos
+        $productosExcluidos = DB::table('productos')
+            ->whereIn('codigo', $excluir)
+            ->select('codigo', 'costo', 'proveedor_id')
+            ->get();
+
+        // Si no hay productos, salir
+        if ($productosNormales->isEmpty() && $productosExcluidos->isEmpty()) {
             $this->command->error('No hay productos para procesar.');
             return;
         }
 
-        // Calcular demanda total por producto (de las ventas)
-        $demandas = DB::table('ventas')
-            ->select('producto_codigo', DB::raw('SUM(cantidad) as total_vendido'))
-            ->groupBy('producto_codigo')
-            ->pluck('total_vendido', 'producto_codigo')
-            ->toArray();
-
         // Meses disponibles
         $meses = ['2026-01', '2026-02', '2026-03', '2026-04', '2026-05'];
 
-        // Lista de productos con alta demanda (los que más se venden)
-        $altaDemanda = [
-            'PT039', 'PT019', 'PT082', 'PT013', 'PT030',
-            'PT029', 'PT022', 'PT005', 'PT017', 'PT033',
-            'PT031', 'PT089', 'PT035', 'PT004', 'PT006',
-            'PT020', 'PT021', 'PT007', 'PT009', 'PT008',
-            'PT002', 'PT083', 'PT025', 'PT112', 'PT015',
-            'PT016', 'PT011', 'PT047', 'PT048'
-        ];
+        // Total de reposiciones para productos normales: 200
+        $totalReposNormales = 200;
+        $numProductosNormales = $productosNormales->count();
 
+        // Lista donde guardaremos todos los items (reposiciones individuales)
         $items = [];
 
-        foreach ($productos as $producto) {
-            $codigo = $producto->codigo;
-            $demanda = $demandas[$codigo] ?? 0;
-            $esAlta = in_array($codigo, $altaDemanda);
+        // --- Reposiciones para productos normales (distribución equitativa de 200) ---
+        if ($numProductosNormales > 0) {
+            // Calcular cuántas reposiciones por producto (base)
+            $base = floor($totalReposNormales / $numProductosNormales);
+            $sobrante = $totalReposNormales - ($base * $numProductosNormales);
 
-            // Stock objetivo: 300% de la demanda (triple), mínimo 200 unidades
-            $stockObjetivo = max(ceil($demanda * 3), 200);
-
-            // Número de reposiciones: 4-6 para alta demanda, 3-5 para el resto
-            if ($esAlta) {
-                $numRepos = rand(4, 6);
-            } else {
-                $numRepos = rand(3, 5);
+            // Asignar a cada producto una cantidad base, y los primeros 'sobrante' productos reciben una extra
+            $reposPorProducto = array_fill(0, $numProductosNormales, $base);
+            for ($i = 0; $i < $sobrante; $i++) {
+                $reposPorProducto[$i]++;
             }
 
-            $base = floor($stockObjetivo / $numRepos);
-            $sobrante = $stockObjetivo - ($base * $numRepos);
+            // Mezclar los productos para que la asignación extra sea aleatoria
+            $productosNormalesArray = $productosNormales->toArray();
+            shuffle($productosNormalesArray);
 
-            for ($i = 0; $i < $numRepos; $i++) {
-                $extra = ($i < $sobrante) ? 1 : 0;
-                $cantidad = $base + $extra + rand(-10, 20);
-                $cantidad = max(40, $cantidad); // nunca menos de 40
+            foreach ($productosNormalesArray as $index => $producto) {
+                $numRepos = $reposPorProducto[$index];
+                for ($i = 0; $i < $numRepos; $i++) {
+                    // Cantidad aleatoria entre 40 y 100
+                    $cantidad = rand(40, 100);
+                    $mes = $meses[array_rand($meses)];
+                    $dia = rand(1, 25);
+                    $fechaPedido = date('Y-m-d H:i:s', strtotime("$mes-" . str_pad($dia, 2, '0', STR_PAD_LEFT) . " 10:00:00"));
 
+                    $cantidadRecibida = rand(ceil($cantidad * 0.90), $cantidad);
+
+                    $items[] = [
+                        'producto' => $producto,
+                        'fecha_pedido' => $fechaPedido,
+                        'cantidad_solicitada' => $cantidad,
+                        'cantidad_recibida' => $cantidadRecibida,
+                        'observaciones' => ($cantidadRecibida < $cantidad) ? "Faltaron " . ($cantidad - $cantidadRecibida) . " unidades" : null,
+                    ];
+                }
+            }
+        }
+
+        // --- Reposiciones para los 5 productos excluidos: 10 cada uno ---
+        foreach ($productosExcluidos as $producto) {
+            for ($i = 0; $i < 10; $i++) {
+                $cantidad = rand(40, 100);
                 $mes = $meses[array_rand($meses)];
                 $dia = rand(1, 25);
                 $fechaPedido = date('Y-m-d H:i:s', strtotime("$mes-" . str_pad($dia, 2, '0', STR_PAD_LEFT) . " 10:00:00"));
@@ -88,7 +102,7 @@ class ReposicionesSeeder extends Seeder
             }
         }
 
-        // Mezclar items para distribución aleatoria
+        // Mezclar todos los items para que los pedidos sean variados
         shuffle($items);
 
         // Agrupar en pedidos de 2 a 4 productos
@@ -133,27 +147,9 @@ class ReposicionesSeeder extends Seeder
                 ->increment('stock_actual', $repo['cantidad_recibida']);
         }
 
-        // Verificar stock final
-        $sinStock = DB::table('productos')
-            ->whereNotIn('codigo', $excluir)
-            ->where('stock_actual', 0)
-            ->count();
-
-
-        // Mostrar resumen de los 5 productos más vendidos
-        $topVentas = DB::table('ventas')
-            ->select('producto_codigo', DB::raw('SUM(cantidad) as total'))
-            ->groupBy('producto_codigo')
-            ->orderBy('total', 'desc')
-            ->limit(5)
-            ->pluck('producto_codigo')
-            ->toArray();
-
-        $resumenStock = DB::table('productos')
-            ->whereIn('codigo', $topVentas)
-            ->select('codigo', 'stock_actual')
-            ->get();
-
+        // Mostrar resumen
+        $this->command->info('Reposiciones generadas: ' . count($reposiciones));
+        $this->command->info('Stock actualizado correctamente.');
     }
 
     private function getOrCreateUser($rol)

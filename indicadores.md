@@ -1,83 +1,123 @@
-### 1. Ingresos Totales por Ventas
-
-**Fórmula:**  
-Suma de (`ventas.cantidad` × `ventas.precio_unitario`)  
-Solo ventas con `ventas.estado_pedido` = `'completado'` en el período.
-
-**Ayuda a decidir:**  
-Ves si el negocio está facturando bien, si las metas se cumplen y en qué meses flojea.
+## 🧮 Fórmulas de los 7 Indicadores Clave
 
 ---
 
-### 2. Margen Bruto de Ganancia
+### 1️⃣ Ingresos Totales por Ventas
 
-**Fórmula:**  
-Suma de (`ventas.precio_unitario` − `productos.costo`) × `ventas.cantidad`  
-Uniendo cada venta completada con su producto.
+**Objetivo:** Saber cuánto dinero está generando el negocio.
 
-**Ayuda a decidir:**  
-Te muestra la ganancia real después de pagar lo vendido. Si es bajo, toca subir precios, bajar costos o quitar productos que dejan poco.
+**Fórmula:**
 
----
+```
+Ingresos Totales = Σ (Cantidad Vendida × Precio Unitario)
+```
 
-### 3. Eficiencia de Proveedores
-
-**Incluye dos métricas:**
-
-- **% Cumplimiento:**  
-  (Suma de `reposiciones.cantidad_recibida` / Suma de `reposiciones.cantidad_solicitada`) × 100  
-  Solo reposiciones con estado `'recibido'`.
-
-**Ayuda a decidir:**  
-Identifica proveedores confiables y los que fallan
+**Condición:** Solo ventas con estado = "completado".
 
 ---
 
-### 4. Alerta de Stock Bajo
+### 2️⃣ Margen Bruto de Ganancia
 
-**Fórmula:**  
-Productos donde `productos.stock_actual` ≤ 30 (umbral ajustable).  
-Para más precisión:
+**Objetivo:** Saber la ganancia real después de cubrir el costo del producto.
 
-**Ayuda a decidir:**  
-Evita que te quedes sin los productos estrella, previene pérdida de ventas y clientes molestos.
+**Fórmula:**
 
----
+```
+Margen Bruto = Σ [ (Precio Unitario - Costo del Producto) × Cantidad Vendida ]
+```
 
-### 5. Productividad por Vendedor
-
-**Fórmula (para cada vendedor con `users.rol = 'personal'`):**
-
-- **Monto vendido:** Suma de (`ventas.cantidad` × `ventas.precio_unitario`) en ventas completadas.
-- **Pedidos completados:** Conteo de esas mismas ventas.
-
-**Ayuda a decidir:**  
-Sabes quién vende más, quién necesita ayuda, y te sirve para comisiones o premios.
+**Condición:** Solo ventas completadas, uniendo cada venta con su producto.
 
 ---
 
-### 6. Rotación de Inventario
+### 3️⃣ Eficiencia de Proveedores (% Cumplimiento)
 
-**Fórmula:**  
-Costo total de productos vendidos (período) / Valor actual del inventario a costo
+**Objetivo:** Medir qué tan confiables son tus proveedores.
 
-- **Numerador:** Suma de (`ventas.cantidad` × `productos.costo`) de ventas completadas.
-- **Denominador:** Suma de (`productos.stock_actual` × `productos.costo`) de todos los productos.
+**Fórmula:**
 
-**Ayuda a decidir:**  
-Te dice cuántas veces renovaste el inventario en el período. Si el número es bajo, tienes dinero estancado en bodega y hay que liquidar o dejar de comprar.
+```
+% Cumplimiento = (Suma de Cantidad Recibida / Suma de Cantidad Solicitada) × 100
+```
 
----
-
-### 7. Días de Inventario
-
-**Fórmula:**  
-365 / Rotación de inventario (la del indicador 6).
-
-**Ayuda a decidir:**  
-Traduce la rotación a días promedio que tarda en venderse todo el inventario. Si son 500 días, la alarma suena; si son 30 días, estás muy ágil pero cuidado con quiebres de stock.
+**Condición:** Solo reposiciones con estado = "recibido".
 
 ---
 
-**Resumen:**  
-Con estos 7 indicadores tienes control total de ventas, rentabilidad, proveedores, stock crítico, fuerza de ventas y salud del inventario. Es justo lo que una gerencia necesita para tomar decisiones rápidas y basadas en datos reales.
+### 4️⃣ Alerta de Stock Bajo
+
+**Objetivo:** Identificar productos que están a punto de agotarse.
+
+**Fórmula:**
+
+```
+Stock Bajo = Productos donde Stock Actual ≤ Umbral (ej. 30 unidades)
+```
+
+**Opcional:** Puedes ajustar el umbral según el producto (si es de alta rotación, umbral más alto).
+
+---
+
+### 5️⃣ Productividad por Vendedor
+
+**Objetivo:** Evaluar desempeño de cada vendedor.
+
+**Monto Vendido:**
+
+```
+Monto Vendido = Σ (Cantidad Vendida × Precio Unitario)
+```
+
+**Pedidos Completados:**
+
+```
+Pedidos Completados = Conteo de ventas completadas
+```
+
+**Condición:** Solo vendedores con rol = "personal" y ventas completadas.
+
+---
+
+### 6️⃣ Rotación de Inventario
+
+**Objetivo:** Saber qué tan rápido se vende el inventario.
+
+**Fórmula:**
+
+```
+Rotación = Costo de Productos Vendidos / Valor Actual del Inventario
+```
+
+**Donde:**
+
+- **Costo de Productos Vendidos:** Σ (Cantidad Vendida × Costo del Producto) en ventas completadas.
+- **Valor Actual del Inventario:** Σ (Stock Actual × Costo del Producto) de todos los productos.
+
+---
+
+### 7️⃣ Días de Inventario
+
+**Objetivo:** Saber en cuántos días se vendería todo el inventario actual.
+
+**Fórmula:**
+
+```
+Días de Inventario = 365 / Rotación de Inventario
+```
+
+**Alternativa según período:** Si usas un período de 30 días, cambia 365 por 30. Si usas 12 meses, usa 365.
+
+---
+
+## 📊 Resumen de Fórmulas
+
+| Indicador               | Fórmula                           |
+| ----------------------- | --------------------------------- |
+| **Ingresos Totales**    | Σ(Cantidad × Precio)              |
+| **Margen Bruto**        | Σ[(Precio - Costo) × Cantidad]    |
+| **% Cumplimiento**      | (Σ Recibido / Σ Solicitado) × 100 |
+| **Stock Bajo**          | Productos con Stock ≤ Umbral      |
+| **Monto Vendido**       | Σ(Cantidad × Precio)              |
+| **Pedidos Completados** | Conteo de ventas completadas      |
+| **Rotación**            | Costo Vendido / Valor Inventario  |
+| **Días Inventario**     | 365 / Rotación                    |
