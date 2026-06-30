@@ -26,14 +26,13 @@ services:
       DB_PASSWORD: secret
 
   nginx:
-    image: nginx:alpine
+    image: ch1l1lyst/stoktu-frontend:latest
     container_name: stoktu-nginx
     restart: unless-stopped
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/dist:/usr/share/nginx/html:ro
     depends_on:
       - backend
 
