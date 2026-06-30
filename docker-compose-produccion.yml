@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mysql:8
+    container_name: stoktu-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: stoktu
+      MYSQL_USER: stoktu_user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  backend:
+    image: ch1l1lyst/stoktu-backend:latest
+    container_name: stoktu-backend
+    restart: unless-stopped
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_DATABASE: stoktu
+      DB_USERNAME: stoktu_user
+      DB_PASSWORD: secret
+
+  nginx:
+    image: nginx:alpine
+    container_name: stoktu-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+
+volumes:
+  dbdata:
