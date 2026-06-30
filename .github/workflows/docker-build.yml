@@ -35,5 +35,5 @@ jobs:
           file: ./frontend/dockerfile.prod
           push: true
           tags: ch1l1lyst/stoktu-frontend:latest
-        build-args: |
-          VITE_APP_URL=/api
+          build-args: |
+            VITE_APP_URL=/api
