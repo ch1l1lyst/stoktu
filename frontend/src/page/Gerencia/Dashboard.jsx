@@ -55,15 +55,15 @@ const barLabelPlugin = {
     bars.forEach((bar, index) => {
       const value = dataset.data[index];
       if (value === 0) return;
-      const x = bar.x + bar.width + 6;
+      const x = bar.x + bar.width + 8;
       const y = bar.y + bar.height / 2;
       ctx.save();
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
-      ctx.font = "bold 10px sans-serif";
-      ctx.fillStyle = "#e5e7eb";
-      ctx.shadowColor = "rgba(0,0,0,0.8)";
-      ctx.shadowBlur = 4;
+      ctx.font = "bold 12px sans-serif";
+      ctx.fillStyle = "#f1f5f9";
+      ctx.shadowColor = "rgba(0,0,0,0.9)";
+      ctx.shadowBlur = 6;
       ctx.fillText(`$${value.toFixed(2)}`, x, y);
       ctx.restore();
     });
@@ -75,7 +75,7 @@ ChartJS.register(barLabelPlugin);
 const PIE_COLORS = ["#4f8ef7", "#10b981", "#f59e0b", "#ef4444", "#9b59f7", "#ec4899"];
 const SEC_COLORS = ["#f59e0b", "#4f8ef7", "#10b981", "#9b59f7", "#ef4444"];
 const GRID_COLOR = "rgba(255,255,255,0.05)";
-const TICK_COLOR = "#64748b";
+const TICK_COLOR = "#94a3b8";
 
 const fmt = (v) => new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(v ?? 0);
 
@@ -147,7 +147,7 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
+      <div className="flex justify-center items-center min-h-[calc(100vh-48px)]">
         <div className="w-10 h-10 rounded-full border-4 border-transparent border-t-[#4f8ef7] animate-spin" />
       </div>
     );
@@ -155,8 +155,8 @@ function Dashboard() {
 
   if (error || !data) {
     return (
-      <div className="flex justify-center items-center h-[calc(100vh-48px)]">
-        <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444]">
+      <div className="flex justify-center items-center min-h-[calc(100vh-48px)]">
+        <div className="bg-red-500/10 border border-[#ef4444] rounded-xl p-6 text-center text-[#ef4444] max-w-sm">
           <AlertTriangle size={32} className="mx-auto mb-2" />
           <p>{error || "Datos no disponibles"}</p>
         </div>
@@ -195,16 +195,27 @@ function Dashboard() {
   const lineOpts = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `$${ctx.raw.toFixed(2)}`,
+        },
+      },
+    },
     scales: {
       x: {
-        ticks: { color: TICK_COLOR, font: { size: 8 }, maxTicksLimit: 8 },
+        ticks: {
+          color: TICK_COLOR,
+          font: { size: 10 },
+          maxTicksLimit: 10,
+        },
         grid: { color: GRID_COLOR },
       },
       y: {
         ticks: {
           color: TICK_COLOR,
-          font: { size: 8 },
+          font: { size: 10 },
           callback: (v) => `$${v}`,
         },
         grid: { color: GRID_COLOR },
@@ -229,19 +240,26 @@ function Dashboard() {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: (c) => ` $${c.raw.toLocaleString()}` } },
+      tooltip: {
+        callbacks: {
+          label: (c) => ` $${c.raw.toLocaleString()}`,
+        },
+      },
     },
     scales: {
       x: {
         ticks: {
           color: TICK_COLOR,
-          font: { size: 8 },
+          font: { size: 10 },
           callback: (v) => `$${v}`,
         },
         grid: { color: GRID_COLOR },
       },
       y: {
-        ticks: { color: "#94a3b8", font: { size: 9 } },
+        ticks: {
+          color: "#94a3b8",
+          font: { size: 11 },
+        },
         grid: { display: false },
       },
     },
@@ -281,7 +299,7 @@ function Dashboard() {
 
   // ─── Render ────────────────────────────────────────────────────────────
   return (
-    <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
+    <div className="bg-[#1a1d27] rounded-xl p-3 w-full min-h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-y-auto">
       {/* HEADER */}
       <div className="flex flex-wrap items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0 gap-2">
         <div className="flex items-center gap-2">
@@ -364,33 +382,33 @@ function Dashboard() {
       </div>
 
       {/* GRÁFICOS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 flex-1 min-h-0">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1 min-h-0">
         {/* Pastel */}
-        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0 overflow-hidden">
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-[200px] sm:min-h-[250px] md:min-h-[280px] overflow-hidden">
           <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <Package size={13} color="#4f8ef7" /> Categorías
           </p>
-          <div className="flex-1 relative min-h-[100px]">
+          <div className="flex-1 relative min-h-[150px]">
             {grafico_pastel.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Doughnut data={pieData} options={pieOpts} />}
           </div>
         </div>
 
         {/* Barras */}
-        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0">
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-[200px] sm:min-h-[250px] md:min-h-[280px]">
           <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <MapPin size={13} color="#f59e0b" /> Sectores
           </p>
-          <div className="flex-1 relative min-h-[80px]">
+          <div className="flex-1 relative min-h-[150px]">
             {sectores_ventas.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Bar data={barData} options={barOpts} />}
           </div>
         </div>
 
         {/* Líneas */}
-        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0">
+        <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-[200px] sm:min-h-[250px] md:min-h-[280px]">
           <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <TrendingUp size={13} color="#10b981" /> Ventas diarias
           </p>
-          <div className="flex-1 relative min-h-[80px]">
+          <div className="flex-1 relative min-h-[150px]">
             {ventas_diarias.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Line data={lineData} options={lineOpts} />}
           </div>
         </div>
