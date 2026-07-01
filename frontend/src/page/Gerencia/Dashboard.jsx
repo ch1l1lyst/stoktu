@@ -43,28 +43,63 @@ const pieLabelPlugin = {
 };
 ChartJS.register(pieLabelPlugin);
 
-// ─── PLUGIN: etiquetas de valor a la derecha de las barras ────────────
+// ─── PLUGIN: etiquetas de valor para barras (dinámicas) ──────────────
 const barLabelPlugin = {
   id: "barLabel",
   afterDraw(chart) {
-    const { ctx, data } = chart;
+    const { ctx, data, chartArea } = chart;
     const dataset = data.datasets[0];
     if (!dataset) return;
     const meta = chart.getDatasetMeta(0);
     const bars = meta.data;
+
+    // Calcular el ancho promedio de las barras
+    const barWidths = bars.map((bar) => bar.width);
+    const avgBarWidth = barWidths.reduce((a, b) => a + b, 0) / barWidths.length;
+
     bars.forEach((bar, index) => {
       const value = dataset.data[index];
       if (value === 0) return;
-      const x = bar.x + bar.width + 8;
-      const y = bar.y + bar.height / 2;
+
+      // Formatear el valor con separadores de miles y dos decimales
+      const formattedValue = value.toLocaleString("es-EC", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      const label = `$${formattedValue}`;
+
+      // Medir el ancho del texto para decidir si cabe dentro
       ctx.save();
-      ctx.textAlign = "left";
+      ctx.font = "bold 11px sans-serif";
+      const textWidth = ctx.measureText(label).width;
+      ctx.restore();
+
+      // Margen de seguridad
+      const margin = 6;
+      const barEnd = bar.x + bar.width;
+
+      // Determinar la posición: dentro si cabe, sino a la derecha
+      let x, align;
+      if (textWidth + margin < bar.width) {
+        // Cabe dentro: centrado horizontalmente
+        x = bar.x + bar.width / 2;
+        align = "center";
+      } else {
+        // No cabe: a la derecha
+        x = barEnd + 8;
+        align = "left";
+      }
+
+      const y = bar.y + bar.height / 2;
+
+      ctx.save();
+      ctx.textAlign = align;
       ctx.textBaseline = "middle";
-      ctx.font = "bold 12px sans-serif";
+      ctx.font = "bold 11px sans-serif";
       ctx.fillStyle = "#f1f5f9";
       ctx.shadowColor = "rgba(0,0,0,0.9)";
       ctx.shadowBlur = 6;
-      ctx.fillText(`$${value.toFixed(2)}`, x, y);
+      ctx.fillText(label, x, y);
       ctx.restore();
     });
   },
