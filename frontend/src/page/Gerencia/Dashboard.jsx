@@ -48,9 +48,11 @@ const barLabelPlugin = {
   id: "barLabel",
   afterDraw(chart) {
     const { ctx, data } = chart;
+    if (chart.config?.type !== "bar") return;
     const dataset = data.datasets[0];
     if (!dataset) return;
     const meta = chart.getDatasetMeta(0);
+    if (!meta || !meta.data) return;
     const bars = meta.data;
 
     bars.forEach((bar, index) => {
