@@ -1,44 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  ArcElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, ArcElement, BarElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Line, Doughnut, Bar } from "react-chartjs-2";
-import {
-  DollarSign,
-  ShoppingBag,
-  TrendingUp,
-  Package,
-  AlertTriangle,
-  Wallet,
-  Zap,
-  Calendar,
-  RefreshCw,
-  MapPin,
-} from "lucide-react";
+import { DollarSign, ShoppingBag, TrendingUp, Package, AlertTriangle, Wallet, Zap, Calendar, RefreshCw, MapPin } from "lucide-react";
 import api from "../../api/axiosConfig";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  ArcElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-);
+ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, ArcElement, BarElement, Title, Tooltip, Legend, Filler);
 
 // ─── PLUGIN: etiquetas grandes dentro del pastel ──────────────────────
 const pieLabelPlugin = {
@@ -58,8 +24,7 @@ const pieLabelPlugin = {
     const labelRadius = (innerRadius + outerRadius) / 2;
     arcs.forEach((arc, index) => {
       const rawValue = dataset.data[index];
-      if (typeof rawValue !== "number" || isNaN(rawValue) || rawValue === 0)
-        return;
+      if (typeof rawValue !== "number" || isNaN(rawValue) || rawValue === 0) return;
       const label = rawValue.toString();
       const midAngle = (arc.startAngle + arc.endAngle) / 2;
       const x = centerX + Math.cos(midAngle) * labelRadius;
@@ -107,22 +72,12 @@ const barLabelPlugin = {
 ChartJS.register(barLabelPlugin);
 
 // ─── Paleta ──────────────────────────────────────────────────────────────
-const PIE_COLORS = [
-  "#4f8ef7",
-  "#10b981",
-  "#f59e0b",
-  "#ef4444",
-  "#9b59f7",
-  "#ec4899",
-];
+const PIE_COLORS = ["#4f8ef7", "#10b981", "#f59e0b", "#ef4444", "#9b59f7", "#ec4899"];
 const SEC_COLORS = ["#f59e0b", "#4f8ef7", "#10b981", "#9b59f7", "#ef4444"];
 const GRID_COLOR = "rgba(255,255,255,0.05)";
 const TICK_COLOR = "#64748b";
 
-const fmt = (v) =>
-  new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(
-    v ?? 0,
-  );
+const fmt = (v) => new Intl.NumberFormat("es-EC", { style: "currency", currency: "USD" }).format(v ?? 0);
 
 const ACCENT = {
   blue: "#4f8ef7",
@@ -137,17 +92,12 @@ const ACCENT = {
 function MetricCard({ label, value, icon: Icon, color }) {
   const ac = ACCENT[color];
   return (
-    <div
-      className="bg-[#252836] rounded-lg p-3 flex items-center justify-between shadow-md"
-      style={{ borderLeft: `4px solid ${ac}` }}
-    >
-      <div>
-        <p className="text-[11px] font-semibold text-[#94a3b8] uppercase">
-          {label}
-        </p>
-        <p className="text-lg font-semibold text-[#f1f5f9]">{value}</p>
+    <div className="bg-[#252836] rounded-lg p-3 flex items-center justify-between shadow-md" style={{ borderLeft: `4px solid ${ac}` }}>
+      <div className="truncate">
+        <p className="text-[10px] sm:text-[11px] font-semibold text-[#94a3b8] uppercase truncate">{label}</p>
+        <p className="text-sm sm:text-base md:text-lg font-semibold text-[#f1f5f9] truncate">{value}</p>
       </div>
-      <Icon size={22} color={ac} className="opacity-70 flex-shrink-0" />
+      <Icon size={20} color={ac} className="opacity-70 flex-shrink-0" />
     </div>
   );
 }
@@ -214,20 +164,10 @@ function Dashboard() {
     );
   }
 
-  const {
-    indicadores = {},
-    grafico_pastel = [],
-    ventas_diarias = [],
-    sectores_ventas = [],
-    productos_sin_stock = [],
-    productos_bajo_stock = [],
-  } = data;
+  const { indicadores = {}, grafico_pastel = [], ventas_diarias = [], sectores_ventas = [], productos_sin_stock = [], productos_bajo_stock = [] } = data;
 
   const totalCritico = productos_sin_stock.length + productos_bajo_stock.length;
-  const productosCriticos = [
-    ...productos_sin_stock.map((p) => ({ ...p, tipo: "Sin stock" })),
-    ...productos_bajo_stock.map((p) => ({ ...p, tipo: "Bajo stock" })),
-  ];
+  const productosCriticos = [...productos_sin_stock.map((p) => ({ ...p, tipo: "Sin stock" })), ...productos_bajo_stock.map((p) => ({ ...p, tipo: "Bajo stock" }))];
 
   // ── Datos gráficos ────────────────────────────────────────────────────
   const lineData = {
@@ -343,90 +283,47 @@ function Dashboard() {
   return (
     <div className="bg-[#1a1d27] rounded-xl p-3 w-full h-[calc(100vh-48px)] flex flex-col gap-2.5 font-sans overflow-hidden">
       {/* HEADER */}
-      <div className="flex items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0">
+      <div className="flex flex-wrap items-center justify-between pb-1.5 border-b border-white/10 flex-shrink-0 gap-2">
         <div className="flex items-center gap-2">
-          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center">
+          <div className="w-7.5 h-7.5 bg-[#4f5cf7] rounded-lg flex items-center justify-center flex-shrink-0">
             <Zap size={15} color="#fff" />
           </div>
           <div>
-            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">
-              Dashboard
-            </p>
+            <p className="text-sm font-medium text-[#e2e8f0] leading-tight">Dashboard</p>
             <p className="text-[9px] text-[#64748b]">Panel de control</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <div className="bg-[#252836] border border-white/10 rounded-md px-2.5 py-1 text-xs text-[#94a3b8] flex items-center gap-1">
-            <Calendar size={12} />
-            <input
-              type="month"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer"
-            />
+            <Calendar size={12} className="flex-shrink-0" />
+            <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="bg-transparent border-none outline-none text-[#94a3b8] text-xs cursor-pointer w-24 sm:w-auto" />
           </div>
-          <button
-            onClick={fetchData}
-            className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8]"
-          >
+          <button onClick={fetchData} className="bg-[#252836] border border-white/10 rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-[#94a3b8] flex-shrink-0">
             <RefreshCw size={13} />
           </button>
         </div>
       </div>
 
       {/* MÉTRICAS */}
-      <div className="grid grid-cols-5 gap-2.5 flex-shrink-0">
-        <MetricCard
-          label="Ventas"
-          value={fmt(indicadores.total_ventas)}
-          icon={DollarSign}
-          color="blue"
-        />
-        <MetricCard
-          label="Pedidos"
-          value={indicadores.pedidos_completados ?? 0}
-          icon={ShoppingBag}
-          color="emerald"
-        />
-        <MetricCard
-          label="Ganancia"
-          value={fmt(indicadores.ganancia_bruta)}
-          icon={TrendingUp}
-          color="purple"
-        />
-        <MetricCard
-          label="Inventario"
-          value={fmt(indicadores.valor_inventario)}
-          icon={Wallet}
-          color="amber"
-        />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 flex-shrink-0">
+        <MetricCard label="Ventas" value={fmt(indicadores.total_ventas)} icon={DollarSign} color="blue" />
+        <MetricCard label="Pedidos" value={indicadores.pedidos_completados ?? 0} icon={ShoppingBag} color="emerald" />
+        <MetricCard label="Ganancia" value={fmt(indicadores.ganancia_bruta)} icon={TrendingUp} color="purple" />
+        <MetricCard label="Inventario" value={fmt(indicadores.valor_inventario)} icon={Wallet} color="amber" />
 
         {/* Stock crítico con tooltip */}
-        <div
-          ref={cardRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className="relative"
-        >
+        <div ref={cardRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="relative col-span-2 sm:col-span-1">
           <div
             className="bg-[#252836] rounded-lg p-3 flex items-center justify-between shadow-md cursor-help"
             style={{
               borderLeft: `4px solid ${totalCritico > 0 ? "#ef4444" : "#10b981"}`,
             }}
           >
-            <div>
-              <p className="text-[11px] font-semibold text-[#94a3b8] uppercase">
-                Stock crítico
-              </p>
-              <p className="text-lg font-semibold text-[#f1f5f9]">
-                {totalCritico}
-              </p>
+            <div className="truncate">
+              <p className="text-[10px] sm:text-[11px] font-semibold text-[#94a3b8] uppercase truncate">Stock crítico</p>
+              <p className="text-sm sm:text-base md:text-lg font-semibold text-[#f1f5f9]">{totalCritico}</p>
             </div>
-            <AlertTriangle
-              size={22}
-              color={totalCritico > 0 ? "#ef4444" : "#10b981"}
-              className="opacity-70"
-            />
+            <AlertTriangle size={20} color={totalCritico > 0 ? "#ef4444" : "#10b981"} className="opacity-70 flex-shrink-0" />
           </div>
 
           {showTooltip && (
@@ -438,40 +335,26 @@ function Dashboard() {
               }}
             >
               {productosCriticos.length === 0 ? (
-                <p className="text-xs text-[#94a3b8] text-center">
-                  ✅ No hay productos críticos
-                </p>
+                <p className="text-xs text-[#94a3b8] text-center">✅ No hay productos críticos</p>
               ) : (
                 <>
-                  <p className="text-[11px] font-semibold text-[#94a3b8] mb-1.5">
-                    Productos con alerta:
-                  </p>
+                  <p className="text-[11px] font-semibold text-[#94a3b8] mb-1.5">Productos con alerta:</p>
                   <ul className="list-none p-0 m-0 flex flex-col gap-1">
                     {productosCriticos.slice(0, 4).map((p) => (
-                      <li
-                        key={p.codigo}
-                        className="flex justify-between text-xs text-[#e2e8f0] border-b border-white/5 pb-1"
-                      >
+                      <li key={p.codigo} className="flex justify-between text-xs text-[#e2e8f0] border-b border-white/5 pb-1">
                         <span>
                           <span
                             className="inline-block w-2 h-2 rounded-full mr-1.5"
                             style={{
-                              background:
-                                p.tipo === "Sin stock" ? "#ef4444" : "#f59e0b",
+                              background: p.tipo === "Sin stock" ? "#ef4444" : "#f59e0b",
                             }}
                           />
                           {p.nombre}
                         </span>
-                        <span className="text-[#94a3b8] text-[10px]">
-                          {p.tipo === "Sin stock" ? "0" : p.stock_actual}
-                        </span>
+                        <span className="text-[#94a3b8] text-[10px]">{p.tipo === "Sin stock" ? "0" : p.stock_actual}</span>
                       </li>
                     ))}
-                    {productosCriticos.length > 4 && (
-                      <li className="text-[11px] text-[#94a3b8] text-center pt-1 border-t border-white/5 mt-0.5">
-                        + {productosCriticos.length - 4} productos más
-                      </li>
-                    )}
+                    {productosCriticos.length > 4 && <li className="text-[11px] text-[#94a3b8] text-center pt-1 border-t border-white/5 mt-0.5">+ {productosCriticos.length - 4} productos más</li>}
                   </ul>
                 </>
               )}
@@ -481,20 +364,14 @@ function Dashboard() {
       </div>
 
       {/* GRÁFICOS */}
-      <div className="grid grid-cols-3 gap-2.5 flex-1 min-h-0">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 flex-1 min-h-0">
         {/* Pastel */}
         <div className="bg-[#252836] rounded-lg p-2.5 flex flex-col min-h-0 overflow-hidden">
           <p className="text-[10px] font-medium text-[#94a3b8] mb-1 flex items-center gap-1 flex-shrink-0">
             <Package size={13} color="#4f8ef7" /> Categorías
           </p>
           <div className="flex-1 relative min-h-[100px]">
-            {grafico_pastel.length === 0 ? (
-              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
-                Sin datos
-              </p>
-            ) : (
-              <Doughnut data={pieData} options={pieOpts} />
-            )}
+            {grafico_pastel.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Doughnut data={pieData} options={pieOpts} />}
           </div>
         </div>
 
@@ -504,13 +381,7 @@ function Dashboard() {
             <MapPin size={13} color="#f59e0b" /> Sectores
           </p>
           <div className="flex-1 relative min-h-[80px]">
-            {sectores_ventas.length === 0 ? (
-              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
-                Sin datos
-              </p>
-            ) : (
-              <Bar data={barData} options={barOpts} />
-            )}
+            {sectores_ventas.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Bar data={barData} options={barOpts} />}
           </div>
         </div>
 
@@ -520,13 +391,7 @@ function Dashboard() {
             <TrendingUp size={13} color="#10b981" /> Ventas diarias
           </p>
           <div className="flex-1 relative min-h-[80px]">
-            {ventas_diarias.length === 0 ? (
-              <p className="text-[11px] text-[#64748b] text-center mt-2.5">
-                Sin datos
-              </p>
-            ) : (
-              <Line data={lineData} options={lineOpts} />
-            )}
+            {ventas_diarias.length === 0 ? <p className="text-[11px] text-[#64748b] text-center mt-2.5">Sin datos</p> : <Line data={lineData} options={lineOpts} />}
           </div>
         </div>
       </div>

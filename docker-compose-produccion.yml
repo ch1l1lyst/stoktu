@@ -1,6 +1,25 @@
-version: "3.8"
-
 services:
+  db:
+    image: mysql:8
+    container_name: stoktu-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=stoktu
+      - MYSQL_USER=stoktu_user
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - app-network
+
   backend:
     image: ch1l1lyst/stoktu-backend:latest
     container_name: stoktu-backend
@@ -12,13 +31,16 @@ services:
       - APP_DEBUG=false
       - APP_URL=https://stoktu-prodid.duckdns.org
       - DB_CONNECTION=mysql
-      - DB_HOST=10.0.1.94
+      - DB_HOST=db
       - DB_PORT=3306
-      - DB_DATABASE=stoktudb
+      - DB_DATABASE=stoktu
       - DB_USERNAME=root
-      - DB_PASSWORD=Mefisto#2002
+      - DB_PASSWORD=root
     volumes:
       - backend-storage:/var/www/html/storage
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -52,6 +74,7 @@ services:
       - app-network
 
 volumes:
+  dbdata:
   backend-storage:
 
 networks:
