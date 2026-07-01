@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import bgImage from "../assets/bgLogin.png";
+import bgImage from "/bgLogin.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -54,8 +54,7 @@ const Login = () => {
           <div
             className="absolute inset-0"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(59,130,246,0.18), rgba(15,23,42,0.65))",
+              background: "linear-gradient(135deg, rgba(59,130,246,0.18), rgba(15,23,42,0.65))",
               clipPath: "polygon(0 0, 58% 0, 85% 100%, 0 100%)",
             }}
           />
@@ -64,11 +63,7 @@ const Login = () => {
               {/* Logo cubo */}
               <div className="flex justify-center mb-5">
                 <div className="w-20 h-20 lg:w-24 lg:h-24">
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="w-full h-full"
-                    fill="none"
-                  >
+                  <svg viewBox="0 0 100 100" className="w-full h-full" fill="none">
                     <defs>
                       <linearGradient id="cube" x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stopColor="#38BDF8" />
@@ -78,12 +73,7 @@ const Login = () => {
                     <path d="M50 8 L80 25 L50 42 L20 25 Z" fill="url(#cube)" />
                     <path d="M20 25 L50 42 L50 80 L20 62 Z" fill="#1D4ED8" />
                     <path d="M80 25 L50 42 L50 80 L80 62 Z" fill="#0EA5E9" />
-                    <path
-                      d="M58 63 L72 50 L72 60 L85 60"
-                      stroke="#38BDF8"
-                      strokeWidth="6"
-                      fill="none"
-                    />
+                    <path d="M58 63 L72 50 L72 60 L85 60" stroke="#38BDF8" strokeWidth="6" fill="none" />
                     <path d="M85 60 L78 53" stroke="#38BDF8" strokeWidth="6" />
                     <path d="M85 60 L78 67" stroke="#38BDF8" strokeWidth="6" />
                   </svg>
@@ -100,17 +90,13 @@ const Login = () => {
                 <div className="h-px bg-blue-500/30"></div>
                 <div className="text-center py-3 text-lg lg:text-xl">
                   <span className="text-gray-300">Empresa:</span>
-                  <span className="text-sky-400 font-semibold ml-3">
-                    PRODID
-                  </span>
+                  <span className="text-sky-400 font-semibold ml-3">PRODID</span>
                 </div>
                 <div className="h-px bg-blue-500/30"></div>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3 mt-4">
-              <div className="w-9 h-9 rounded-xl border border-sky-500 flex items-center justify-center text-sky-400 font-bold text-base">
-                CH
-              </div>
+              <div className="w-9 h-9 rounded-xl border border-sky-500 flex items-center justify-center text-sky-400 font-bold text-base">CH</div>
             </div>
           </div>
         </div>
@@ -119,16 +105,12 @@ const Login = () => {
         <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6 md:p-8">
           <div className="w-full max-w-sm">
             <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-                Iniciar Sesión
-              </h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Iniciar Sesión</h2>
               <p className="text-gray-500 mt-1">Bienvenido a STOKTU</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
-                  Correo electrónico
-                </label>
+                <label className="block text-gray-700 font-semibold mb-1">Correo electrónico</label>
                 <input
                   type="email"
                   value={email}
@@ -139,9 +121,7 @@ const Login = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-1">
-                  Contraseña
-                </label>
+                <label className="block text-gray-700 font-semibold mb-1">Contraseña</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -151,20 +131,12 @@ const Login = () => {
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition pr-12"
                     placeholder="Ingresa tu contraseña"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700">
                     {showPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
               </div>
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 text-sm">
-                  {error}
-                </div>
-              )}
+              {error && <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 text-sm">{error}</div>}
               <button
                 type="submit"
                 disabled={loading}

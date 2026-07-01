@@ -25,26 +25,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// ========== CARGA AUTOMÁTICA DE IMÁGENES ==========
-const imageModules = import.meta.glob("/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true, import: "default" });
-
-const imagesByCategory = {
-  desengrasantes: [],
-  sanitizantes: [],
-  otros: [],
-};
-
-Object.entries(imageModules).forEach(([path, url]) => {
-  const fileName = path.split("/").pop();
-  if (path.includes("/desengrasantes/")) {
-    imagesByCategory.desengrasantes.push({ path: url, name: fileName });
-  } else if (path.includes("/sanitizantes/")) {
-    imagesByCategory.sanitizantes.push({ path: url, name: fileName });
-  } else {
-    imagesByCategory.otros.push({ path: url, name: fileName });
-  }
-});
-
 // ========== TOAST ==========
 const Toast = ({ message, type, onClose }) => {
   useEffect(() => {
@@ -184,7 +164,7 @@ const ProductCard = memo(({ item, onEdit, onDelete, onReponer }) => {
 const Inventario = () => {
   const { items: carritoItems, totalItems: carritoCount, agregarAlCarrito, eliminarDelCarrito, actualizarCantidad, vaciarCarrito, generarPedido, loading: carritoLoading, totalGeneral } = useCarrito();
 
-  // Estados (sin cambios)
+  // Estados
   const [productos, setProductos] = useState([]);
   const [resumen, setResumen] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -223,6 +203,9 @@ const Inventario = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
 
+  // ✅ NUEVO: estado para imágenes disponibles desde el servidor
+  const [imagenesDisponibles, setImagenesDisponibles] = useState([]);
+
   // ========== API ==========
   const fetchAllData = useCallback(async () => {
     setLoading(true);
@@ -256,6 +239,26 @@ const Inventario = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, categoriaSeleccionada]);
+
+  // ✅ NUEVO: cargar imágenes según categoría cuando cambia en el formulario
+  useEffect(() => {
+    const fetchImagenes = async () => {
+      if (!productForm.categoria) {
+        setImagenesDisponibles([]);
+        return;
+      }
+      try {
+        const res = await api.get("/imagenes", {
+          params: { categoria: productForm.categoria.toLowerCase() },
+        });
+        setImagenesDisponibles(res.data);
+      } catch (err) {
+        console.error("Error al cargar imágenes:", err);
+        setImagenesDisponibles([]);
+      }
+    };
+    fetchImagenes();
+  }, [productForm.categoria]);
 
   // ========== HANDLERS ==========
   const openCreateModal = useCallback(() => {
@@ -406,10 +409,6 @@ const Inventario = () => {
   const goToPage = (page) => {
     setCurrentPage(Math.min(Math.max(1, page), totalPages));
   };
-
-  const currentCategory = productForm.categoria?.toLowerCase() || "";
-  const availableImages = useMemo(() => imagesByCategory[currentCategory] || [], [currentCategory]);
-  const hasImagesForCategory = availableImages.length > 0;
 
   if (loading) {
     return (
@@ -966,7 +965,7 @@ const Inventario = () => {
                   </div>
                 </div>
 
-                {/* Columna derecha */}
+                {/* Columna derecha - SECCIÓN DE IMAGEN (modificada) */}
                 <div className="flex flex-col gap-2">
                   <label className="text-[9px] text-[#94a3b8]">Imagen del producto</label>
                   <div className="flex gap-1.5">
@@ -1006,23 +1005,23 @@ const Inventario = () => {
                         Categoría: <span className="text-[#e2e8f0]">{productForm.categoria || "(sin categoría)"}</span>
                       </p>
                       {productForm.categoria ? (
-                        hasImagesForCategory ? (
+                        imagenesDisponibles.length > 0 ? (
                           <div className="grid grid-cols-3 gap-1.5 max-h-40 overflow-y-auto p-1 bg-black/20 rounded-md border border-white/5">
-                            {availableImages.map((img, idx) => (
+                            {imagenesDisponibles.map((imgPath, idx) => (
                               <div
                                 key={idx}
                                 onClick={() => {
-                                  setSelectedExistingImage(img.path);
+                                  setSelectedExistingImage(imgPath);
                                   setProductForm({
                                     ...productForm,
-                                    imagen: img.path,
-                                    imagenUrl: img.path,
+                                    imagen: imgPath,
+                                    imagenUrl: imgPath,
                                   });
                                 }}
-                                className={`cursor-pointer rounded-md overflow-hidden transition-all ${selectedExistingImage === img.path ? "ring-1 ring-[#4f8ef7]" : ""}`}
+                                className={`cursor-pointer rounded-md overflow-hidden transition-all ${selectedExistingImage === imgPath ? "ring-1 ring-[#4f8ef7]" : ""}`}
                               >
-                                <img src={img.path} alt={img.name} className="w-full h-14 object-cover" />
-                                <p className="text-[7px] text-[#64748b] text-center py-0.5 truncate">{img.name}</p>
+                                <img src={imgPath} alt={imgPath.split("/").pop()} className="w-full h-14 object-cover" />
+                                <p className="text-[7px] text-[#64748b] text-center py-0.5 truncate">{imgPath.split("/").pop()}</p>
                               </div>
                             ))}
                           </div>

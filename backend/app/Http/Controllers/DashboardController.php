@@ -47,7 +47,7 @@ class DashboardController extends Controller
             ->get();
 
         $productosBajoStock = Producto::where('stock_actual', '>', 0)
-            ->where('stock_actual', '<', 10)
+            ->where('stock_actual', '<', 40)
             ->select('codigo', 'nombre', 'stock_actual')
             ->orderBy('stock_actual')
             ->get();

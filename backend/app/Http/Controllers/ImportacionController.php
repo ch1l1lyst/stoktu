@@ -19,15 +19,12 @@ class ImportacionController extends Controller
 
     public function destroy($id)
     {
-        $importacion = Importacion::findOrFail($id);
+        $importacion = Importacion::with('ventas')->findOrFail($id);
 
         DB::beginTransaction();
         try {
             foreach ($importacion->ventas as $venta) {
-                if ($venta->producto) {
-                    $venta->producto->stock_actual += $venta->cantidad;
-                    $venta->producto->save();
-                }
+                $this->adjustProductStock($venta->producto_codigo, $venta->cantidad, true);
             }
 
             $importacion->ventas()->delete();
@@ -82,6 +79,21 @@ class ImportacionController extends Controller
         }
 
         return response()->json($result, 200);
+    }
+
+    private function adjustProductStock(string $productoCodigo, int $cantidad, bool $increase = false): void
+    {
+        if (empty($productoCodigo) || $cantidad <= 0) {
+            return;
+        }
+
+        $producto = Producto::where('codigo', $productoCodigo)->lockForUpdate()->first();
+        if (!$producto) {
+            return;
+        }
+
+        $producto->stock_actual += $increase ? $cantidad : -$cantidad;
+        $producto->save();
     }
 
     private function processCsv($file, $importMode = false)
@@ -201,7 +213,7 @@ class ImportacionController extends Controller
             if ($productoCodigo === '') {
                 $lineErrors[] = 'producto_codigo vacío';
             } else {
-                $producto = Producto::find($productoCodigo);
+                $producto = Producto::where('codigo', $productoCodigo)->first();
                 if (!$producto) $lineErrors[] = "producto_codigo '$productoCodigo' no existe";
             }
 
@@ -331,10 +343,7 @@ class ImportacionController extends Controller
                     'importacion_id'  => $importacion->id,
                 ]);
 
-                if ($row['producto']) {
-                    $row['producto']->stock_actual -= $row['cantidad'];
-                    $row['producto']->save();
-                }
+                $this->adjustProductStock($row['productoCodigo'], $row['cantidad']);
             }
 
             DB::commit();

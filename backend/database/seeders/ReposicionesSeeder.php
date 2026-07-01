@@ -23,8 +23,8 @@ class ReposicionesSeeder extends Seeder
             return;
         }
 
-        $stockObjetivo = 250;
-        $meses = ['2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06'];
+        $stockObjetivo = 300;
+        $meses = ['2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07'];
         $reposiciones = [];
 
         foreach ($productos as $producto) {

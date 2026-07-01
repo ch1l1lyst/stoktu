@@ -55,7 +55,7 @@ const Reposiciones = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [paginaActual, setPaginaActual] = useState(1);
-  const [itemsPorPagina] = useState(13);
+  const [itemsPorPagina] = useState(12);
 
   const [month, setMonth] = useState(() => {
     const n = new Date();
