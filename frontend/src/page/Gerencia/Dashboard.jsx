@@ -71,27 +71,12 @@ const barLabelPlugin = {
       const textWidth = ctx.measureText(label).width;
       ctx.restore();
 
-      // Margen de seguridad (mayor para mejor legibilidad)
-      const margin = 16;
-      const barWidth = bar.width;
-      const barX = bar.x;
-      const barEnd = barX + barWidth;
-
-      let x, align;
-      if (textWidth + margin < barWidth) {
-        // Cabe dentro: centrado horizontalmente
-        x = barX + barWidth / 2;
-        align = "center";
-      } else {
-        // No cabe: a la derecha con margen amplio
-        x = barEnd + 16;
-        align = "left";
-      }
-
-      const y = bar.y + bar.height / 2;
+      // Centramos el valor dentro de la barra usando el centro real del elemento
+      const x = bar.x;
+      const y = bar.y;
 
       ctx.save();
-      ctx.textAlign = align;
+      ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = "bold 13px sans-serif";
       ctx.fillStyle = "#f1f5f9";
