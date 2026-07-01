@@ -1,42 +1,38 @@
+version: "3.8"
+
+networks:
+  app-network:
+    driver: bridge
+
 services:
-  db:
-    image: mysql:8
-    container_name: stoktu-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: stoktu
-      MYSQL_USER: stoktu_user
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - dbdata:/var/lib/mysql
-
-  backend:
-    image: ch1l1lyst/stoktu-backend:latest
-    container_name: stoktu-backend
-    restart: unless-stopped
-    expose:
-      - "8000"
-    depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_DATABASE: stoktu
-      DB_USERNAME: stoktu_user
-      DB_PASSWORD: secret
-
   nginx:
-    image: ch1l1lyst/stoktu-frontend:latest
+    image: nginx:alpine
     container_name: stoktu-nginx
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
     depends_on:
       - backend
+    networks:
+      - app-network
 
-volumes:
-  dbdata:
+  backend:
+    build: ./backend
+    container_name: stoktu-backend
+    # Exponer puerto 9000 (solo interno)
+    expose:
+      - "9000"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=https://stoktu-prodid.duckdns.org
+      # Otras variables de entorno (DB, etc.)
+    volumes:
+      - ./backend:/var/www/html
+      # Opcional: no montar bootstrap/cache para evitar que el caché se sobrescriba
+    networks:
+      - app-network
