@@ -1,10 +1,12 @@
 ﻿producto_codigo,cantidad,precio_unitario,fecha,cliente,cedula,sector,documento,vendedor,forma_pago,observaciones,numero_pedido,estado_pedido
-PT002,25,1.55,2026-06-01,Electro Hogar,1234567890,Centro,001-001-0001695,Carlos Pérez,Contado,,PED-228,completado
-PT004,25,4.38,2026-06-01,Supermaxi,4567890123,Sur,001-001-0001696,María López,Contado,Cliente pidió factura con RUC,PED-229,completado
-PT005,25,2.00,2026-06-02,Distribuidora Quito,2345678901,Norte,001-001-0001697,Jorge Martínez,Tarjeta,,PED-230,completado
-PT006,25,1.95,2026-06-02,Farmacia Central,3456789012,Centro,001-001-0001698,Ana Rodríguez,Efectivo,Descuento por volumen 5%,PED-231,completado
+PT002,25,2.00,2026-06-01,Electro Hogar,1234567890,Centro,001-001-0001695,Carlos Pérez,Contado,,PED-228,completado
+PT004,25,5.90,2026-06-01,Supermaxi,4567890123,Sur,001-001-0001696,María López,Contado,Cliente pidió factura con RUC,PED-229,completado
+PT005,25,2.70,2026-06-02,Distribuidora Quito,2345678901,Norte,001-001-0001697,Jorge Martínez,Tarjeta,,PED-230,completado
+PT006,25,2.00,2026-06-02,Farmacia Central,3456789012,Centro,001-001-0001698,Ana Rodríguez,Efectivo,Descuento por volumen 5%,PED-231,completado
+PT006,25,2.00,2026-06-02,Mega Almacenes,8901234567,Centro,001-001-0001698,Ana Rodríguez,Efectivo,Descuento por volumen 5%,PED-231,completado
 PT007,25,2.80,2026-06-03,Carlos Fuentes,1234567890,Industrial,001-001-0001699,Carlos Pérez,Contado,,PED-232,completado
 PT008,25,2.25,2026-06-03,Mega Almacenes,8901234567,Sur,001-001-0001700,María López,Cheque,,PED-233,completado
+PT008,30,2.25,2026-06-03,Distribuidora del Sur,0123456789,Sur,001-001-0001700,María López,Cheque,,PED-233,completado
 PT009,25,1.90,2026-06-04,Tiendas Industriales,7890123456,Industrial,001-001-0001701,Jorge Martínez,Contado,Cliente canceló por cambio de presupuesto,PED-234,cancelado
 PT011,25,3.30,2026-06-04,Corporación GP,9012345678,Centro,001-001-0001702,Ana Rodríguez,Contado,,PED-235,completado
 PT013,25,1.25,2026-06-05,Gabriel Silva,0123456789,Industrial,001-001-0001703,Carlos Pérez,Efectivo,,PED-236,completado
@@ -19,15 +21,19 @@ PT022,30,1.20,2026-06-09,Mega Almacenes,8901234567,Sur,001-001-0001711,Carlos P�
 PT025,30,3.30,2026-06-09,Corporación GP,9012345678,Centro,001-001-0001712,María López,Tarjeta,,PED-245,completado
 PT029,30,1.20,2026-06-10,Tiendas Industriales,7890123456,Industrial,001-001-0001713,Jorge Martínez,Contado,Cliente canceló por falta de stock,PED-246,cancelado
 PT030,30,1.00,2026-06-10,Patricia Gómez,4567890123,Industrial,001-001-0001714,Ana Rodríguez,Efectivo,,PED-247,completado
+PT030,30,1.00,2026-06-10,Patricia Gómez,4567890123,Industrial,001-001-0001714,Ana Rodríguez,Efectivo,,PED-247,completado
 PT031,30,1.60,2026-06-11,Electro Hogar,1234567890,Centro,001-001-0001715,Carlos Pérez,Contado,,PED-248,completado
 PT032,30,1.80,2026-06-11,Supermaxi,4567890123,Sur,001-001-0001716,María López,Contado,Cliente no deseaba continuar la compra,PED-249,cancelado
 PT033,30,3.75,2026-06-12,Farmacia Central,3456789012,Centro,001-001-0001717,Jorge Martínez,Contado,,PED-250,completado
-PT034,30,1.90,2026-06-12,Distribuidora del Sur,0123456789,Sur,001-001-0001718,Ana Rodríguez,Cheque,Cliente canceló por demora en la entrega,PED-251,completado
+PT034,30,1.90,2026-06-12,Distribuidora del Sur,0123456789,Sur,001-001-0001718,Ana Rodríguez,Cheque,,PED-251,completado
+PT034,30,1.90,2026-06-12,Distribuidora Quito,2345678901,Sur,001-001-0001718,Ana Rodríguez,Cheque,,PED-251,completado
 PT035,30,3.35,2026-06-13,Gabriel Torres,6789012345,Industrial,001-001-0001719,Carlos Pérez,Contado,,PED-252,completado
 PT038,30,1.28,2026-06-13,Distribuidora Quito,2345678901,Norte,001-001-0001720,María López,Tarjeta,,PED-253,completado
 PT039,30,0.55,2026-06-14,Supermaxi,4567890123,Sur,001-001-0001721,Jorge Martínez,Contado,Cliente se arrepintió por cambio de planes,PED-254,cancelado
 PT043,30,1.20,2026-06-14,Mega Almacenes,8901234567,Sur,001-001-0001722,Ana Rodríguez,Contado,,PED-255,completado
 PT045,30,1.40,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
+PT045,30,1.40,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
+PT047,30,16.30,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
 PT047,30,16.30,2026-06-15,Corporación GP,9012345678,Centro,001-001-0001724,María López,Contado,Cliente canceló porque el producto no cumplía especificaciones,PED-257,cancelado
 PT048,30,2.25,2026-06-16,Electro Hogar,1234567890,Centro,001-001-0001725,Jorge Martínez,Contado,,PED-258,completado
 PT050,30,1.00,2026-06-16,Farmacia Central,3456789012,Centro,001-001-0001726,Ana Rodríguez,Cheque,,PED-259,completado
@@ -39,6 +45,7 @@ PT064,30,3.00,2026-06-19,Tiendas Industriales,7890123456,Industrial,001-001-0001
 PT066,30,2.75,2026-06-19,Corporación GP,9012345678,Centro,001-001-0001732,María López,Efectivo,,PED-265,completado
 PT074,30,1.90,2026-06-20,Electro Hogar,1234567890,Centro,001-001-0001733,Jorge Martínez,Contado,Cliente pidió cancelación por emergencia personal,PED-266,cancelado
 PT075,30,2.37,2026-06-20,Farmacia Central,3456789012,Centro,001-001-0001734,Ana Rodríguez,Contado,,PED-267,completado
+PT076,30,2.20,2026-06-21,Distribuidora del Sur,0123456789,Sur,001-001-0001735,Carlos Pérez,Cheque,,PED-268,completado
 PT076,30,2.20,2026-06-21,Distribuidora del Sur,0123456789,Sur,001-001-0001735,Carlos Pérez,Cheque,,PED-268,completado
 PT080,30,1.82,2026-06-21,Supermaxi,4567890123,Sur,001-001-0001736,María López,Contado,Cliente se arrepintió porque compró en otro lado,PED-269,cancelado
 PT082,30,1.00,2026-06-22,Distribuidora Quito,2345678901,Norte,001-001-0001737,Jorge Martínez,Contado,,PED-270,completado
@@ -64,6 +71,7 @@ PT129,30,1.78,2026-06-02,Electro Hogar,1234567890,Centro,001-001-0001756,María 
 PT132,30,3.08,2026-06-03,Farmacia Central,3456789012,Centro,001-001-0001757,Jorge Martínez,Contado,Cliente canceló por cambio de presupuesto,PED-290,cancelado
 PT133,30,2.90,2026-06-04,Supermaxi,4567890123,Sur,001-001-0001758,Ana Rodríguez,Contado,,PED-291,completado
 PT134,30,0.92,2026-06-05,Distribuidora Quito,2345678901,Norte,001-001-0001759,Carlos Pérez,Tarjeta,,PED-292,completado
+PT135,30,1.12,2026-06-05,Distribuidora Quito,2345678901,Norte,001-001-0001759,Carlos Pérez,Tarjeta,,PED-292,completado
 PT135,30,1.12,2026-06-06,Mega Almacenes,8901234567,Sur,001-001-0001760,María López,Contado,Cliente no deseaba continuar la compra,PED-293,cancelado
 PT136,30,2.15,2026-06-07,Tiendas Industriales,7890123456,Industrial,001-001-0001761,Jorge Martínez,Contado,,PED-294,completado
 PT137,30,3.84,2026-06-08,Corporación GP,9012345678,Centro,001-001-0001762,Ana Rodríguez,Efectivo,,PED-295,completado
@@ -73,13 +81,14 @@ PTAP96,30,2.45,2026-06-11,Supermaxi,4567890123,Sur,001-001-0001765,Jorge Martín
 PTCW76,30,1.30,2026-06-12,Distribuidora del Sur,0123456789,Sur,001-001-0001766,Ana Rodríguez,Contado,,PED-299,completado
 PTDC80,30,2.37,2026-06-13,Electro Hogar,1234567890,Centro,001-001-0001800,Carlos Pérez,Contado,,PED-320,completado
 PT995,30,2.95,2026-06-14,Distribuidora Quito,2345678901,Norte,001-001-0001801,María López,Contado,,PED-321,completado
+PT995,30,2.95,2026-06-14,Distribuidora Quito,2345678901,Norte,001-001-0001801,María López,Contado,,PED-321,completado
 PT996,35,3.10,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001802,Jorge Martínez,Contado,,PED-322,completado
 PT997,35,6.25,2026-06-16,Mega Almacenes,8901234567,Sur,001-001-0001803,Ana Rodríguez,Tarjeta,,PED-323,completado
 PT998,35,4.10,2026-06-17,Corporación GP,9012345678,Centro,001-001-0001804,Carlos Pérez,Contado,,PED-324,completado
 PT999,35,3.50,2026-06-18,Distribuidora Quito,2345678901,Norte,001-001-0001805,María López,Contado,,PED-325,completado
-PTXXX,-35,TEXT,2026-06-15,Cliente Error,1111111111,Sin sector,001-001-0001826,Carlos Pérez,Contado,Código no existe (error dato),PED-346,cancelado
-PT020,35,text,2026-06-16,Cliente Error2,2222222222,Sin sector,001-001-0001827,María López,Contado,Cantidad negativa (error dato),PED-347,cancelado
-PTERROR3,35,2.50,2026-1106-17,Cliente Error3,3333333333,Sin sector,001-001-0001828,Jorge Martínez,Contado,Código vacío (error dato),PED-348,cancelado
+PTXXX,-35,1.00,2026-06-15,Cliente Error,1111111111,Sin sector,001-001-0001826,Carlos Pérez,Contado,Código no existe (error dato),PED-346,cancelado
+PT020,35,1.55,2026-06-16,Cliente Error2,2222222222,Sin sector,001-001-0001827,María López,Contado,Cantidad negativa (error dato),PED-347,cancelado
+PTERROR3,35,2.50,2026-06-17,Cliente Error3,3333333333,Sin sector,001-001-0001828,Jorge Martínez,Contado,Código vacío (error dato),PED-348,cancelado
 PT030,35,1.00,2026-06-18,Cliente Error4,4444444444,Sin sector,001-001-0001829,Ana Rodríguez,Contado,Cantidad decimal (error dato),PED-349,cancelado
-PT006,-35,1.95,2026-06-30,Cliente Error5,5555555555,Sin sector,001-001-0001830,Carlos Pérez,Contado,Fecha inválida (error dato),PED-350,cancelado
+PT006,-35,2.00,2026-06-30,Cliente Error5,5555555555,Sin sector,001-001-0001830,Carlos Pérez,Contado,Fecha inválida (error dato),PED-350,cancelado
 PT008,-35,2.25,2026-06-30,Ana López,5678901234,Sin sector,001-001-0001831,María López,Contado,Cantidad vacía (error dato),PED-351,cancelado

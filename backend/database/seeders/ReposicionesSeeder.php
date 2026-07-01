@@ -37,7 +37,7 @@ class ReposicionesSeeder extends Seeder
             }
 
             // Decidir cuántas reposiciones hacer (2-4 pedidos)
-            $numRepos = rand(2, 4);
+            $numRepos = rand(2, 5);
             // Repartir el faltante en esos pedidos (de forma equitativa)
             $base = floor($faltante / $numRepos);
             $sobrante = $faltante - ($base * $numRepos);

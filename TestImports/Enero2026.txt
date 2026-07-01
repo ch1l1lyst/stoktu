@@ -1,8 +1,8 @@
 ﻿producto_codigo,cantidad,precio_unitario,fecha,cliente,cedula,sector,documento,vendedor,forma_pago,observaciones,numero_pedido,estado_pedido
-PT002,30,1.55,2026-01-03,Electro Hogar,1234567890,Centro,001-001-0001000,Carlos Pérez,Contado,,PED-001,completado
-PT004,25,4.38,2026-01-05,Distribuidora Quito,2345678901,Norte,001-001-0001001,María López,Credito 15 dias,,PED-002,completado
-PT004,25,4.38,2026-01-18,Supermaxi,4567890123,Sur,001-001-0001002,Ana Rodríguez,Tarjeta,,PED-003,completado
-PT005,30,2.00,2026-01-07,Farmacia Central,3456789012,Centro,001-001-0001003,Jorge Martínez,Contado,,PED-004,completado
+PT002,30,2.00,2026-01-03,Electro Hogar,1234567890,Centro,001-001-0001000,Carlos Pérez,Contado,,PED-001,completado
+PT004,25,5.90,2026-01-05,Distribuidora Quito,2345678901,Norte,001-001-0001001,María López,Credito 15 dias,,PED-002,completado
+PT004,25,5.90,2026-01-18,Supermaxi,4567890123,Sur,001-001-0001002,Ana Rodríguez,Tarjeta,,PED-003,completado
+PT005,30,2.70,2026-01-07,Farmacia Central,3456789012,Centro,001-001-0001003,Jorge Martínez,Contado,,PED-004,completado
 PT006,30,2.00,2026-01-09,Mega Almacenes,8901234567,Sur,001-001-0001004,María López,Cheque,,PED-005,completado
 PT007,30,2.80,2026-01-11,Corporación GP,9012345678,Centro,001-001-0001005,Carlos Pérez,Contado,,PED-006,completado
 PT008,30,2.25,2026-01-13,Tiendas Industriales,7890123456,Industrial,001-001-0001006,Jorge Martínez,Efectivo,,PED-007,completado
@@ -23,14 +23,14 @@ PT025,30,3.30,2026-01-04,Mega Almacenes,8901234567,Sur,001-001-0001020,Carlos P�
 PT029,30,1.20,2026-01-06,Corporación GP,9012345678,Centro,001-001-0001021,María López,Contado,,PED-022,completado
 PT030,30,1.00,2026-01-08,Tiendas Industriales,7890123456,Industrial,001-001-0001022,Jorge Martínez,Tarjeta,,PED-023,completado
 PT031,30,1.60,2026-01-10,Gabriel Silva,0123456789,Industrial,001-001-0001023,Ana Rodríguez,Contado,,PED-024,completado
-PT032,30,1.35,2026-01-12,Supermaxi,4567890123,Sur,001-001-0001024,Carlos Pérez,Contado,,PED-025,completado
+PT032,30,1.80,2026-01-12,Supermaxi,4567890123,Sur,001-001-0001024,Carlos Pérez,Contado,,PED-025,completado
 PT033,25,3.75,2026-01-14,Electro Hogar,1234567890,Centro,001-001-0001025,María López,Efectivo,,PED-026,completado
 PT033,25,3.75,2026-01-28,Farmacia Central,3456789012,Centro,001-001-0001026,Jorge Martínez,Contado,,PED-027,completado
-PT034,30,1.33,2026-01-16,Distribuidora Quito,2345678901,Norte,001-001-0001027,Ana Rodríguez,Credito 15 dias,,PED-028,completado
+PT034,30,1.90,2026-01-16,Distribuidora Quito,2345678901,Norte,001-001-0001027,Ana Rodríguez,Credito 15 dias,,PED-028,completado
 PT035,30,3.35,2026-01-18,Mega Almacenes,8901234567,Sur,001-001-0001028,Carlos Pérez,Cheque,,PED-029,completado
-PT038,30,0.97,2026-01-20,Corporación GP,9012345678,Centro,001-001-0001029,María López,Contado,,PED-030,completado
+PT038,30,1.28,2026-01-20,Corporación GP,9012345678,Centro,001-001-0001029,María López,Contado,,PED-030,completado
 PT039,30,0.55,2026-01-22,Tiendas Industriales,7890123456,Industrial,001-001-0001030,Jorge Martínez,Tarjeta,,PED-031,completado
-PT043,30,0.88,2026-01-24,Gabriel Silva,0123456789,Industrial,001-001-0001031,Ana Rodríguez,Contado,,PED-032,completado
+PT043,30,1.20,2026-01-24,Gabriel Silva,0123456789,Industrial,001-001-0001031,Ana Rodríguez,Contado,,PED-032,completado
 PT045,30,1.40,2026-01-26,Supermaxi,4567890123,Sur,001-001-0001032,Carlos Pérez,Contado,,PED-033,completado
 PT047,25,16.30,2026-01-28,Electro Hogar,1234567890,Centro,001-001-0001033,María López,Efectivo,,PED-034,completado
 PT047,25,16.30,2026-01-31,Farmacia Central,3456789012,Centro,001-001-0001034,Jorge Martínez,Contado,,PED-035,completado
@@ -40,7 +40,7 @@ PT056,30,1.90,2026-01-03,Corporación GP,9012345678,Centro,001-001-0001037,Marí
 PT057,30,1.82,2026-01-05,Tiendas Industriales,7890123456,Industrial,001-001-0001038,Jorge Martínez,Tarjeta,,PED-039,completado
 PT059,30,1.25,2026-01-07,Gabriel Silva,0123456789,Industrial,001-001-0001039,Ana Rodríguez,Contado,,PED-040,completado
 PT061,30,1.98,2026-01-09,Supermaxi,4567890123,Sur,001-001-0001040,Carlos Pérez,Contado,,PED-041,completado
-PT064,30,1.90,2026-01-15,Distribuidora Quito,2345678901,Norte,001-001-0001043,Ana Rodríguez,Credito 15 dias,,PED-044,completado
+PT064,30,3.00,2026-01-15,Distribuidora Quito,2345678901,Norte,001-001-0001043,Ana Rodríguez,Credito 15 dias,,PED-044,completado
 PT065,30,2026-01-11,Electro Hogar,1234567890,Centro,001-001-0001041,María López,Efectivo,,PED-042,completado
 PT066,30,2026-01-13,Farmacia Central,3456789012,Centro,001-001-0001042,Jorge Martínez,Contado,,PED-043,completado
 PT074,30,1.90,2026-01-15,Distribuidora Quito,2345678901,Norte,001-001-0001043,Ana Rodríguez,Credito 15 dias,,PED-044,completado
@@ -59,27 +59,27 @@ PT106,30,1.76,2026-01-08,Gabriel Silva,0123456789,Industrial,001-001-0001055,Ana
 PT107,35,2.92,2026-01-10,Supermaxi,4567890123,Sur,001-001-0001056,Carlos Pérez,Contado,,PED-057,completado
 PT109,30,1.70,2026-01-12,Electro Hogar,1234567890,Centro,001-001-0001057,María López,Efectivo,,PED-058,completado
 PT111,30,1.62,2026-01-14,Farmacia Central,3456789012,Centro,001-001-0001058,Jorge Martínez,Contado,,PED-059,completado
-PT112,30,1.55,2026-01-16,Distribuidora Quito,2345678901,Norte,001-001-0001059,Ana Rodríguez,Credito 15 dias,,PED-060,completado
-PT113,30,1.95,2026-01-18,Mega Almacenes,8901234567,Sur,001-001-0001060,Carlos Pérez,Cheque,,PED-061,completado
-PT117,30,2.26,2026-01-20,Corporación GP,9012345678,Centro,001-001-0001061,María López,Contado,,PED-062,completado
-PT121,35,0.73,2026-01-22,Tiendas Industriales,7890123456,Industrial,001-001-0001062,Jorge Martínez,Tarjeta,,PED-063,completado
-PT122,30,1.80,2026-01-24,Gabriel Silva,0123456789,Industrial,001-001-0001063,Ana Rodríguez,Contado,,PED-064,completado
-PT126,35,1.62,2026-01-26,Supermaxi,4567890123,Sur,001-001-0001064,Carlos Pérez,Contado,,PED-065,completado
-PT128,35,1.30,2026-01-28,Electro Hogar,1234567890,Centro,001-001-0001065,María López,Efectivo,,PED-066,completado
-PT129,30,1.22,2026-01-30,Farmacia Central,3456789012,Centro,001-001-0001066,Jorge Martínez,Contado,,PED-067,completado
-PT132,35,2.28,2026-01-31,Distribuidora Quito,2345678901,Norte,001-001-0001067,Ana Rodríguez,Credito 15 dias,,PED-068,completado
+PT112,30,2.47,2026-01-16,Distribuidora Quito,2345678901,Norte,001-001-0001059,Ana Rodríguez,Credito 15 dias,,PED-060,completado
+PT113,30,3.05,2026-01-18,Mega Almacenes,8901234567,Sur,001-001-0001060,Carlos Pérez,Cheque,,PED-061,completado
+PT117,30,3.28,2026-01-20,Corporación GP,9012345678,Centro,001-001-0001061,María López,Contado,,PED-062,completado
+PT121,35,0.98,2026-01-22,Tiendas Industriales,7890123456,Industrial,001-001-0001062,Jorge Martínez,Tarjeta,,PED-063,completado
+PT122,30,2.80,2026-01-24,Gabriel Silva,0123456789,Industrial,001-001-0001063,Ana Rodríguez,Contado,,PED-064,completado
+PT126,35,2.66,2026-01-26,Supermaxi,4567890123,Sur,001-001-0001064,Carlos Pérez,Contado,,PED-065,completado
+PT128,35,1.84,2026-01-28,Electro Hogar,1234567890,Centro,001-001-0001065,María López,Efectivo,,PED-066,completado
+PT129,30,1.78,2026-01-30,Farmacia Central,3456789012,Centro,001-001-0001066,Jorge Martínez,Contado,,PED-067,completado
+PT132,35,3.08,2026-01-31,Distribuidora Quito,2345678901,Norte,001-001-0001067,Ana Rodríguez,Credito 15 dias,,PED-068,completado
 PT133,35,2.90,2026-01-01,Mega Almacenes,8901234567,Sur,001-001-0001068,Carlos Pérez,Cheque,,PED-069,completado
-PT134,30,0.68,2026-01-03,Corporación GP,9012345678,Centro,001-001-0001069,María López,Contado,,PED-070,completado
-PT135,35,0.77,2026-01-05,Tiendas Industriales,7890123456,Industrial,001-001-0001070,Jorge Martínez,Tarjeta,,PED-071,completado
-PT136,35,1.47,2026-01-07,Gabriel Silva,0123456789,Industrial,001-001-0001071,Ana Rodríguez,Contado,,PED-072,completado
-PT137,30,2.65,2026-01-09,Supermaxi,4567890123,Sur,001-001-0001072,Carlos Pérez,Contado,,PED-073,completado
-PT138,30,1.74,2026-01-11,Electro Hogar,1234567890,Centro,001-001-0001073,María López,Efectivo,,PED-074,completado
-PT995,30,1.75,2026-01-13,Farmacia Central,3456789012,Centro,001-001-0001074,Jorge Martínez,Contado,,PED-075,completado
-PT996,35,1.90,2026-01-15,Distribuidora Quito,2345678901,Norte,001-001-0001075,Ana Rodríguez,Credito 15 dias,,PED-076,completado
-PT997,30,3.80,2026-01-17,Mega Almacenes,8901234567,Sur,001-001-0001076,Carlos Pérez,Cheque,,PED-077,completado
-PT998,35,2.45,2026-01-19,Corporación GP,9012345678,Centro,001-001-0001077,María López,Contado,,PED-078,completado
-PT999,30,2.10,2026-01-21,Tiendas Industriales,7890123456,Industrial,001-001-0001078,Jorge Martínez,Tarjeta,,PED-079,completado
-PTAP11,30,1.23,2026-01-23,Gabriel Silva,0123456789,Industrial,001-001-0001079,Ana Rodríguez,Contado,,PED-080,completado
-PTAP96,30,1.81,2026-01-25,Supermaxi,4567890123,Sur,001-001-0001080,Carlos Pérez,Contado,,PED-081,completado
-PTCW76,35,0.80,2026-01-27,Electro Hogar,1234567890,Centro,001-001-0001081,María López,Efectivo,,PED-082,completado
-PTDC80,35,1.75,2026-01-29,Farmacia Central,3456789012,Centro,001-001-0001082,Jorge Martínez,Contado,,PED-083,completado
+PT134,30,0.92,2026-01-03,Corporación GP,9012345678,Centro,001-001-0001069,María López,Contado,,PED-070,completado
+PT135,35,1.12,2026-01-05,Tiendas Industriales,7890123456,Industrial,001-001-0001070,Jorge Martínez,Tarjeta,,PED-071,completado
+PT136,35,2.15,2026-01-07,Gabriel Silva,0123456789,Industrial,001-001-0001071,Ana Rodríguez,Contado,,PED-072,completado
+PT137,30,3.84,2026-01-09,Supermaxi,4567890123,Sur,001-001-0001072,Carlos Pérez,Contado,,PED-073,completado
+PT138,30,2.52,2026-01-11,Electro Hogar,1234567890,Centro,001-001-0001073,María López,Efectivo,,PED-074,completado
+PT995,30,2.95,2026-01-13,Farmacia Central,3456789012,Centro,001-001-0001074,Jorge Martínez,Contado,,PED-075,completado
+PT996,35,3.10,2026-01-15,Distribuidora Quito,2345678901,Norte,001-001-0001075,Ana Rodríguez,Credito 15 dias,,PED-076,completado
+PT997,30,6.25,2026-01-17,Mega Almacenes,8901234567,Sur,001-001-0001076,Carlos Pérez,Cheque,,PED-077,completado
+PT998,35,4.10,2026-01-19,Corporación GP,9012345678,Centro,001-001-0001077,María López,Contado,,PED-078,completado
+PT999,30,3.50,2026-01-21,Tiendas Industriales,7890123456,Industrial,001-001-0001078,Jorge Martínez,Tarjeta,,PED-079,completado
+PTAP11,30,1.78,2026-01-23,Gabriel Silva,0123456789,Industrial,001-001-0001079,Ana Rodríguez,Contado,,PED-080,completado
+PTAP96,30,2.45,2026-01-25,Supermaxi,4567890123,Sur,001-001-0001080,Carlos Pérez,Contado,,PED-081,completado
+PTCW76,35,1.30,2026-01-27,Electro Hogar,1234567890,Centro,001-001-0001081,María López,Efectivo,,PED-082,completado
+PTDC80,35,2.37,2026-01-29,Farmacia Central,3456789012,Centro,001-001-0001082,Jorge Martínez,Contado,,PED-083,completado
