@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 // ========== CARGA AUTOMÁTICA DE IMÁGENES ==========
-const imageModules = import.meta.glob("/src/assets/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true, import: "default" });
+const imageModules = import.meta.glob("/productos/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true, import: "default" });
 
 const imagesByCategory = {
   desengrasantes: [],
