@@ -1,32 +1,10 @@
-services:
-  # Base de datos (igual que antes)
-  db:
-    image: mysql:8
-    container_name: stoktu-db
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=stoktu
-      - MYSQL_USER=stoktu_user
-      - MYSQL_PASSWORD=secret
-      - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - dbdata:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 5s
-      timeout: 3s
-      retries: 20
-    networks:
-      - app-network
+version: "3.8"
 
-  # Backend Laravel (PHP-FPM en lugar de php artisan serve)
+services:
   backend:
     image: ch1l1lyst/stoktu-backend:latest
     container_name: stoktu-backend
     restart: unless-stopped
-    # No exponemos puerto al host, solo interno para Nginx
     expose:
       - "9000"
     environment:
@@ -34,27 +12,20 @@ services:
       - APP_DEBUG=false
       - APP_URL=https://stoktu-prodid.duckdns.org
       - DB_CONNECTION=mysql
-      - DB_HOST=db
+      - DB_HOST=10.0.1.94
       - DB_PORT=3306
-      - DB_DATABASE=stoktu
+      - DB_DATABASE=stoktudb
       - DB_USERNAME=root
-      - DB_PASSWORD=root
-      # Añade aquí otras variables que necesite tu Laravel
-    depends_on:
-      db:
-        condition: service_healthy
+      - DB_PASSWORD=Mefisto#2002
     volumes:
-      # Solo persistencia de archivos subidos y logs, NO el código
       - backend-storage:/var/www/html/storage
     networks:
       - app-network
 
-  # Frontend React (servido con Vite o similar, puerto 5173)
   frontend:
     image: ch1l1lyst/stoktu-frontend:latest
     container_name: stoktu-frontend
     restart: unless-stopped
-    # Exponemos internamente para Nginx
     expose:
       - "80"
     environment:
@@ -64,7 +35,6 @@ services:
     networks:
       - app-network
 
-  # Nginx como proxy inverso con SSL
   nginx:
     image: nginx:alpine
     container_name: stoktu-nginx
@@ -82,7 +52,6 @@ services:
       - app-network
 
 volumes:
-  dbdata:
   backend-storage:
 
 networks:
