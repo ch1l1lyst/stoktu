@@ -25,6 +25,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend
+          file: ./backend/dockerfile.prod
           push: true
           tags: ch1l1lyst/stoktu-backend:latest
 
