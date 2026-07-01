@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # Base de datos (igual que antes)
   db:
@@ -58,7 +56,7 @@ services:
     restart: unless-stopped
     # Exponemos internamente para Nginx
     expose:
-      - "5173"
+      - "80"
     environment:
       - VITE_API_URL=https://stoktu-prodid.duckdns.org/api
     depends_on:
