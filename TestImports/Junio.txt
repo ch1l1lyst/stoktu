@@ -32,7 +32,7 @@ PT038,30,1.28,2026-06-13,Distribuidora Quito,2345678901,Norte,001-001-0001720,Ma
 PT039,30,0.55,2026-06-14,Supermaxi,4567890123,Sur,001-001-0001721,Jorge Martínez,Contado,Cliente se arrepintió por cambio de planes,PED-254,cancelado
 PT043,30,1.20,2026-06-14,Mega Almacenes,8901234567,Sur,001-001-0001722,Ana Rodríguez,Contado,,PED-255,completado
 PT045,30,1.40,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
-PT045,30,1.40,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
+PT045,30,1.40,2026-06-15,Tiendas Industriales,789012    3456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
 PT047,30,16.30,2026-06-15,Tiendas Industriales,7890123456,Industrial,001-001-0001723,Carlos Pérez,Efectivo,Producto de alto valor,PED-256,completado
 PT047,30,16.30,2026-06-15,Corporación GP,9012345678,Centro,001-001-0001724,María López,Contado,Cliente canceló porque el producto no cumplía especificaciones,PED-257,cancelado
 PT048,30,2.25,2026-06-16,Electro Hogar,1234567890,Centro,001-001-0001725,Jorge Martínez,Contado,,PED-258,completado
