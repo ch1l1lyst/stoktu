@@ -57,7 +57,7 @@ Su objetivo es transformar operaciones manuales en un flujo estructurado, audita
 ### 👥 Usuarios y roles
 
 - Sistema de autenticación
-- Roles diferenciados (administración y operación)
+- Roles diferenciados (gerencia y personal)
 - Control de permisos por funcionalidad
 
 ---
@@ -73,32 +73,6 @@ Su objetivo es transformar operaciones manuales en un flujo estructurado, audita
 
 ---
 
-## 🧱 Arquitectura (resumen)
-
-```
-Usuarios
-   ↓
-Módulos del sistema (Ventas / Inventario / Reposiciones)
-   ↓
-Lógica de negocio (control de stock y estados)
-   ↓
-Base de datos relacional
-```
-
----
-
-## 🎯 Objetivo
-
-Convertir procesos operativos de inventario y abastecimiento en un sistema estructurado, auditable y basado en datos para mejorar el control, la eficiencia y la toma de decisiones.
-
----
-
-## 🚀 Estado del proyecto
-
-Sistema funcional completo (MVP avanzado / producción interna).
-
----
-
 ## 🛠️ Tecnologías
 
 - Backend: PHP (Laravel / API REST)
@@ -109,14 +83,3 @@ Sistema funcional completo (MVP avanzado / producción interna).
 
 ---
 
-## 📊 Valor del sistema
-
-- Reduce errores operativos en inventario
-- Mejora trazabilidad de productos
-- Centraliza ventas y abastecimiento
-- Permite control en tiempo real del stock
-- Soporta decisiones basadas en datos
-
-COLORS UTILZIDOS EN EL DASHBOARD (POWER BI)
-BACKGROUND -> #0D0C0C
-BACKGROUND GRAFICA ->
