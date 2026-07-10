@@ -2,13 +2,14 @@ FROM php:8.2-fpm
 
 WORKDIR /var/www/html
 
-# Instalar dependencias del sistema y extensiones PHP
+# Instalar dependencias incluyendo Nginx
 RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
     libzip-dev \
     libonig-dev \
+    nginx \
     && docker-php-ext-install pdo_mysql mbstring zip
 
 # Instalar Composer
@@ -20,15 +21,20 @@ COPY . .
 # Instalar dependencias (sin dev) y optimizar
 RUN composer install --no-dev --optimize-autoloader
 
-# Cachear rutas y config (esto generará el caché)
+# Cachear rutas y config
 RUN php artisan route:cache && php artisan config:cache
 
-# Ajustar permisos para Laravel
+# Ajustar permisos
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Exponer puerto 9000 para PHP-FPM
-EXPOSE 9000
+# Copiar configuración de Nginx
+COPY nginx.conf /etc/nginx/sites-enabled/default
 
-# Comando por defecto (php-fpm)
-CMD ["php-fpm"]
+# Exponer el puerto 80 para Nginx
+EXPOSE 80
+
+# Script para iniciar Nginx y PHP-FPM
+RUN echo "service nginx start && php-fpm" > /start.sh && chmod +x /start.sh
+
+CMD ["/start.sh"]
