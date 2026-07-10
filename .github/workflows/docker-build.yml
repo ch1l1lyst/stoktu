@@ -1,8 +1,8 @@
-name: Build and Push Docker Images (Multi-Arch)
+name: Build and Push Docker Images
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main, staging] # o la rama que uses
 
 jobs:
   build:
@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        # Esto habilita emulación para arquitecturas como arm64
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -25,22 +21,20 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push Backend (multi-arch)
+      - name: Build and push Backend
         uses: docker/build-push-action@v4
         with:
           context: ./backend
           file: ./backend/dockerfile.prod
           push: true
-          platforms: linux/amd64,linux/arm64 # <--- AÑADIR ESTO
           tags: ch1l1lyst/stoktu-backend:latest
 
-      - name: Build and push Frontend (multi-arch)
+      - name: Build and push Frontend
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
           file: ./frontend/dockerfile.prod
           push: true
-          platforms: linux/amd64,linux/arm64 # <--- AÑADIR ESTO
           tags: ch1l1lyst/stoktu-frontend:latest
           build-args: |
             VITE_APP_URL=/api
