@@ -25,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend
-          file: ./backend/dockerfile.prod
+          file: ./backend/dockerfile
           push: true
           tags: ch1l1lyst/stoktu-backend:latest
 
@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
-          file: ./frontend/dockerfile.prod
+          file: ./frontend/dockerfile
           push: true
           tags: ch1l1lyst/stoktu-frontend:latest
           build-args: |
