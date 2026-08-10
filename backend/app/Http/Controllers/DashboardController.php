@@ -36,7 +36,7 @@ class DashboardController extends Controller
             ->value('ganancia') ?? 0;
 
         // Valor del inventario (stock * costo)
-        $valorInventario = Producto::sum(DB::raw('stock_actual * costo'));
+        $valorInventario = Producto::sum(DB::raw('stock_actual * precio'));
 
         // ============================================================
         // 2. LISTAS PARA TOOLTIP (productos sin stock y bajo stock)
