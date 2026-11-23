@@ -1,7 +1,3 @@
-Sí. Aquí tienes un **README.md profesional estilo portafolio/empresa**, alineado a lo que ya construiste en Stoktu.
-
----
-
 # Stoktu
 
 Sistema empresarial de gestión de inventario, ventas y reposiciones con enfoque en control operativo, automatización de procesos y trazabilidad de datos.
