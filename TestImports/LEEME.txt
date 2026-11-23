@@ -1,0 +1,12 @@
+Imágenes extraídas de la sección de propuesta tecnológica (Capítulo IV).
+
+01_Ilustraci_n_2_-_Proceso_de_Gesti_n_de_inventarios_-_PRODID.jpg | Ilustración 2 - Proceso de Gestión de inventarios - PRODID | media/image8.jpg
+02_Imagen_2.png | Imagen 2 | media/image9.png
+03_Ilustraci_n_4_-_Login_y_acceso_al_sistema_StoktuIlustraci_n_4_-_L.jpeg | Ilustración 4 - Login y acceso al sistema StoktuIlustración 4 - Login y acceso al sistema StoktuEl acceso al sistema se realiza mediante un módulo de inicio de sesión que identifica al usuario y lo dirige automáticamente al panel correspondiente según su rol: el rol de gerencia accede al panel de ventas con una visión estratégica del negocio, mientras que el rol de personal accede al panel de inventario orientado a la operación diaria. | media/image10.jpeg
+04_Imagen_4.png | Imagen 4 | media/image11.png
+05_Ilustraci_n_6_-_Importaci_n_de_ventas_en_Stoktu.png | Ilustración 6 - Importación de ventas en Stoktu | media/image12.png
+06_Ilustraci_n_7_Carrito_de_reposiciones.png | Ilustración 7 – Carrito de reposiciones | media/image13.png
+07_Ilustraci_n_8_-_Dashboard.png | Ilustración 8 - Dashboard | media/image14.png
+08_Imagen_8.png | Imagen 8 | media/image15.png
+09_Ilustraci_n_9_-_C_digo_fuente.png | Ilustración 9 - Código fuente | media/image16.png
+10_Ilustraci_n_11_Codigo_fuente.png | Ilustración 11 – Codigo fuente | media/image17.png
